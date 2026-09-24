@@ -22,9 +22,11 @@ Eine unveränderte Kopie des PDFs liegt unter [`book/`](book/). Die aktuelle Fas
 
 ## Nutzung
 
-`docs/index.html` im Browser öffnen. Die Datei ist in sich geschlossen und funktioniert offline, nur die Schriften kommen von Google Fonts.
+**Online:** https://janmrt-d.github.io/understanding-deep-learning-helper/ (GitHub Pages)
 
-Über GitHub Pages lässt sich die Seite auch online stellen: *Settings → Pages → Branch `main`, Ordner `/docs`*.
+**Offline:** `docs/index.html` im Browser öffnen. Die Datei ist in sich geschlossen und funktioniert offline, nur die Schriften kommen von Google Fonts.
+
+GitHub Pages ist eingerichtet mit *Settings → Pages → Branch `main`, Ordner `/docs`*. Forks können das genauso einstellen.
 
 ## Inhalt je Kapitel
 
@@ -92,7 +94,7 @@ NODE_PATH=$(npm root -g) node scripts/check.js    # benötigt Playwright mit Chr
 | Inhalte: `src/chapters/`, `content/`, Texte und Diagramme in `docs/index.html` | [CC BY 4.0](LICENSE-CONTENT) |
 | Buch-PDF in `book/` | CC BY-NC-ND 4.0, © MIT Press, siehe [`book/README.md`](book/README.md) |
 
-Bei Weiterverwendung der Inhalte bitte „UDL Lernbegleiter von Jan Mertes“ mit Link auf dieses Repo nennen.
+Bei Weiterverwendung der Inhalte bitte „UDL Lernbegleiter von Jan Mertes“ mit Link auf https://github.com/JanMrt-d/understanding-deep-learning-helper nennen.
 
 ## Hinweis
 
