@@ -1,0 +1,298 @@
+{
+  "id": "ch1",
+  "num": 1,
+  "title": "Introduction",
+  "intro": "Supervised, unsupervised and reinforcement learning at a glance, latent variables and ethical questions.",
+  "questions": [
+    {
+      "id": "1-01",
+      "sec": "1.1.1",
+      "q": "A model estimates the price of a house from its floor area and number of bedrooms. What type of problem is this?",
+      "opts": [
+        "Regression, because the model outputs a continuous number",
+        "Binary classification, because the price is either above or below market value",
+        "Multiclass classification with one class per price band",
+        "Unsupervised learning, because no expert sets the price"
+      ],
+      "exp": "Regression returns a continuous value rather than a category assignment. Price bands would be an artificial discretization that the book does not use."
+    },
+    {
+      "id": "1-02",
+      "sec": "1.1.1",
+      "q": "A model predicts both the freezing point and the boiling point of a molecule. What is this problem called?",
+      "opts": [
+        "Multivariate regression",
+        "Binary classification with the classes solid and liquid",
+        "Multiclass classification with two outputs",
+        "Conditional generation"
+      ],
+      "exp": "The model predicts more than one continuous number. Having several outputs makes the regression multivariate."
+    },
+    {
+      "id": "1-03",
+      "sec": "1.1.1",
+      "q": "What does the output vector of a classification model with N categories contain?",
+      "opts": [
+        "The probability that the input belongs to each of the N categories",
+        "The index of the chosen category as a single integer",
+        "A continuous value that is then rounded to the nearest category",
+        "One Boolean value per input feature"
+      ],
+      "exp": "The model returns a vector of size N containing class probabilities. The actual class decision is derived from it afterwards."
+    },
+    {
+      "id": "1-04",
+      "sec": "1.1.2",
+      "q": "Why are the features of a house considered tabular data?",
+      "opts": [
+        "They have no internal structure. If we reorder the inputs and train a new model, the prediction stays the same.",
+        "They are usually stored in a database table.",
+        "They consist only of fixed-length integers.",
+        "The order of the features carries the meaning of the data."
+      ],
+      "exp": "The defining property is the lack of internal structure. In text, a different word order changes the meaning, and in images, neighboring pixels carry information."
+    },
+    {
+      "id": "1-05",
+      "sec": "1.1.2",
+      "q": "Apart from their size, what distinguishes image inputs from tabular data?",
+      "opts": [
+        "Spatial structure: vertically adjacent pixels are closely related even though they are far apart in the input vector",
+        "Images always have variable length",
+        "Images cannot be represented as a vector of numbers",
+        "Image pixels are statistically independent of each other"
+      ],
+      "exp": "Concatenating the RGB values destroys vertical neighborhoods. A good model still has to exploit this structure, which later motivates convolutional networks."
+    },
+    {
+      "id": "1-06",
+      "sec": "1.1.3",
+      "q": "What does it mean to train a model, in the book's sense?",
+      "opts": [
+        "Searching a family of possible equations for the one that describes the training data best",
+        "Storing all training pairs and interpolating between them",
+        "Deriving the model equation symbolically from the data",
+        "Extending the architecture until every training point is hit exactly"
+      ],
+      "exp": "The model defines a family of curves. Training uses the training data to select one member of that family."
+    },
+    {
+      "id": "1-07",
+      "sec": "1.1.3",
+      "q": "Where does the term supervised learning come from?",
+      "opts": [
+        "Labeled input/output pairs act as a teacher or supervisor for the training process",
+        "A human monitors the predictions during operation",
+        "The model supervises its own uncertainty",
+        "Experts clean the training data before training"
+      ],
+      "exp": "The labels, such as the genre of a music clip identified by an expert, act as the supervisor."
+    },
+    {
+      "id": "1-08",
+      "sec": "1.1.5",
+      "q": "Semantic segmentation and machine translation both produce structured outputs. Why is translation considered harder?",
+      "opts": [
+        "The output is ambiguous and must follow its own grammar, which is not closely tied to the input",
+        "Text has more dimensions than an image",
+        "Translation is a classification problem with millions of classes",
+        "Segmentation does not need training data"
+      ],
+      "exp": "In segmentation, the output structure is closely tied to the input, and similar neighboring pixels probably share a label. In translation there are several valid outputs, and not every string of words is a valid sentence."
+    },
+    {
+      "id": "1-09",
+      "sec": "1.1.5",
+      "q": "According to the book, how can the grammar of a structured output be learned?",
+      "opts": [
+        "Without output labels, from the statistics of large corpora, that is, unsupervised",
+        "Only through explicitly programmed grammar rules",
+        "By collecting more labeled input/output pairs",
+        "Through reinforcement learning with a reward per correct sentence"
+      ],
+      "exp": "Valid sentences can be learned from a large text corpus without any pairs. This is the connection to unsupervised learning."
+    },
+    {
+      "id": "1-10",
+      "sec": "1.2.1",
+      "q": "What is the goal of the generative unsupervised models the book focuses on?",
+      "opts": [
+        "To synthesize new examples that are statistically indistinguishable from the training data",
+        "To partition the training data into clusters",
+        "To predict a missing label for every example",
+        "To compress the training data losslessly"
+      ],
+      "exp": "Some generative models describe the probability distribution explicitly, others only learn a mechanism for generating new examples."
+    },
+    {
+      "id": "1-11",
+      "sec": "1.2.1",
+      "q": "Image inpainting and text completion are examples of what?",
+      "opts": [
+        "Conditional generation, where part of the output is predetermined",
+        "Multivariate regression",
+        "Semantic segmentation",
+        "Reinforcement learning"
+      ],
+      "exp": "In inpainting, the unobscured pixels stay fixed. In text completion, the beginning of the text is fixed. The model only generates the missing part."
+    },
+    {
+      "id": "1-12",
+      "sec": "1.2.1",
+      "q": "A large language model answers a question correctly. What follows from this according to the book?",
+      "opts": [
+        "It generated the most likely completion of the document. It knows the statistics of language but does not understand the significance of its answer.",
+        "It built an explicit world model and reasoned logically from it",
+        "It retrieved the answer verbatim from its training data",
+        "It was trained with supervision on exactly this question"
+      ],
+      "exp": "The book stresses that the apparent intelligence comes from filling in the most likely completion."
+    },
+    {
+      "id": "1-13",
+      "sec": "1.2.2",
+      "q": "Why can the variation in face images of the same person be described with about 42 numbers?",
+      "opts": [
+        "The images are generated by a physical process with few degrees of freedom, here roughly 42 facial muscles",
+        "The image is downscaled to 42 pixels",
+        "42 color channels are enough for a face",
+        "A classifier distinguishes 42 facial expressions"
+      ],
+      "exp": "Real-world images are a tiny subset of all possible RGB combinations. The data is lower dimensional than the number of pixels suggests. This is the core idea behind latent variables."
+    },
+    {
+      "id": "1-14",
+      "sec": "1.2.2",
+      "q": "How does a generative model with latent variables create a new example?",
+      "opts": [
+        "It samples from a simple distribution over the latent variables and maps the sample to data space with a deep network",
+        "It randomly combines patches of training examples",
+        "It finds the most similar training example and adds noise",
+        "It draws uniformly distributed random values pixel by pixel"
+      ],
+      "exp": "The latent distribution is simple by design. All the complexity lives in the learned mapping from latent space to data space."
+    },
+    {
+      "id": "1-15",
+      "sec": "1.2.2",
+      "q": "Why do intermediate images look plausible when interpolating in latent space, rather than like a cross-fade?",
+      "opts": [
+        "The latent variables of the two images are interpolated, and only then mapped back to image space",
+        "The pixel values of both images are averaged with weights",
+        "The model picks real training images that lie between the two",
+        "The images are normalized to the same brightness beforehand"
+      ],
+      "exp": "Every sensible point in latent space yields a plausible image. Averaging pixels, in contrast, leaves the set of realistic images."
+    },
+    {
+      "id": "1-16",
+      "sec": "1.2.3",
+      "q": "Which statement is NOT an advantage of latent variables when mapping text to images?",
+      "opts": [
+        "The model no longer needs any training data",
+        "Fewer text/image pairs are needed because inputs and outputs are lower dimensional",
+        "Generated images are more likely to be plausible",
+        "Randomness in the mapping produces several images that fit one caption"
+      ],
+      "exp": "The book names exactly three advantages: fewer pairs, more plausible images and multiple outputs per caption. Training data is still required."
+    },
+    {
+      "id": "1-17",
+      "sec": "1.3.1",
+      "q": "A chess agent receives a reward only at the end of the game, for winning. Which problem becomes extreme here?",
+      "opts": [
+        "Temporal credit assignment: it is unclear which of the many moves were instrumental to success or failure",
+        "The exploration-exploitation trade-off",
+        "Overfitting to known openings",
+        "Missing labels for each board position"
+      ],
+      "exp": "The reward arrives long after the actions. Attributing it to the actions that caused it is the temporal credit assignment problem."
+    },
+    {
+      "id": "1-18",
+      "sec": "1.3.1",
+      "q": "A robot makes progress by lying on its side and pushing with one leg. Which dilemma does this illustrate?",
+      "opts": [
+        "Exploration vs. exploitation: keep using a known strategy with modest rewards, or try new actions that might lead to walking",
+        "Temporal credit assignment",
+        "Underfitting of the locomotion model",
+        "Non-deterministic state transitions"
+      ],
+      "exp": "The known strategy yields reliable but small rewards. Only exploration can discover the much better solution."
+    },
+    {
+      "id": "1-19",
+      "sec": "1.3.1",
+      "q": "Why do actions in chess change the state of the system non-deterministically?",
+      "opts": [
+        "For any move, the opponent may respond with many different moves",
+        "The rules of chess contain random elements",
+        "The agent chooses its moves at random",
+        "The reward is transmitted with noise"
+      ],
+      "exp": "The agent's own move is unambiguous, but the next state it observes depends on the opponent's response."
+    },
+    {
+      "id": "1-20",
+      "sec": "1.3.1",
+      "q": "What does a policy network map?",
+      "opts": [
+        "The observed world state to an action, such as board position to move, or sensor measurements to joint movements",
+        "An action to the expected reward",
+        "The latent space to the data space",
+        "Training data to model parameters"
+      ],
+      "exp": "The policy is the mapping from state to action. It is one way to incorporate deep networks into reinforcement learning."
+    },
+    {
+      "id": "1-21",
+      "sec": "1.4",
+      "q": "A system predicts salary levels from historical data. What does the book say to expect?",
+      "opts": [
+        "It will reproduce historical biases, for example predicting that women should be paid less",
+        "It will automatically correct historical biases",
+        "It becomes neutral given enough data",
+        "It predicts the same mean for all groups"
+      ],
+      "exp": "The model learns the relationship the data shows, including its injustices. Careless deployment can entrench or aggravate existing biases."
+    },
+    {
+      "id": "1-22",
+      "sec": "1.4",
+      "q": "Which approach to explainable AI does the book describe as moderately successful?",
+      "opts": [
+        "Local explanations of why a particular individual decision was made",
+        "Full disclosure of how large networks work",
+        "Inspection of all weights by experts",
+        "Replacing the network with an equivalent rule base"
+      ],
+      "exp": "The whole system cannot be explained. For individual decisions, interpretable descriptions are possible. Whether full transparency is achievable remains an open question."
+    },
+    {
+      "id": "1-23",
+      "sec": "Transfer",
+      "transfer": true,
+      "q": "A client wants to predict the remaining useful life of a bearing, in operating hours, from vibration data. Which classification fits?",
+      "opts": [
+        "Supervised regression with a time series as input, whose order carries information",
+        "Binary classification with tabular data",
+        "An unsupervised generative model",
+        "Reinforcement learning, because the machine learns during operation"
+      ],
+      "exp": "The output is a continuous quantity, labeled through historical failures. Like audio, the input is high dimensional and temporally ordered."
+    },
+    {
+      "id": "1-24",
+      "sec": "Transfer",
+      "transfer": true,
+      "q": "An inline inspection system should assign each part image to one of five defect types or to the class OK. What does the model output?",
+      "opts": [
+        "A vector with six probabilities, one per class",
+        "A single number between zero and five",
+        "A binary mask of the defect regions",
+        "A text describing the defect"
+      ],
+      "exp": "Six classes make this a multiclass classification problem with N equal to six. A binary mask would instead be a segmentation, which is a structured output."
+    }
+  ]
+}

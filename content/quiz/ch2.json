@@ -1,0 +1,238 @@
+{
+  "id": "ch2",
+  "num": 2,
+  "title": "Supervised learning",
+  "intro": "Model, parameters, loss function, training and testing, illustrated with 1D linear regression.",
+  "questions": [
+    {
+      "id": "2-01",
+      "sec": "2.1",
+      "q": "What does the book call inference?",
+      "opts": [
+        "Computing the prediction y from the input x with the model",
+        "Searching for the best parameters",
+        "Evaluating the model on test data",
+        "Inferring the underlying distribution from the outputs"
+      ],
+      "exp": "Inference simply means passing the input through the model equation to compute the output. Training and testing are separate steps."
+    },
+    {
+      "id": "2-02",
+      "sec": "2.1",
+      "q": "What roles do the model equation and the parameters ϕ play in y = f[x, ϕ]?",
+      "opts": [
+        "The equation defines a family of possible relationships, and the parameters select a particular one",
+        "The equation is trained, and the parameters are fixed in advance",
+        "The parameters determine the form of the equation, for example linear or quadratic",
+        "Both are derived anew during training"
+      ],
+      "exp": "In linear regression the family is the set of all lines. The y-intercept and slope determine the particular line."
+    },
+    {
+      "id": "2-03",
+      "sec": "2.1",
+      "q": "What does chapter 2 assume about structured or tabular data?",
+      "opts": [
+        "Input and output vectors have a fixed size, and their elements are always in the same order",
+        "All values must be normalized between zero and one",
+        "The data must come from a relational database",
+        "Every input must have exactly one output, which is a category"
+      ],
+      "exp": "In the used-car example, the vector always contains the age first, then the mileage."
+    },
+    {
+      "id": "2-04",
+      "sec": "2.1",
+      "q": "What is the loss L?",
+      "opts": [
+        "A scalar that summarizes how poorly the model with parameters ϕ predicts the training outputs",
+        "The deviation of the prediction for a single new example",
+        "The number of misclassified test examples",
+        "The difference between training and test performance"
+      ],
+      "exp": "A small loss means a good fit to the training data. On its own, it says nothing about generalization."
+    },
+    {
+      "id": "2-05",
+      "sec": "2.1",
+      "q": "Why is the loss written as a function L[ϕ] of the parameters, even though it also depends on the data?",
+      "opts": [
+        "The training data is fixed during training, and only the parameters change",
+        "The data has no influence on the loss",
+        "The loss is computed once before training",
+        "The parameters contain a copy of the training data"
+      ],
+      "exp": "Formally it would be L[{xᵢ, yᵢ}, ϕ]. Because the data is fixed, the book omits it for readability."
+    },
+    {
+      "id": "2-06",
+      "sec": "2.2.1",
+      "q": "What do ϕ₀ and ϕ₁ mean in the 1D linear regression model?",
+      "opts": [
+        "The y-intercept and the slope of the line",
+        "The mean and variance of the outputs",
+        "The minimum and maximum input value",
+        "The learning rate and the number of iterations"
+      ],
+      "exp": "Two parameters describe every possible line. Choosing them selects the member of the family."
+    },
+    {
+      "id": "2-07",
+      "sec": "2.2.2",
+      "q": "Why are the deviations squared in the least-squares loss?",
+      "opts": [
+        "The direction of the deviation, above or below the data, should not matter. Theoretical reasons follow in chapter 5.",
+        "So that outliers receive less weight",
+        "So that the loss is linear in the parameters",
+        "So that the loss can always reach exactly zero"
+      ],
+      "exp": "Without squaring, positive and negative deviations would cancel out. Note that squaring gives large deviations more weight, so it does not dampen outliers."
+    },
+    {
+      "id": "2-08",
+      "sec": "2.2.2",
+      "q": "In the heatmap of the loss function (figure 2.3), what does the minimum correspond to?",
+      "opts": [
+        "The parameters of the best-fitting line",
+        "The line with the steepest slope",
+        "The point where the y-intercept is zero",
+        "The training example with the smallest error"
+      ],
+      "exp": "Every point on the surface is a pair of parameters, and therefore a line. The lowest point belongs to the line with the smallest loss."
+    },
+    {
+      "id": "2-09",
+      "sec": "2.2.3",
+      "q": "How does the iterative training procedure described in the book work?",
+      "opts": [
+        "Initialize randomly, measure the gradient at the current position, step in the direction of steepest descent, and repeat until the gradient is flat",
+        "Evaluate every combination of parameters and choose the best",
+        "Redraw the parameters at random until the loss falls below a threshold",
+        "Adjust the parameters to fit each training example exactly, one at a time"
+      ],
+      "exp": "This is gradient descent. With two parameters an exhaustive evaluation is still feasible, with millions it is not."
+    },
+    {
+      "id": "2-10",
+      "sec": "2.2.3",
+      "q": "Linear regression has a closed-form solution. Why does the book still use gradient descent?",
+      "opts": [
+        "More complex models have no closed-form solution and too many parameters to evaluate the loss for every combination",
+        "The closed-form solution is always numerically unstable",
+        "Gradient descent finds a better minimum for linear regression",
+        "The closed-form solution requires test data"
+      ],
+      "exp": "The example introduces a procedure that becomes indispensable for deep networks later on."
+    },
+    {
+      "id": "2-11",
+      "sec": "2.2.4",
+      "q": "Why is the loss computed on a separate test set?",
+      "opts": [
+        "To check how well the model generalizes to examples it did not observe during training",
+        "To fine-tune the parameters a second time",
+        "To confirm the training loss",
+        "To determine the learning rate"
+      ],
+      "exp": "A small training loss only shows a good fit to known data. Only the test shows whether the model is ready to deploy."
+    },
+    {
+      "id": "2-12",
+      "sec": "2.2.4",
+      "q": "According to the book, what determines how well prediction accuracy generalizes to test data?",
+      "opts": [
+        "How representative and complete the training data is, and how expressive the model is",
+        "Only the number of training iterations",
+        "Only the size of the test set",
+        "The choice of initial parameters"
+      ],
+      "exp": "Both factors interact. Even the best model cannot compensate for situations that are missing from the training data."
+    },
+    {
+      "id": "2-13",
+      "sec": "2.2.4",
+      "q": "What is underfitting?",
+      "opts": [
+        "The model is not expressive enough to capture the true relationship, for example a line for a curved relationship",
+        "The model was trained for too few iterations",
+        "The model describes atypical peculiarities of the training data",
+        "The test set is too small"
+      ],
+      "exp": "The book defines underfitting through the expressiveness of the model family. The family simply does not contain the relationship."
+    },
+    {
+      "id": "2-14",
+      "sec": "2.2.4",
+      "q": "What is overfitting?",
+      "opts": [
+        "A very expressive model describes statistical peculiarities of the training data that are atypical, leading to unusual predictions",
+        "The model has a training loss that is too large",
+        "The model is too simple for the data",
+        "The training data contains too many features"
+      ],
+      "exp": "Overfitting typically shows up as a low training loss combined with a much higher test loss."
+    },
+    {
+      "id": "2-15",
+      "sec": "Notes",
+      "q": "Strictly speaking, how do loss function and cost function differ?",
+      "opts": [
+        "The loss function is the term for a single data point, while the cost function is the overall quantity being minimized and may contain additional terms",
+        "The loss function is used for regression, the cost function for classification",
+        "The cost function is maximized, the loss function minimized",
+        "There is no difference, both terms are defined identically"
+      ],
+      "exp": "The book mostly uses the terms interchangeably. Strictly, the cost function is the sum plus any additional terms, such as regularization (chapter 9)."
+    },
+    {
+      "id": "2-16",
+      "sec": "Notes",
+      "q": "How does a generative model x = g[y, ϕ] differ from a discriminative model y = f[x, ϕ]?",
+      "opts": [
+        "It computes the measurements from the output. To make a prediction, it has to be inverted, which may be difficult.",
+        "It does not need training data",
+        "It always returns probabilities instead of point estimates",
+        "It can only be used for images"
+      ],
+      "exp": "Discriminative models predict y directly from x. Generative models describe how the data x is created from y."
+    },
+    {
+      "id": "2-17",
+      "sec": "Notes",
+      "q": "Why do discriminative models dominate, even though generative models can build in prior knowledge about how the data was created?",
+      "opts": [
+        "Very flexible discriminative models trained on large amounts of data usually outperform the advantage of built-in prior knowledge",
+        "Generative models cannot be trained at all",
+        "Prior knowledge always makes predictions worse",
+        "Discriminative models need less data"
+      ],
+      "exp": "For the 3D pose of a car, one could model geometry and light transport. In practice, the combination of a flexible model and lots of data usually wins."
+    },
+    {
+      "id": "2-18",
+      "sec": "Transfer",
+      "transfer": true,
+      "q": "A model that predicts order lead times achieves a very low training loss but makes large errors on new orders. What is the most likely diagnosis?",
+      "opts": [
+        "Overfitting: the model learned peculiarities of the historical orders that do not generalize",
+        "Underfitting: the model is too simple",
+        "Gradient descent has not converged",
+        "The loss function is wrong because it squares the errors"
+      ],
+      "exp": "Low training loss and high test loss is the typical pattern. It is also worth checking how representative the data is, for example with new product variants, and how expressive the model is."
+    },
+    {
+      "id": "2-19",
+      "sec": "Transfer",
+      "transfer": true,
+      "q": "An energy model of a press uses a single straight line over the stroke rate. Both training and test error are high. What is the most likely cause?",
+      "opts": [
+        "Underfitting: the model family is too restricted to capture the actual relationship",
+        "Overfitting to the training data",
+        "Too little test data",
+        "The parameters were initialized badly"
+      ],
+      "exp": "If the model cannot even explain the training data well, it lacks expressiveness. The shallow neural networks in chapter 3 describe a much larger family of functions."
+    }
+  ]
+}

@@ -1,101 +1,103 @@
-# UDL Lernbegleiter
+# UDL Study Companion
 
-**Inoffizieller, interaktiver Lernbegleiter auf Deutsch zu [*Understanding Deep Learning*](https://udlbook.github.io/udlbook/) von Simon J. D. Prince (MIT Press).**
+**An unofficial, interactive study companion to [*Understanding Deep Learning*](https://udlbook.github.io/udlbook/) by Simon J. D. Prince (MIT Press).**
 
-> *English:* Unofficial interactive German study companion for Prince's *Understanding Deep Learning*. Theory in plain words, interactive figures, industrial examples and multiple-choice questions per chapter.
+For every chapter: the theory in plain words, interactive figures, an industrial case study, and conceptual multiple-choice questions.
 
-## Warum dieses Repo öffentlich ist
+**Live version:** https://janmrt-d.github.io/understanding-deep-learning-helper/
 
-Der Lernbegleiter entsteht Kapitel für Kapitel mit Claude. Das Repo ist bewusst öffentlich, damit nicht jede und jeder dieselbe Arbeit noch einmal generieren und dafür eigene Tokens ausgeben muss. Wer das Buch durcharbeitet, kann die Seite direkt nutzen, forken oder um weitere Kapitel ergänzen. Pull Requests sind willkommen.
+## Why this repository is public
 
-## Das Buch
+This companion is built chapter by chapter with Claude. The repository is public on purpose, so that nobody has to generate the same material again and spend their own tokens on it. If you are working through the book, feel free to use the site directly, fork it, or add chapters. Pull requests are welcome.
+
+## The book
 
 | | |
 |---|---|
-| Website mit kostenlosem PDF | https://udlbook.github.io/udlbook/ |
-| Offizielles Repo mit Python-Notebooks, Errata und Lösungen | https://github.com/udlbook/udlbook |
-| Autor | Simon J. D. Prince |
-| Verlag | MIT Press |
-| Lizenz des Buches | [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) |
+| Website with free PDF | https://udlbook.github.io/udlbook/ |
+| Official repository with Python notebooks, errata and answers | https://github.com/udlbook/udlbook |
+| Author | Simon J. D. Prince |
+| Publisher | MIT Press |
+| License of the book | [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) |
 
-Eine unveränderte Kopie des PDFs liegt unter [`book/`](book/). Die aktuelle Fassung gibt es immer auf der offiziellen Website.
+An unmodified copy of the PDF is stored in [`book/`](book/). The latest version is always available on the official website.
 
-## Nutzung
+## Usage
 
-**Online:** https://janmrt-d.github.io/understanding-deep-learning-helper/ (GitHub Pages)
+**Online:** via GitHub Pages at the link above.
 
-**Offline:** `docs/index.html` im Browser öffnen. Die Datei ist in sich geschlossen und funktioniert offline, nur die Schriften kommen von Google Fonts.
+**Offline:** open `docs/index.html` in a browser. The file is self-contained and works offline, only the fonts are loaded from Google Fonts.
 
-GitHub Pages ist eingerichtet mit *Settings → Pages → Branch `main`, Ordner `/docs`*. Forks können das genauso einstellen.
+GitHub Pages serves *Settings → Pages → Branch `main`, folder `/docs`*. Forks can use the same setting.
 
-## Inhalt je Kapitel
+## What each chapter contains
 
-* **Theorie** in eigenen Worten mit Formeln und Diagrammen
-* **Interaktive Abbildungen**, zum Beispiel latenter Raum mit Gesichtsgenerator, Q-Learning in einer Gridworld, Verlustlandschaft mit animiertem Gradientenabstieg, Under- und Overfitting über den Polynomgrad
-* **Praxisbeispiel** aus der Industrie, etwa Condition Monitoring oder eine Energie-Baseline
-* **Multiple-Choice-Verständnisfragen** ohne Rechenaufgaben, mit Begründung und Fortschritt im Browser
+* **Theory** in plain words, with equations and diagrams
+* **Interactive figures**, for example a latent space with a face generator, tabular Q-learning in a gridworld, a loss surface with animated gradient descent, and under- vs. overfitting as a function of polynomial degree
+* **Case study** from industry, such as condition monitoring or an energy baseline
+* **Multiple-choice questions** without calculations, with explanations and progress saved in the browser
 
-## Stand
+## Status
 
-| Kapitel | Thema | Status |
+| Chapter | Topic | Status |
 |---|---|---|
-| 1 | Einführung | ✅ |
-| 2 | Überwachtes Lernen | ✅ |
-| 3 | Flache neuronale Netze | geplant |
-| 4 bis 21 | | offen |
+| 1 | Introduction | ✅ |
+| 2 | Supervised learning | ✅ |
+| 3 | Shallow neural networks | planned |
+| 4 to 21 | | open |
 
-## Aufbau
+## Repository layout
 
-| Pfad | Inhalt |
+| Path | Contents |
 |---|---|
-| `src/page.html` | Gerüst mit Header, Kapitel-Tabs, Footer und Platzhaltern |
-| `src/styles.css` | Design-Tokens (Light und Dark), Layout, Komponenten |
-| `src/chapters/<id>.html` | Ein `<article class="chapter">` je Kapitel mit Abschnitten, Figuren, SVG-Diagrammen |
-| `src/js/00-core.js` | Helfer (`prep`, `tok`, `axes`), Speicher, Kapitel-Navigation, `widgets`, `pauseHooks` |
-| `src/js/10-kap1.js` ff. | Interaktive Widgets je Kapitel |
-| `src/js/30-quiz.js` | Quiz-Rendering |
-| `src/js/40-init.js` | Start |
-| `content/chapters.json` | Manifest mit Reihenfolge, Titeln und dem nächsten angekündigten Kapitel |
-| `content/quiz/<id>.json` | Fragen je Kapitel |
-| `scripts/build.py` | Baut `docs/index.html` als eine selbstständige Datei |
-| `scripts/check.js` | Smoke-Test auf JS-Fehler und Überlauf bei 390 px, jeweils in Light und Dark |
-| `book/` | Unverändertes Buch-PDF und Lizenzhinweis |
+| `src/page.html` | Page shell with header, chapter tabs, footer and placeholders |
+| `src/styles.css` | Design tokens (light and dark), layout, components |
+| `src/chapters/<id>.html` | One `<article class="chapter">` per chapter with sections, figures and SVG diagrams |
+| `src/js/00-core.js` | Helpers (`prep`, `tok`, `axes`), storage, chapter navigation, `widgets`, `pauseHooks` |
+| `src/js/10-ch1.js`, `20-ch2.js` | Interactive widgets per chapter |
+| `src/js/30-quiz.js` | Quiz rendering |
+| `src/js/40-init.js` | Startup |
+| `content/chapters.json` | Manifest with order, titles and the next announced chapter |
+| `content/quiz/<id>.json` | Questions per chapter |
+| `scripts/build.py` | Builds `docs/index.html` as a single self-contained file |
+| `scripts/check.js` | Smoke test for JS errors and horizontal overflow at 390 px, in light and dark mode |
+| `book/` | Unmodified book PDF and license notice |
 
 ## Workflow
 
 ```bash
-python3 scripts/build.py                          # keine Abhängigkeiten
-NODE_PATH=$(npm root -g) node scripts/check.js    # benötigt Playwright mit Chromium
+python3 scripts/build.py                          # no dependencies
+NODE_PATH=$(npm root -g) node scripts/check.js    # requires Playwright with Chromium
 ```
 
-`docs/index.html` wird mit eingecheckt.
+`docs/index.html` is committed.
 
-## Neues Kapitel anlegen
+## Adding a chapter
 
-1. `src/chapters/kapN.html` mit `<article class="chapter" id="ch-kapN" data-ch="kapN" hidden>` anlegen. Struktur wie Kapitel 2: Hero mit drei Kernaussagen, `subnav`, Abschnitte, Praxis und `<div id="quiz-kapN">`.
-2. Widgets in `src/js/NN-kapN.js` schreiben. Jede Zeichenfunktion mit `widgets.push(fn)` registrieren und Animationen über `pauseHooks` beim Kapitelwechsel stoppen. Die JS-Dateien so nummerieren, dass Quiz und Init zuletzt laden.
-3. `content/quiz/kapN.json` anlegen, das Kapitel in `content/chapters.json` eintragen und `upcoming` hochzählen.
-4. Bauen, prüfen, committen.
+1. Create `src/chapters/chN.html` with `<article class="chapter" id="chapter-chN" data-ch="chN" hidden>`. Follow the structure of chapter 2: hero with three key takeaways, `subnav`, sections, case study, and `<div id="quiz-chN">`.
+2. Put widgets in `src/js/NN-chN.js`. Register every draw function with `widgets.push(fn)` and stop animations on chapter switch via `pauseHooks`. Number the JS files so that the quiz and init scripts load last.
+3. Create `content/quiz/chN.json`, add the chapter to `content/chapters.json`, and increment `upcoming`.
+4. Build, check, commit.
 
-## Konventionen
+## Conventions
 
-* Quizfragen haben genau 4 Optionen. **Index 0 ist immer die richtige Antwort**, die Anzeige mischt deterministisch nach Frage-ID.
-* Frage-IDs (`1-01`, `2-17`, …) nie ändern, sonst passt gespeicherter Fortschritt nicht mehr. Der Speicherschlüssel ist `udl-quiz-v1`.
-* Texte auf Deutsch, ohne Gedankenstriche und ohne Semikolons. Keine Rechenaufgaben im Quiz.
-* Farben nur über CSS-Tokens, Canvas-Farben über `tok()`, damit Light und Dark stimmen.
-* Keine externen Ressourcen außer Google Fonts, alles andere inline.
-* Erklärungen und Fragen in eigenen Worten formulieren und keine Passagen oder Abbildungen aus dem Buch übernehmen.
+* Quiz questions have exactly 4 options. **Index 0 is always the correct answer**, and the display order is shuffled deterministically per question ID.
+* Never change question IDs (`1-01`, `2-17`, …), otherwise saved progress no longer matches. The storage key is `udl-quiz-v1`.
+* All text in English, using the standard terminology of ML research and of the book (for example *loss function*, *latent variables*, *temporal credit assignment*, *capacity*). No em dashes, no semicolons. No calculations in the quiz.
+* Colors only via CSS tokens, canvas colors via `tok()`, so that light and dark mode both work.
+* No external resources except Google Fonts. Everything else is inlined.
+* Write explanations and questions in your own words and do not copy passages or figures from the book.
 
-## Lizenz
+## License
 
-| Bestandteil | Lizenz |
+| Part | License |
 |---|---|
 | Code: `src/js/`, `src/page.html`, `src/styles.css`, `scripts/` | [MIT](LICENSE) |
-| Inhalte: `src/chapters/`, `content/`, Texte und Diagramme in `docs/index.html` | [CC BY 4.0](LICENSE-CONTENT) |
-| Buch-PDF in `book/` | CC BY-NC-ND 4.0, © MIT Press, siehe [`book/README.md`](book/README.md) |
+| Content: `src/chapters/`, `content/`, text and diagrams in `docs/index.html` | [CC BY 4.0](LICENSE-CONTENT) |
+| Book PDF in `book/` | CC BY-NC-ND 4.0, © MIT Press, see [`book/README.md`](book/README.md) |
 
-Bei Weiterverwendung der Inhalte bitte „UDL Lernbegleiter von Jan Mertes“ mit Link auf https://github.com/JanMrt-d/understanding-deep-learning-helper nennen.
+When reusing the content, please credit “UDL Study Companion by Jan Mertes” with a link to https://github.com/JanMrt-d/understanding-deep-learning-helper.
 
-## Hinweis
+## Disclaimer
 
-Dieses Projekt ist nicht mit dem Autor oder MIT Press verbunden. Die interaktiven Abbildungen sind vereinfachte Spielzeugmodelle zur Veranschaulichung. Fehler im Lernbegleiter gehen auf dieses Repo zurück, nicht auf das Buch.
+This project is not affiliated with the author or MIT Press. The interactive figures are simplified toy models for illustration. Any errors in this companion are the responsibility of this repository, not of the book.

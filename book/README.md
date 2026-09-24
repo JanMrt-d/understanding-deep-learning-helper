@@ -1,11 +1,11 @@
-# Buch-PDF
+# Book PDF
 
 **Understanding Deep Learning**
 Simon J. D. Prince, MIT Press
-Offizielle Quelle: https://udlbook.github.io/udlbook/ · https://github.com/udlbook/udlbook
+Official source: https://udlbook.github.io/udlbook/ · https://github.com/udlbook/udlbook
 
-Das PDF in diesem Ordner ist eine **unveränderte Kopie** der vom Autor frei bereitgestellten Fassung. Es steht unter der Lizenz
+The PDF in this folder is an **unmodified copy** of the version made freely available by the author. It is licensed under
 [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)](https://creativecommons.org/licenses/by-nc-nd/4.0/),
-© MIT Press. Weitergabe nur unverändert, nicht kommerziell und mit Namensnennung.
+© MIT Press. It may only be shared unmodified, for non-commercial purposes and with attribution.
 
-Die Lizenz des übrigen Repos gilt **nicht** für dieses PDF. Die jeweils aktuelle Fassung mit Korrekturen gibt es auf der offiziellen Website.
+The license of the rest of this repository does **not** apply to this PDF. The latest version, including corrections, is available on the official website.

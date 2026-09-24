@@ -1,12 +1,12 @@
-/* ---------- K1: problem explorer ---------- */
+/* ---------- CH1: problem explorer ---------- */
 const PROBLEMS=[
- {k:"Hauspreis",real:"Wohnfläche 120 m², 4 Zimmer, Baujahr 1998",vin:"[120, 4, 1998]",vout:"[389000]",pred:"389.000 €",type:"Regression",inp:"Tabellarisch",note:"Eine kontinuierliche Zahl als Ausgabe."},
- {k:"Molekül",real:"Ethanol, C₂H₆O",vin:"Atome und Bindungen als Graph",vout:"[−114, 78]",pred:"Gefrierpunkt −114 °C, Siedepunkt 78 °C",type:"Multivariate Regression",inp:"Graph",note:"Mehrere kontinuierliche Zahlen zugleich."},
- {k:"Rezension",real:"„Das Schnitzel war hervorragend.“",vin:"[27, 5120, 88, 4051]",vout:"[0,94  0,06]",pred:"positiv",type:"Binäre Klassifikation",inp:"Sequenz variabler Länge",note:"Wortindizes aus einem Vokabular mit 10.000 Einträgen."},
- {k:"Musikgenre",real:"Audioclip, 10 s",vin:"441.000 Ganzzahlen (44,1 kHz, 16 bit)",vout:"[0,02  0,81  0,05 …]",pred:"Jazz",type:"Multiklassen-Klassifikation",inp:"Sehr hochdimensional",note:"Ein Wahrscheinlichkeitsvektor der Länge N für N Genres."},
- {k:"Bildobjekt",real:"Foto, 640 × 480 Pixel",vin:"921.600 RGB-Werte",vout:"[0,01  0,93  0,02 …]",pred:"Katze",type:"Multiklassen-Klassifikation",inp:"Räumlich strukturiert",note:"Nachbarpixel hängen zusammen, auch wenn sie im Vektor weit auseinander liegen."},
- {k:"Restlebensdauer",real:"Vibrationsmessung am Wälzlager",vin:"25.600 Werte pro Sekunde",vout:"[1840]",pred:"≈ 1.840 Betriebsstunden",type:"Regression",inp:"Zeitreihe",note:"Labels stammen aus dokumentierten Ausfällen.",ind:true},
- {k:"Fehlerklasse",real:"Kamerabild eines Gussteils",vin:"RGB-Werte je Pixel",vout:"[0,03  0,91  0,02  0,01  0,02  0,01]",pred:"Riss",type:"Multiklassen-Klassifikation",inp:"Räumlich strukturiert",note:"Fünf Fehlerarten plus i.O. ergeben N = 6.",ind:true}
+ {k:"House price",real:"120 m², 4 bedrooms, built 1998",vin:"[120, 4, 1998]",vout:"[389000]",pred:"$389,000",type:"Regression",inp:"Tabular",note:"A single continuous number as output."},
+ {k:"Molecule",real:"Ethanol, C₂H₆O",vin:"atoms and bonds as a graph",vout:"[−114, 78]",pred:"freezing point −114 °C, boiling point 78 °C",type:"Multivariate regression",inp:"Graph",note:"Several continuous numbers at once."},
+ {k:"Review",real:"“The food was excellent.”",vin:"[27, 5120, 88, 4051]",vout:"[0.94  0.06]",pred:"positive",type:"Binary classification",inp:"Variable-length sequence",note:"Word indices from a vocabulary of 10,000 entries."},
+ {k:"Music genre",real:"audio clip, 10 s",vin:"441,000 integers (44.1 kHz, 16 bit)",vout:"[0.02  0.81  0.05 …]",pred:"jazz",type:"Multiclass classification",inp:"Very high-dimensional",note:"A probability vector of length N for N genres."},
+ {k:"Image object",real:"photo, 640 × 480 pixels",vin:"921,600 RGB values",vout:"[0.01  0.93  0.02 …]",pred:"cat",type:"Multiclass classification",inp:"Spatially structured",note:"Neighboring pixels are related even when they are far apart in the vector."},
+ {k:"Remaining useful life",real:"vibration signal of a rolling bearing",vin:"25,600 samples per second",vout:"[1840]",pred:"≈ 1,840 operating hours",type:"Regression",inp:"Time series",note:"Labels come from documented failures.",ind:true},
+ {k:"Defect class",real:"camera image of a cast part",vin:"RGB values per pixel",vout:"[0.03  0.91  0.02  0.01  0.02  0.01]",pred:"crack",type:"Multiclass classification",inp:"Spatially structured",note:"Five defect types plus OK give N = 6.",ind:true}
 ];
 let peSel=0;
 function renderPE(){
@@ -14,25 +14,25 @@ function renderPE(){
   PROBLEMS.forEach((p,i)=>{ const b=document.createElement("button"); b.className="chip"+(p.ind?" ind":""); b.id="pe-"+i; b.textContent=p.k; b.setAttribute("aria-pressed",String(i===peSel)); b.onclick=()=>{peSel=i; renderPE();}; c.appendChild(b); });
   const p=PROBLEMS[peSel];
   $("pe-real").textContent=p.real; $("pe-vin").textContent=p.vin; $("pe-vout").textContent=p.vout; $("pe-pred").textContent=p.pred;
-  $("pe-type").textContent=p.type; $("pe-inp").textContent="Eingabe: "+p.inp; $("pe-note").textContent=p.note;
+  $("pe-type").textContent=p.type; $("pe-inp").textContent="Input: "+p.inp; $("pe-note").textContent=p.note;
 }
 renderPE();
 
-/* ---------- K1: order demo ---------- */
+/* ---------- CH1: order demo ---------- */
 let ordSw=false;
 function renderOrd(anim){
-  const tab=ordSw?["Baujahr 1998","Fläche 120 m²","Zimmer 4"]:["Fläche 120 m²","Zimmer 4","Baujahr 1998"];
-  const txt=ordSw?["Der Mann","beißt","den Hund"]:["Der Hund","beißt","den Mann"];
+  const tab=ordSw?["built 1998","area 120 m²","bedrooms 4"]:["area 120 m²","bedrooms 4","built 1998"];
+  const txt=ordSw?["The man","bites","the dog"]:["The dog","bites","the man"];
   const put=(id,arr)=>{ const el=$(id); el.classList.remove("anim"); el.innerHTML=arr.map(t=>`<span class="otok">${t}</span>`).join(""); if(anim){ void el.offsetWidth; el.classList.add("anim"); } };
   put("ord-tab",tab); put("ord-txt",txt);
-  $("ord-tab-r").textContent=ordSw?"Nach Neutraining: 389.000 €. Bedeutung unverändert.":"Vorhersage: 389.000 €";
-  const r=$("ord-txt-r"); r.textContent=ordSw?"Täter und Opfer vertauscht. Bedeutung geändert.":"Der Hund ist der Täter."; r.className="ores"+(ordSw?" bad":"");
-  $("ord-btn").textContent=ordSw?"Ursprüngliche Reihenfolge":"Reihenfolge vertauschen";
+  $("ord-tab-r").textContent=ordSw?"After retraining: $389,000. Meaning unchanged.":"Prediction: $389,000";
+  const r=$("ord-txt-r"); r.textContent=ordSw?"Subject and object swapped. Meaning changed.":"The dog does the biting."; r.className="ores"+(ordSw?" bad":"");
+  $("ord-btn").textContent=ordSw?"Restore original order":"Swap the order";
 }
 $("ord-btn").onclick=()=>{ ordSw=!ordSw; renderOrd(true); };
 renderOrd(false);
 
-/* ---------- K1: structured output grids (SVG) ---------- */
+/* ---------- CH1: structured output grids (SVG) ---------- */
 (function(){
   const NS="http://www.w3.org/2000/svg";
   const cow=["00000","01110","11111","01010","00000"];
@@ -42,7 +42,7 @@ renderOrd(false);
   mk($("seg-out"),210,70,(r,c)=>cow[r][c]==="1"?"cell-a":"cell-b");
 })();
 
-/* ---------- K1: faces, noise, latent ---------- */
+/* ---------- CH1: faces, noise, latent ---------- */
 function faceParams(z1,z2){ return {smile:Math.tanh(0.75*z1), eye:1/(1+Math.exp(-1.3*z2)), brow:Math.tanh(0.55*z1-0.45*z2)}; }
 function drawFace(ctx,cx,cy,r,p,T,alpha){
   ctx.save(); ctx.globalAlpha=alpha==null?1:alpha;
@@ -82,13 +82,13 @@ function drawPad(){
   for(const [k,al] of [[2,0.10],[1,0.18]]){ ctx.fillStyle=T.accent; ctx.globalAlpha=al; ctx.beginPath(); ctx.arc(w/2,h/2,k/ZR*(w/2-10),0,Math.PI*2); ctx.fill(); }
   ctx.globalAlpha=1; ctx.strokeStyle=T.line; ctx.lineWidth=1;
   ctx.beginPath(); ctx.moveTo(10,h/2); ctx.lineTo(w-10,h/2); ctx.moveTo(w/2,10); ctx.lineTo(w/2,h-10); ctx.stroke();
-  ctx.fillStyle=T.muted; ctx.font=`500 12px ${T.fMono}`; ctx.textAlign="right"; ctx.fillText("z₁ ≈ Lächeln",w-12,h/2-8); ctx.textAlign="left"; ctx.fillText("z₂ ≈ Augen",w/2+8,20);
+  ctx.fillStyle=T.muted; ctx.font=`500 12px ${T.fMono}`; ctx.textAlign="right"; ctx.fillText("z₁ ≈ smile",w-12,h/2-8); ctx.textAlign="left"; ctx.fillText("z₂ ≈ eyes",w/2+8,20);
   const px=sx(pad.z[0]), py=sy(pad.z[1]);
   ctx.fillStyle=T.data; ctx.strokeStyle=T.surface; ctx.lineWidth=2.5; ctx.beginPath(); ctx.arc(px,py,8,0,Math.PI*2); ctx.fill(); ctx.stroke();
   const b=prep($("cv-face")); if(!b) return;
   b.ctx.fillStyle=T.surface2; b.ctx.fillRect(0,0,b.w,b.h);
   drawFace(b.ctx,b.w/2,b.h/2,b.w*0.38,faceParams(pad.z[0],pad.z[1]),T);
-  $("pad-read").innerHTML=`<span>z = (<b>${fmt(pad.z[0])}</b> | <b>${fmt(pad.z[1])}</b>)</span>`;
+  $("pad-read").innerHTML=`<span>z = (<b>${fmt(pad.z[0])}</b>, <b>${fmt(pad.z[1])}</b>)</span>`;
 }
 widgets.push(drawPad);
 (function(){
@@ -116,13 +116,13 @@ widgets.push(drawLerp);
 $("lerp-t").addEventListener("input",drawLerp);
 let lerpAnim=null;
 $("lerp-play").onclick=()=>{
-  if(lerpAnim){ cancelAnimationFrame(lerpAnim); lerpAnim=null; $("lerp-play").textContent="Abspielen"; return; }
-  $("lerp-play").textContent="Anhalten"; const t0=performance.now();
+  if(lerpAnim){ cancelAnimationFrame(lerpAnim); lerpAnim=null; $("lerp-play").textContent="Play"; return; }
+  $("lerp-play").textContent="Pause"; const t0=performance.now();
   const step=now=>{ const u=((now-t0)/4000)%2; $("lerp-t").value=(u<1?u:2-u).toFixed(2); drawLerp(); lerpAnim=requestAnimationFrame(step); };
   lerpAnim=requestAnimationFrame(step);
 };
 
-/* ---------- K1: gridworld Q-learning ---------- */
+/* ---------- CH1: gridworld Q-learning ---------- */
 const GW={W:8,H:5,start:[0,2],walls:new Set(),rew:{"1,0":1,"4,0":10},gamma:0.9,alpha:0.5,maxSteps:80};
 const ACT=[[0,-1],[1,0],[0,1],[-1,0]];
 const gw={Q:null,pos:null,steps:0,ep:0,hist:[],running:false,acc:0,last:0};
@@ -141,7 +141,7 @@ function gwStep(eps){
   gw.pos=[nx,ny]; gw.steps++;
   if(term||gw.steps>=GW.maxSteps){ gw.hist.push(r); if(gw.hist.length>20) gw.hist.shift(); gw.ep++; gw.pos=GW.start.slice(); gw.steps=0; }
 }
-const SPEEDS=[{n:"Zeitlupe",ms:180,k:1},{n:"normal",ms:40,k:1},{n:"schnell",ms:16,k:25},{n:"sehr schnell",ms:16,k:400}];
+const SPEEDS=[{n:"slow motion",ms:180,k:1},{n:"normal",ms:40,k:1},{n:"fast",ms:16,k:25},{n:"very fast",ms:16,k:400}];
 function drawGrid(){
   const a=prep($("cv-grid")); if(!a) return; const {ctx,w}=a; const T=tok();
   const cs=w/GW.W; const [ar,ag,ab]=rgb(T.accent);
@@ -165,10 +165,10 @@ function drawGrid(){
   ctx.fillStyle=T.data; ctx.strokeStyle=T.surface; ctx.lineWidth=2.5;
   ctx.beginPath(); ctx.arc(gw.pos[0]*cs+cs/2,gw.pos[1]*cs+cs/2,cs*0.19,0,Math.PI*2); ctx.fill(); ctx.stroke();
   const big=gw.hist.filter(r=>r===10).length, small=gw.hist.filter(r=>r===1).length, none=gw.hist.length-big-small;
-  $("gw-read").innerHTML=`<span>Episoden <b>${gw.ep}</b></span><span>Letzte ${gw.hist.length}: <b>${big}×</b> +10 · <b>${small}×</b> +1 · <b>${none}×</b> ohne Ziel</span><span>Startwert <b>${fmt(gwMax(GW.start[0],GW.start[1]))}</b></span>`;
+  $("gw-read").innerHTML=`<span>Episodes <b>${gw.ep}</b></span><span>Last ${gw.hist.length}: <b>${big}×</b> +10 · <b>${small}×</b> +1 · <b>${none}×</b> no goal</span><span>Value of start <b>${fmt(gwMax(GW.start[0],GW.start[1]))}</b></span>`;
 }
 widgets.push(drawGrid);
-function gwBtn(){ $("gw-run").textContent=gw.running?"Pausieren":(gw.ep?"Weiter trainieren":"Training starten"); }
+function gwBtn(){ $("gw-run").textContent=gw.running?"Pause":(gw.ep?"Continue training":"Start training"); }
 function gwLoop(now){
   if(!gw.running) return;
   const sp=SPEEDS[+$("gw-speed").value], eps=parseFloat($("gw-eps").value);

@@ -1,0 +1,164 @@
+<!-- ===================== CHAPTER 2 ===================== -->
+<article class="chapter" id="chapter-ch2" data-ch="ch2" hidden>
+  <div class="ch-hero">
+    <div class="eyebrow">Chapter 2</div>
+    <h2>Supervised learning</h2>
+    <p class="lead">All the core concepts of supervised learning, illustrated with a model everyone knows: the straight line.</p>
+    <ul class="takeaways">
+      <li><b>Model</b>An equation defines a family of functions. The parameters select one member of that family.</li>
+      <li><b>Training</b>We look for the parameters that minimize the loss on the training data, usually by gradient descent.</li>
+      <li><b>Testing</b>Only held-out test data shows whether the model generalizes, underfits or overfits.</li>
+    </ul>
+  </div>
+  <nav class="subnav" aria-label="Sections of chapter 2">
+    <button data-go="k2-frame">Framework</button><button data-go="k2-lin">Linear regression</button><button data-go="k2-test">Under- and overfitting</button><button data-go="k2-notes">Terminology</button><button data-go="k2-praxis">In practice</button><button class="q" data-go="k2-quiz">Quiz</button>
+  </nav>
+
+  <section class="sec" id="k2-frame">
+    <div class="eyebrow">§ 2.1</div>
+    <h3>The framework</h3>
+    <p>A supervised learning model is a function <i>f</i> with parameters <i>ϕ</i>. The equation fixes which input/output relationships are possible at all. The parameters select one of them. Computing the prediction <i>y</i> from an input <i>x</i> is called <em>inference</em>.</p>
+    <div class="math"><i>y</i> = <i>f</i>[<i>x</i>, <i>ϕ</i>]</div>
+    <p>Training searches for the parameters that give the smallest loss <i>L</i> on the <i>I</i> training pairs {<i>x<sub>i</sub></i>, <i>y<sub>i</sub></i>}. The loss is a scalar that summarizes how poorly the model predicts the training outputs.</p>
+    <div class="math"><i>ϕ̂</i> = <span class="u">argmin</span><sub><i>ϕ</i></sub> <i>L</i>[<i>ϕ</i>]<span class="note">Strictly speaking, L also depends on the training data. Since the data is fixed during training, only the parameters are written.</span></div>
+    <p>A small training loss alone proves nothing. Only a separate test set shows whether the model generalizes to examples it has not seen. The chapter also assumes structured, or tabular, data: fixed-size vectors whose elements are always in the same order. For a used car, the age always comes first, then the mileage.</p>
+    <figure class="fig">
+      <svg class="diagram" viewBox="0 0 660 228" role="img" aria-label="Training produces the parameters phi hat. They are plugged into the same model that is used for testing and for predictions.">
+        <defs>
+          <marker id="ah4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+          <marker id="ah4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+        </defs>
+        <text class="ts" x="20" y="45">Training</text>
+        <text class="ts" x="20" y="135">Testing</text>
+        <text class="ts" x="20" y="195">Deployment</text>
+        <rect class="bx-data" x="100" y="20" width="150" height="40" rx="7"/><text class="t" x="175" y="45" text-anchor="middle">pairs {xᵢ, yᵢ}</text>
+        <rect class="bx" x="290" y="20" width="150" height="40" rx="7"/><text class="t" x="365" y="45" text-anchor="middle">minimize L[ϕ]</text>
+        <rect class="bx-acc" x="480" y="20" width="150" height="40" rx="7"/><text class="ta" x="555" y="45" text-anchor="middle">learned ϕ̂</text>
+        <line class="arr" x1="250" y1="40" x2="288" y2="40" marker-end="url(#ah4)"/>
+        <line class="arr" x1="440" y1="40" x2="478" y2="40" marker-end="url(#ah4)"/>
+        <path class="arr-acc dash" d="M555 60 V84 H365 V108" marker-end="url(#ah4a)"/>
+        <text class="ta" x="462" y="78" text-anchor="middle">plug in</text>
+        <rect class="bx-data" x="100" y="112" width="150" height="40" rx="7"/><text class="t" x="175" y="137" text-anchor="middle">test data</text>
+        <rect class="bx" x="100" y="172" width="150" height="40" rx="7"/><text class="t" x="175" y="197" text-anchor="middle">new input x</text>
+        <rect class="bx" x="290" y="112" width="150" height="100" rx="7"/><text class="tm" x="365" y="167" text-anchor="middle">f[x, ϕ̂]</text>
+        <rect class="bx" x="480" y="112" width="150" height="40" rx="7"/><text class="t" x="555" y="137" text-anchor="middle">test loss</text>
+        <rect class="bx" x="480" y="172" width="150" height="40" rx="7"/><text class="t" x="555" y="197" text-anchor="middle">prediction y</text>
+        <line class="arr" x1="250" y1="132" x2="288" y2="132" marker-end="url(#ah4)"/>
+        <line class="arr" x1="250" y1="192" x2="288" y2="192" marker-end="url(#ah4)"/>
+        <line class="arr" x1="440" y1="132" x2="478" y2="132" marker-end="url(#ah4)"/>
+        <line class="arr" x1="440" y1="192" x2="478" y2="192" marker-end="url(#ah4)"/>
+      </svg>
+      <figcaption><b>One model, three uses.</b> The parameters come from the training data only. Testing and deployment use the same function with fixed parameters. The test answers whether the model is ready to deploy.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec" id="k2-lin">
+    <div class="eyebrow">§ 2.2</div>
+    <h3>Linear regression: model, loss, training</h3>
+    <p>The simplest model is a straight line with y-intercept <i>ϕ</i><sub>0</sub> and slope <i>ϕ</i><sub>1</sub>. Every choice of parameters is one member of the family of all lines.</p>
+    <div class="math"><i>y</i> = <i>f</i>[<i>x</i>, <i>ϕ</i>] = <i>ϕ</i><sub>0</sub> + <i>ϕ</i><sub>1</sub><i>x</i></div>
+    <p>The least-squares loss sums the squared vertical deviations between the line and the data points. Squaring means the direction of the deviation does not matter, whether a point lies above or below the line. Large deviations are penalized disproportionately. Chapter 5 gives the deeper theoretical justification for this choice.</p>
+    <div class="math"><i>L</i>[<i>ϕ</i>] = <span class="u">∑</span><sub><i>i</i>=1</sub><sup><i>I</i></sup> (<i>ϕ</i><sub>0</sub> + <i>ϕ</i><sub>1</sub><i>x<sub>i</sub></i> − <i>y<sub>i</sub></i>)<sup>2</sup></div>
+    <p>With two parameters we can compute the loss for every combination and visualize it as a surface. With millions of parameters that is impossible. Training therefore starts from a random initialization, measures the gradient of the loss at the current position, and takes a step downhill. This repeats until the surface is flat.</p>
+    <div class="math"><i>ϕ</i> ← <i>ϕ</i> − <i>α</i> · <i>∂L</i>/<i>∂ϕ</i><span class="note">α is the learning rate. It sets the step size.</span></div>
+    <figure class="fig">
+      <div class="pair">
+        <div><div class="cv-label">Data space · line and residuals</div><canvas id="cv-lin" data-ar="0.9" aria-label="Data points with regression line"></canvas></div>
+        <div><div class="cv-label">Parameter space · loss surface L[ϕ]</div><canvas id="cv-loss" data-ar="0.9" tabindex="0" aria-label="Loss surface, click to set the parameters"></canvas></div>
+      </div>
+      <div class="ctl">
+        <div class="rng"><label for="lin-p0">ϕ₀ intercept</label><input type="range" id="lin-p0" min="-0.6" max="1.4" step="0.01" value="1.1"><output id="lin-p0-o"></output></div>
+        <div class="rng"><label for="lin-p1">ϕ₁ slope</label><input type="range" id="lin-p1" min="-0.6" max="1.4" step="0.01" value="-0.3"><output id="lin-p1-o"></output></div>
+      </div>
+      <div class="ctl">
+        <button class="btn primary" id="gd-run">Run gradient descent</button>
+        <div class="rng"><label for="gd-lr">Learning rate α</label><input type="range" id="gd-lr" min="0.002" max="0.045" step="0.001" value="0.012"><output id="gd-lr-o"></output></div>
+        <button class="btn" id="lin-opt">Closed-form solution</button>
+      </div>
+      <div class="readout" id="lin-read"></div>
+      <div class="status" id="gd-status"></div>
+      <figcaption><b>Two views of the same model.</b> On the left, a line with its residuals in orange. On the right, the same line is a single point in parameter space, and the color shows the loss: stronger teal means lower loss. The green cross marks the minimum. Drag the point on the right or use the sliders. Then run gradient descent and try a learning rate above 0.035. The parameters overshoot the valley and oscillate with growing amplitude.</figcaption>
+    </figure>
+    <p>Linear regression has a closed-form solution, which the “Closed-form solution” button uses. The book still introduces the iterative approach because it also works for models that have no closed-form solution and too many parameters to evaluate every combination. That is practically every deep network.</p>
+  </section>
+
+  <section class="sec" id="k2-test">
+    <div class="eyebrow">§ 2.2.4</div>
+    <h3>Testing: underfitting and overfitting</h3>
+    <p>How well prediction accuracy generalizes to test data depends on two things. The training data must be representative and complete, and the expressiveness of the model must match the problem.</p>
+    <div class="defs">
+      <div><b>Underfitting</b>The model is too simple to capture the true relationship between input and output. Training and test error are both high.</div>
+      <div><b>Overfitting</b>The model is so expressive that it also describes statistical peculiarities of the training data that are atypical. Training error is low, test error is high.</div>
+    </div>
+    <figure class="fig">
+      <div class="pair">
+        <div><div class="cv-label">Model and data</div><canvas id="cv-poly" data-ar="0.8" aria-label="Polynomial fit to training data"></canvas></div>
+        <div><div class="cv-label">Error vs. model capacity</div><canvas id="cv-polyerr" data-ar="0.8" aria-label="Training and test error per polynomial degree"></canvas></div>
+      </div>
+      <div class="ctl"><div class="rng"><label for="poly-d">Capacity (polynomial degree)</label><input type="range" id="poly-d" min="0" max="9" step="1" value="1"><output id="poly-d-o"></output></div></div>
+      <div class="readout" id="poly-read"></div>
+      <div class="legend"><span><i style="background:var(--data);border-radius:50%"></i>training data</span><span><i style="background:transparent;border:2px solid var(--muted);border-radius:50%"></i>test data</span><span><i style="background:var(--accent)"></i>model</span></div>
+      <figcaption><b>The U-shaped curve.</b> As the degree grows, the training error keeps falling. The test error falls only up to a point and then rises again. At degree 9 the model passes exactly through all ten training points and oscillates wildly in between. Polynomials only serve as an illustration of increasing capacity here. The book returns to the topic in chapters 8 and 9, where it also discusses double descent.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec" id="k2-notes">
+    <div class="eyebrow">Notes to chapter 2</div>
+    <h3>Two pairs of terms</h3>
+    <h4>Loss function and cost function</h4>
+    <p>The book mostly uses the two terms interchangeably. Strictly speaking, the loss function is the term associated with a single data point, one summand. The cost function is the overall quantity that is minimized and may contain additional terms not associated with any data point, such as a regularization term from chapter 9. Objective function is the general term for anything that is maximized or minimized.</p>
+    <h4>Discriminative and generative models</h4>
+    <p>The models in this chapter are discriminative. They predict <i>y</i> directly from the measurement <i>x</i>. A generative model goes the other way and describes how the measurement is created from the output. This makes it possible to build in prior knowledge, for example about 3D geometry and light transport when estimating the pose of a car in an image. To perform inference, however, the model must be inverted, which can be difficult.</p>
+    <figure class="fig">
+      <svg class="diagram" viewBox="0 0 660 180" role="img" aria-label="In a discriminative model the arrow points from x to y. In a generative model it points from y to x, and prediction requires the inverse.">
+        <defs>
+          <marker id="ah5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+          <marker id="ah5a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+        </defs>
+        <text class="th" x="20" y="45">Discriminative</text>
+        <text class="th" x="20" y="125">Generative</text>
+        <text class="ts" x="20" y="143">prior knowledge</text>
+        <rect class="bx-data" x="150" y="20" width="150" height="40" rx="7"/><text class="t" x="225" y="45" text-anchor="middle">input x (image)</text>
+        <rect class="bx" x="480" y="20" width="150" height="40" rx="7"/><text class="t" x="555" y="45" text-anchor="middle">output y (pose)</text>
+        <line class="arr-acc" x1="300" y1="40" x2="478" y2="40" marker-end="url(#ah5a)"/>
+        <text class="ta" x="390" y="32" text-anchor="middle">y = f[x, ϕ] directly</text>
+        <rect class="bx-data" x="150" y="100" width="150" height="40" rx="7"/><text class="t" x="225" y="125" text-anchor="middle">input x (image)</text>
+        <rect class="bx" x="480" y="100" width="150" height="40" rx="7"/><text class="t" x="555" y="125" text-anchor="middle">output y (pose)</text>
+        <line class="arr" x1="480" y1="120" x2="302" y2="120" marker-end="url(#ah5)"/>
+        <text class="ts" x="390" y="112" text-anchor="middle">x = g[y, ϕ]</text>
+        <path class="arr-acc dash" d="M225 140 V160 H555 V142" marker-end="url(#ah5a)"/>
+        <text class="ta" x="390" y="174" text-anchor="middle">inference requires the inverse g⁻¹</text>
+      </svg>
+      <figcaption><b>The difference is the direction of the arrow.</b> In practice discriminative models dominate, because very flexible models trained on large amounts of data usually outperform the advantage of built-in prior knowledge.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec" id="k2-praxis">
+    <div class="sec-meta"><span class="tag">IN PRACTICE</span><span class="eyebrow">Energy management</span></div>
+    <h3>Energy baseline of a press</h3>
+    <p>A linear regression is often enough for a first, easily explainable result. The mean power consumption of a press can be modeled as a base load plus power per stroke rate.</p>
+    <div class="math"><i>P</i> = <i>ϕ</i><sub>0</sub> + <i>ϕ</i><sub>1</sub> · <i>n</i><span class="note">P mean power in kW per hour, n strokes per minute as an hourly mean</span></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Term from chapter 2</th><th>Counterpart in the project</th></tr></thead>
+      <tbody>
+        <tr><td>Input x</td><td>Strokes per minute, hourly mean from the PLC</td></tr>
+        <tr><td>Output y</td><td>Mean power consumption in kW from the energy meter</td></tr>
+        <tr><td>ϕ₀</td><td>Base load from hydraulics, cooling and control that also occurs at idle</td></tr>
+        <tr><td>ϕ₁</td><td>Additional power per stroke per minute</td></tr>
+        <tr><td>Loss L</td><td>Sum of squared residuals over the training weeks</td></tr>
+        <tr><td>Test</td><td>Prediction for weeks that were not part of training</td></tr>
+        <tr><td>Underfitting</td><td>Tooling or material strongly affect consumption, but the line ignores them</td></tr>
+        <tr><td>Overfitting</td><td>A very flexible model fitted to only a few shifts also learns one-off events such as a downtime</td></tr>
+      </tbody>
+    </table></div>
+    <p>The value lies in the residual. If measured power stays above the model's expectation, this points to excess consumption, for example from hydraulic leaks or worn pumps. An example calculation with assumed values:</p>
+    <div class="math">Δ<i>P</i> · <i>t</i> · <i>c</i> = 5 <span class="u">kW</span> · 6,000 <span class="u">h/a</span> · 0.20 <span class="u">€/kWh</span> = 6,000 <span class="u">€/a</span></div>
+    <div class="callout"><b>Consulting perspective.</b> Both parameters are physically interpretable. That eases acceptance by the client and is a good argument for starting with a simple model. A deep network only pays off once test error and residuals show that the line no longer captures the relationship.</div>
+  </section>
+
+  <section class="sec" id="k2-quiz">
+    <div class="eyebrow">Self-test</div>
+    <h3>Chapter 2 quiz</h3>
+    <div id="quiz-ch2"></div>
+  </section>
+</article>

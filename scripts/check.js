@@ -1,5 +1,5 @@
-// Smoke-Test für docs/index.html: JS-Fehler, horizontaler Überlauf auf Phone-Breite, alle Kapitel-Tabs.
-// Aufruf: NODE_PATH=$(npm root -g) node scripts/check.js
+// Smoke test for docs/index.html: JS errors, horizontal overflow at phone width, all chapter tabs.
+// Usage: NODE_PATH=$(npm root -g) node scripts/check.js
 const path = require("path");
 const { chromium } = require("playwright");
 
@@ -19,10 +19,10 @@ const { chromium } = require("playwright");
         await page.click("#" + id);
         await page.waitForTimeout(150);
         const sw = await page.evaluate(() => document.documentElement.scrollWidth);
-        if (sw > vp.width) { errors.push(`${id}: horizontaler Überlauf ${sw}px > ${vp.width}px`); }
+        if (sw > vp.width) { errors.push(`${id}: horizontal overflow ${sw}px > ${vp.width}px`); }
       }
       const tag = `${vp.width}px ${scheme}`;
-      if (errors.length) { failed = true; console.log("FEHLER", tag, errors); } else { console.log("ok", tag, tabs.join(", ")); }
+      if (errors.length) { failed = true; console.log("FAIL", tag, errors); } else { console.log("ok", tag, tabs.join(", ")); }
       await page.close();
     }
   }

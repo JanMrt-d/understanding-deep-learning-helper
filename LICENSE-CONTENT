@@ -1,11 +1,11 @@
-Lizenz für die Inhalte dieses Repos
+License for the content of this repository
 
-Gilt für: Texte, Erklärungen, Diagramme und Quizfragen, also src/chapters/, content/ und die daraus erzeugten Inhalte in docs/index.html.
-Gilt nicht für: book/ (Buch-PDF, CC BY-NC-ND 4.0, © MIT Press) und den Programmcode (siehe LICENSE, MIT).
+Applies to: text, explanations, diagrams and quiz questions, i.e. src/chapters/, content/ and the content generated from them in docs/index.html.
+Does not apply to: book/ (book PDF, CC BY-NC-ND 4.0, © MIT Press) and the program code (see LICENSE, MIT).
 
 Copyright (c) 2026 Jan Mertes
-Namensnennung: "UDL Lernbegleiter von Jan Mertes" mit Link auf https://github.com/JanMrt-d/understanding-deep-learning-helper
-Offizieller Lizenztext: https://creativecommons.org/licenses/by/4.0/legalcode
+Attribution: "UDL Study Companion by Jan Mertes" with a link to https://github.com/JanMrt-d/understanding-deep-learning-helper
+Official license text: https://creativecommons.org/licenses/by/4.0/legalcode
 
 ========================================================================
 

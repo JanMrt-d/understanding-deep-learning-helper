@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Baut docs/index.html (GitHub Pages) als eine selbstständige Datei aus src/ und content/.
+"""Builds docs/index.html (GitHub Pages) as a single self-contained file from src/ and content/.
 
-Reihenfolge:
-  src/page.html            Gerüst mit Platzhaltern
+Order:
+  src/page.html            page shell with placeholders
   src/styles.css           -> /*@STYLES*/
-  src/chapters/<id>.html   -> <!--@CHAPTERS-->  (Reihenfolge aus content/chapters.json)
+  src/chapters/<id>.html   -> <!--@CHAPTERS-->  (order from content/chapters.json)
   content/quiz/<id>.json   -> /*@DATA*/         (QUIZ, UPCOMING, CH_TITLES)
-  src/js/*.js              -> /*@SCRIPTS*/      (alphabetisch, daher Präfixe 00-, 10-, ...)
+  src/js/*.js              -> /*@SCRIPTS*/      (alphabetical, hence prefixes 00-, 10-, ...)
 """
 import json
 import pathlib
@@ -28,17 +28,17 @@ def main() -> int:
 
     ids = [q["id"] for q in quiz]
     if ids != [c["id"] for c in chapters]:
-        print("Quiz-IDs passen nicht zum Manifest", file=sys.stderr)
+        print("Quiz IDs do not match the manifest", file=sys.stderr)
         return 1
     for q in quiz:
         seen = set()
         for item in q["questions"]:
             if item["id"] in seen:
-                print(f"Doppelte Frage-ID {item['id']}", file=sys.stderr)
+                print(f"Duplicate question ID {item['id']}", file=sys.stderr)
                 return 1
             seen.add(item["id"])
             if len(item["opts"]) != 4:
-                print(f"Frage {item['id']} hat nicht genau 4 Optionen (Index 0 ist korrekt)", file=sys.stderr)
+                print(f"Question {item['id']} does not have exactly 4 options (index 0 is correct)", file=sys.stderr)
                 return 1
 
     data = (
@@ -56,7 +56,7 @@ def main() -> int:
         ("/*@SCRIPTS*/", scripts),
     ]:
         if marker not in page:
-            print(f"Platzhalter {marker} fehlt in src/page.html", file=sys.stderr)
+            print(f"Placeholder {marker} missing in src/page.html", file=sys.stderr)
             return 1
         page = page.replace(marker, value)
 
@@ -64,7 +64,7 @@ def main() -> int:
     out = DIST / "index.html"
     out.write_text(page, encoding="utf-8")
     n = sum(len(q["questions"]) for q in quiz)
-    print(f"{out.relative_to(ROOT)}  {out.stat().st_size/1024:.0f} KiB  {len(chapters)} Kapitel  {n} Fragen")
+    print(f"{out.relative_to(ROOT)}  {out.stat().st_size/1024:.0f} KiB  {len(chapters)} chapters  {n} questions")
     return 0
 
 

@@ -1,4 +1,4 @@
-/* ---------- K2: linear regression & gradient descent ---------- */
+/* ---------- CH2: linear regression & gradient descent ---------- */
 const LX=[0.12,0.25,0.4,0.52,0.66,0.8,0.95,1.1,1.28,1.45,1.62,1.85];
 const LN=[0.09,-0.13,0.05,0.12,-0.07,0.03,-0.11,0.08,-0.04,0.1,-0.09,0.05];
 const LY=LX.map((x,i)=>0.35+0.55*x+LN[i]);
@@ -35,7 +35,7 @@ function axes(ctx,T,m,w,h,xr,yr,ticks,xl,yl){
 function drawLin(){
   const T=tok();
   const a=prep($("cv-lin")); if(!a) return; const {ctx,w,h}=a; const m={l:40,r:10,t:10,b:38};
-  const {X,Y}=axes(ctx,T,m,w,h,[0,2],[0,2],{x:[0,0.5,1,1.5,2],y:[0,0.5,1,1.5,2]},"Eingabe x","Ausgabe y");
+  const {X,Y}=axes(ctx,T,m,w,h,[0,2],[0,2],{x:[0,0.5,1,1.5,2],y:[0,0.5,1,1.5,2]},"Input x","Output y");
   ctx.save(); ctx.beginPath(); ctx.rect(m.l,m.t,w-m.l-m.r,h-m.t-m.b); ctx.clip();
   ctx.strokeStyle=T.data; ctx.lineWidth=1.4; ctx.setLineDash([4,3]);
   LX.forEach((x,i)=>{ ctx.beginPath(); ctx.moveTo(X(x),Y(LY[i])); ctx.lineTo(X(x),Y(lin.p0+lin.p1*x)); ctx.stroke(); });
@@ -48,7 +48,7 @@ function drawLin(){
   if(!lin.heat||lin.heatGen!==themeGen){ lin.heat=buildHeat(T); lin.heatGen=themeGen; }
   const m2={l:40,r:10,t:10,b:38};
   c2.imageSmoothingEnabled=true; c2.drawImage(lin.heat,m2.l,m2.t,W-m2.l-m2.r,H-m2.t-m2.b);
-  const ax=axes(c2,T,m2,W,H,PR,PR,{x:[-0.5,0,0.5,1],y:[-0.5,0,0.5,1]},"ϕ₀ Achsenabschnitt","ϕ₁ Steigung");
+  const ax=axes(c2,T,m2,W,H,PR,PR,{x:[-0.5,0,0.5,1],y:[-0.5,0,0.5,1]},"ϕ₀ intercept","ϕ₁ slope");
   c2.save(); c2.beginPath(); c2.rect(m2.l,m2.t,W-m2.l-m2.r,H-m2.t-m2.b); c2.clip();
   c2.strokeStyle=T.ok; c2.lineWidth=2; c2.beginPath(); const ox=ax.X(LOPT[0]), oy=ax.Y(LOPT[1]); c2.moveTo(ox-6,oy); c2.lineTo(ox+6,oy); c2.moveTo(ox,oy-6); c2.lineTo(ox,oy+6); c2.stroke();
   if(lin.path.length>1){ c2.strokeStyle=T.ink; c2.lineWidth=1.6; c2.beginPath(); lin.path.forEach((p,i)=>i?c2.lineTo(ax.X(p[0]),ax.Y(p[1])):c2.moveTo(ax.X(p[0]),ax.Y(p[1]))); c2.stroke(); c2.fillStyle=T.ink; lin.path.forEach(p=>{ c2.beginPath(); c2.arc(ax.X(p[0]),ax.Y(p[1]),2,0,Math.PI*2); c2.fill(); }); }
@@ -56,14 +56,14 @@ function drawLin(){
   c2.restore();
   $("lin-p0").value=lin.p0; $("lin-p1").value=lin.p1;
   $("lin-p0-o").textContent=fmt(lin.p0); $("lin-p1-o").textContent=fmt(lin.p1); $("gd-lr-o").textContent=fmt(parseFloat($("gd-lr").value),3);
-  $("lin-read").innerHTML=`<span>Verlust L = <b>${fmt(lossAt(lin.p0,lin.p1),3)}</b></span><span>Minimum L = <b>${fmt(lossAt(LOPT[0],LOPT[1]),3)}</b> bei ϕ = (${fmt(LOPT[0])} | ${fmt(LOPT[1])})</span>${lin.it?`<span>Schritte <b>${lin.it}</b></span>`:""}`;
+  $("lin-read").innerHTML=`<span>Loss L = <b>${fmt(lossAt(lin.p0,lin.p1),3)}</b></span><span>Minimum L = <b>${fmt(lossAt(LOPT[0],LOPT[1]),3)}</b> at ϕ = (${fmt(LOPT[0])}, ${fmt(LOPT[1])})</span>${lin.it?`<span>Steps <b>${lin.it}</b></span>`:""}`;
 }
 widgets.push(drawLin);
 function setLin(p0,p1,keepPath){ lin.p0=Math.max(PR[0],Math.min(PR[1],p0)); lin.p1=Math.max(PR[0],Math.min(PR[1],p1)); if(!keepPath){ lin.path=[]; lin.it=0; stopGD(""); } drawLin(); }
 $("lin-p0").addEventListener("input",e=>setLin(parseFloat(e.target.value),lin.p1));
 $("lin-p1").addEventListener("input",e=>setLin(lin.p0,parseFloat(e.target.value)));
 $("gd-lr").addEventListener("input",()=>$("gd-lr-o").textContent=fmt(parseFloat($("gd-lr").value),3));
-$("lin-opt").onclick=()=>{ setLin(LOPT[0],LOPT[1]); status("Geschlossene Lösung eingesetzt. Kein iterativer Weg nötig.","ok"); };
+$("lin-opt").onclick=()=>{ setLin(LOPT[0],LOPT[1]); status("Closed-form solution applied. No iterations needed.","ok"); };
 (function(){
   const cv=$("cv-loss"); let drag=false;
   const set=e=>{ const r=cv.getBoundingClientRect(); const m={l:40,r:10,t:10,b:38}; const u=(e.clientX-r.left-m.l)/(r.width-m.l-m.r), v=(e.clientY-r.top-m.t)/(r.height-m.t-m.b); setLin(PR[0]+u*(PR[1]-PR[0]),PR[1]-v*(PR[1]-PR[0])); };
@@ -75,8 +75,8 @@ $("lin-opt").onclick=()=>{ setLin(LOPT[0],LOPT[1]); status("Geschlossene Lösung
 function status(t,cls){ const s=$("gd-status"); s.textContent=t; s.className="status"+(cls?" "+cls:""); }
 function stopGD(msg,cls){ lin.gd=false; $("gd-run").textContent="Gradientenabstieg starten"; if(msg!==undefined) status(msg,cls); }
 $("gd-run").onclick=()=>{
-  if(lin.gd){ stopGD("Angehalten."); return; }
-  lin.gd=true; lin.path=[[lin.p0,lin.p1]]; lin.it=0; $("gd-run").textContent="Anhalten"; status("Läuft. Jeder Punkt rechts ist ein Schritt.");
+  if(lin.gd){ stopGD("Stopped."); return; }
+  lin.gd=true; lin.path=[[lin.p0,lin.p1]]; lin.it=0; $("gd-run").textContent="Stop"; status("Running. Each dot on the right is one step.");
   let last=0;
   const step=now=>{
     if(!lin.gd) return;
@@ -84,17 +84,17 @@ $("gd-run").onclick=()=>{
       const lr=parseFloat($("gd-lr").value); const [g0,g1]=gradAt(lin.p0,lin.p1);
       lin.p0-=lr*g0; lin.p1-=lr*g1; lin.it++; lin.path.push([lin.p0,lin.p1]);
       const gn=Math.hypot(g0,g1);
-      if(!isFinite(lin.p0)||Math.abs(lin.p0)>6||Math.abs(lin.p1)>6){ lin.p0=Math.max(PR[0],Math.min(PR[1],lin.p0||0)); lin.p1=Math.max(PR[0],Math.min(PR[1],lin.p1||0)); drawLin(); stopGD(`Divergiert nach ${lin.it} Schritten. Die Lernrate ist zu groß, jeder Schritt springt weiter über das Tal hinaus.`,"bad"); return; }
+      if(!isFinite(lin.p0)||Math.abs(lin.p0)>6||Math.abs(lin.p1)>6){ lin.p0=Math.max(PR[0],Math.min(PR[1],lin.p0||0)); lin.p1=Math.max(PR[0],Math.min(PR[1],lin.p1||0)); drawLin(); stopGD(`Diverged after ${lin.it} steps. The learning rate is too large, so every step overshoots the valley further.`,"bad"); return; }
       drawLin();
-      if(gn<2e-3){ stopGD(`Konvergiert nach ${lin.it} Schritten. Der Gradient ist praktisch null.`,"ok"); return; }
-      if(lin.it>=400){ stopGD(`Nach 400 Schritten gestoppt. Mit dieser Lernrate geht es nur langsam voran.`); return; }
+      if(gn<2e-3){ stopGD(`Converged after ${lin.it} steps. The gradient is practically zero.`,"ok"); return; }
+      if(lin.it>=400){ stopGD(`Stopped after 400 steps. With this learning rate, progress is slow.`); return; }
     }
     requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
 };
 
-/* ---------- K2: polynomial under/overfitting ---------- */
+/* ---------- CH2: polynomial under/overfitting ---------- */
 const TRUEF=x=>0.5+0.35*Math.sin(2*Math.PI*0.9*x);
 const PX=[0.03,0.13,0.22,0.34,0.44,0.56,0.66,0.77,0.88,0.97];
 const PNz=[0.06,-0.08,0.1,-0.05,0.07,-0.1,0.04,0.09,-0.07,0.05];
@@ -116,7 +116,7 @@ const BEST=POLY.reduce((b,p,i)=>p.te<POLY[b].te?i:b,0);
 function drawPoly(){
   const d=+$("poly-d").value, P=POLY[d], T=tok();
   const a=prep($("cv-poly")); if(!a) return; const {ctx,w,h}=a; const m={l:40,r:10,t:10,b:38};
-  const {X,Y}=axes(ctx,T,m,w,h,[0,1],[-0.2,1.2],{x:[0,0.25,0.5,0.75,1],y:[0,0.5,1]},"Eingabe x","Ausgabe y");
+  const {X,Y}=axes(ctx,T,m,w,h,[0,1],[-0.2,1.2],{x:[0,0.25,0.5,0.75,1],y:[0,0.5,1]},"Input x","Output y");
   ctx.save(); ctx.beginPath(); ctx.rect(m.l,m.t,w-m.l-m.r,h-m.t-m.b); ctx.clip();
   ctx.strokeStyle=T.muted; ctx.globalAlpha=.35; ctx.lineWidth=1.5; ctx.setLineDash([3,4]); ctx.beginPath(); for(let i=0;i<=200;i++){ const x=i/200; i?ctx.lineTo(X(x),Y(TRUEF(x))):ctx.moveTo(X(x),Y(TRUEF(x))); } ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
   ctx.strokeStyle=T.accent; ctx.lineWidth=2.8; ctx.beginPath(); for(let i=0;i<=400;i++){ const x=i/400; const y=Math.max(-5,Math.min(5,polyEval(P.w,x))); i?ctx.lineTo(X(x),Y(y)):ctx.moveTo(X(x),Y(y)); } ctx.stroke();
@@ -130,8 +130,8 @@ function drawPoly(){
   c.strokeStyle=T.line; c.lineWidth=1; c.fillStyle=T.muted; c.font=`400 11px ${T.fMono}`; c.textAlign="right"; c.textBaseline="middle";
   for(let k=lo;k<=hi;k++){ const yy=H-m2.b-(k-lo)/(hi-lo)*(H-m2.t-m2.b); c.globalAlpha=.5; c.beginPath(); c.moveTo(m2.l,yy); c.lineTo(W-m2.r,yy); c.stroke(); c.globalAlpha=1; c.fillText(k===0?"1":"10"+["⁻⁴","⁻³","⁻²","⁻¹","","¹"][k+4],m2.l-6,yy); }
   c.textAlign="center"; c.textBaseline="top"; for(let i=0;i<=9;i++) c.fillText(String(i),Xd(i),H-m2.b+5);
-  c.fillStyle=T.ink; c.font=`500 12px ${T.fBody}`; c.textBaseline="bottom"; c.fillText("Polynomgrad",m2.l+(W-m2.l-m2.r)/2,H-2);
-  c.save(); c.translate(12,m2.t+(H-m2.t-m2.b)/2); c.rotate(-Math.PI/2); c.textBaseline="middle"; c.fillText("mittlerer quadr. Fehler",0,0); c.restore();
+  c.fillStyle=T.ink; c.font=`500 12px ${T.fBody}`; c.textBaseline="bottom"; c.fillText("Polynomial degree",m2.l+(W-m2.l-m2.r)/2,H-2);
+  c.save(); c.translate(12,m2.t+(H-m2.t-m2.b)/2); c.rotate(-Math.PI/2); c.textBaseline="middle"; c.fillText("Mean squared error",0,0); c.restore();
   c.fillStyle=T.accent; c.globalAlpha=.12; c.fillRect(Xd(d)-8,m2.t,16,H-m2.t-m2.b); c.globalAlpha=1;
   for(const [key,col,lab] of [["tr",T.accent,"Training"],["te",T.data,"Test"]]){
     c.strokeStyle=col; c.lineWidth=2.4; c.beginPath(); POLY.forEach((p,i)=>i?c.lineTo(Xd(i),Yl(p[key])):c.moveTo(Xd(i),Yl(p[key]))); c.stroke();
@@ -139,11 +139,11 @@ function drawPoly(){
     c.font=`600 12px ${T.fBody}`; c.textAlign="left"; c.textBaseline="middle"; c.fillText(lab,Xd(9)+8,Yl(POLY[9][key]));
   }
   let diag,cls;
-  if(d<BEST && P.te>1.3*POLY[BEST].te){ diag="Underfitting: Das Modell ist zu starr für den Verlauf."; cls="bad"; }
-  else if(d>BEST && P.te>1.3*POLY[BEST].te){ diag="Overfitting: Das Modell lernt das Rauschen der Trainingsdaten mit."; cls="bad"; }
-  else { diag="Gute Generalisierung: Die Ausdrucksstärke passt zum Problem."; cls="ok"; }
+  if(d<BEST && P.te>1.3*POLY[BEST].te){ diag="Underfitting: the model is too rigid for the true function."; cls="bad"; }
+  else if(d>BEST && P.te>1.3*POLY[BEST].te){ diag="Overfitting: the model also fits the noise in the training data."; cls="bad"; }
+  else { diag="Good generalization: the capacity matches the problem."; cls="ok"; }
   $("poly-d-o").textContent=String(d);
-  $("poly-read").innerHTML=`<span>Trainingsfehler <b>${P.tr.toExponential(1).replace(".",",")}</b></span><span>Testfehler <b>${P.te.toExponential(1).replace(".",",")}</b></span><span class="status ${cls}" style="font-family:var(--f-body)">${diag}</span>`;
+  $("poly-read").innerHTML=`<span>Training error <b>${P.tr.toExponential(1)}</b></span><span>Test error <b>${P.te.toExponential(1)}</b></span><span class="status ${cls}" style="font-family:var(--f-body)">${diag}</span>`;
 }
 widgets.push(drawPoly);
 $("poly-d").addEventListener("input",drawPoly);

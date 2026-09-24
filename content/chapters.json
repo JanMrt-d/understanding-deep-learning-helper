@@ -2,14 +2,14 @@
   "upcoming": 3,
   "chapters": [
     {
-      "id": "kap1",
+      "id": "ch1",
       "num": 1,
-      "title": "Einführung"
+      "title": "Introduction"
     },
     {
-      "id": "kap2",
+      "id": "ch2",
       "num": 2,
-      "title": "Überwachtes Lernen"
+      "title": "Supervised learning"
     }
   ]
 }
