@@ -35,7 +35,7 @@ GitHub Pages serves *Settings → Pages → Branch `main`, folder `/docs`*. Fork
 * **Theory** in plain words, with equations and diagrams
 * **Interactive figures**, for example a latent space with a face generator, tabular Q-learning in a gridworld, a loss surface with animated gradient descent, and under- vs. overfitting as a function of polynomial degree
 * **Case study** from industry, such as condition monitoring or an energy baseline
-* **Multiple-choice questions** without calculations, with explanations and progress saved in the browser
+* **Multiple-choice questions** without calculations, 10 core and 3 transfer questions per chapter, with explanations and progress saved in the browser
 
 ## Status
 
@@ -76,11 +76,12 @@ NODE_PATH=$(npm root -g) node scripts/check.js    # requires Playwright with Chr
 
 1. Create `src/chapters/chN.html` with `<article class="chapter" id="chapter-chN" data-ch="chN" hidden>`. Follow the structure of chapter 2: hero with three key takeaways, `subnav`, sections, case study, and `<div id="quiz-chN">`.
 2. Put widgets in `src/js/NN-chN.js`. Register every draw function with `widgets.push(fn)` and stop animations on chapter switch via `pauseHooks`. Number the JS files so that the quiz and init scripts load last.
-3. Create `content/quiz/chN.json`, add the chapter to `content/chapters.json`, and increment `upcoming`.
+3. Create `content/quiz/chN.json` with 10 core and 3 transfer questions, add the chapter to `content/chapters.json`, and increment `upcoming`.
 4. Build, check, commit.
 
 ## Conventions
 
+* Each chapter has exactly 10 core questions followed by 3 transfer questions. Transfer questions apply the chapter to an industrial scenario and carry `"sec": "Transfer", "transfer": true`. The build enforces this.
 * Quiz questions have exactly 4 options. **Index 0 is always the correct answer**, and the display order is shuffled deterministically per question ID.
 * Never change question IDs (`1-01`, `2-17`, …), otherwise saved progress no longer matches. The storage key is `udl-quiz-v1`.
 * All text in English, using the standard terminology of ML research and of the book (for example *loss function*, *latent variables*, *temporal credit assignment*, *capacity*). No em dashes, no semicolons. No calculations in the quiz.

@@ -17,30 +17,6 @@
       "exp": "Regression returns a continuous value rather than a category assignment. Price bands would be an artificial discretization that the book does not use."
     },
     {
-      "id": "1-02",
-      "sec": "1.1.1",
-      "q": "A model predicts both the freezing point and the boiling point of a molecule. What is this problem called?",
-      "opts": [
-        "Multivariate regression",
-        "Binary classification with the classes solid and liquid",
-        "Multiclass classification with two outputs",
-        "Conditional generation"
-      ],
-      "exp": "The model predicts more than one continuous number. Having several outputs makes the regression multivariate."
-    },
-    {
-      "id": "1-03",
-      "sec": "1.1.1",
-      "q": "What does the output vector of a classification model with N categories contain?",
-      "opts": [
-        "The probability that the input belongs to each of the N categories",
-        "The index of the chosen category as a single integer",
-        "A continuous value that is then rounded to the nearest category",
-        "One Boolean value per input feature"
-      ],
-      "exp": "The model returns a vector of size N containing class probabilities. The actual class decision is derived from it afterwards."
-    },
-    {
       "id": "1-04",
       "sec": "1.1.2",
       "q": "Why are the features of a house considered tabular data?",
@@ -65,30 +41,6 @@
       "exp": "Concatenating the RGB values destroys vertical neighborhoods. A good model still has to exploit this structure, which later motivates convolutional networks."
     },
     {
-      "id": "1-06",
-      "sec": "1.1.3",
-      "q": "What does it mean to train a model, in the book's sense?",
-      "opts": [
-        "Searching a family of possible equations for the one that describes the training data best",
-        "Storing all training pairs and interpolating between them",
-        "Deriving the model equation symbolically from the data",
-        "Extending the architecture until every training point is hit exactly"
-      ],
-      "exp": "The model defines a family of curves. Training uses the training data to select one member of that family."
-    },
-    {
-      "id": "1-07",
-      "sec": "1.1.3",
-      "q": "Where does the term supervised learning come from?",
-      "opts": [
-        "Labeled input/output pairs act as a teacher or supervisor for the training process",
-        "A human monitors the predictions during operation",
-        "The model supervises its own uncertainty",
-        "Experts clean the training data before training"
-      ],
-      "exp": "The labels, such as the genre of a music clip identified by an expert, act as the supervisor."
-    },
-    {
       "id": "1-08",
       "sec": "1.1.5",
       "q": "Semantic segmentation and machine translation both produce structured outputs. Why is translation considered harder?",
@@ -101,18 +53,6 @@
       "exp": "In segmentation, the output structure is closely tied to the input, and similar neighboring pixels probably share a label. In translation there are several valid outputs, and not every string of words is a valid sentence."
     },
     {
-      "id": "1-09",
-      "sec": "1.1.5",
-      "q": "According to the book, how can the grammar of a structured output be learned?",
-      "opts": [
-        "Without output labels, from the statistics of large corpora, that is, unsupervised",
-        "Only through explicitly programmed grammar rules",
-        "By collecting more labeled input/output pairs",
-        "Through reinforcement learning with a reward per correct sentence"
-      ],
-      "exp": "Valid sentences can be learned from a large text corpus without any pairs. This is the connection to unsupervised learning."
-    },
-    {
       "id": "1-10",
       "sec": "1.2.1",
       "q": "What is the goal of the generative unsupervised models the book focuses on?",
@@ -123,42 +63,6 @@
         "To compress the training data losslessly"
       ],
       "exp": "Some generative models describe the probability distribution explicitly, others only learn a mechanism for generating new examples."
-    },
-    {
-      "id": "1-11",
-      "sec": "1.2.1",
-      "q": "Image inpainting and text completion are examples of what?",
-      "opts": [
-        "Conditional generation, where part of the output is predetermined",
-        "Multivariate regression",
-        "Semantic segmentation",
-        "Reinforcement learning"
-      ],
-      "exp": "In inpainting, the unobscured pixels stay fixed. In text completion, the beginning of the text is fixed. The model only generates the missing part."
-    },
-    {
-      "id": "1-12",
-      "sec": "1.2.1",
-      "q": "A large language model answers a question correctly. What follows from this according to the book?",
-      "opts": [
-        "It generated the most likely completion of the document. It knows the statistics of language but does not understand the significance of its answer.",
-        "It built an explicit world model and reasoned logically from it",
-        "It retrieved the answer verbatim from its training data",
-        "It was trained with supervision on exactly this question"
-      ],
-      "exp": "The book stresses that the apparent intelligence comes from filling in the most likely completion."
-    },
-    {
-      "id": "1-13",
-      "sec": "1.2.2",
-      "q": "Why can the variation in face images of the same person be described with about 42 numbers?",
-      "opts": [
-        "The images are generated by a physical process with few degrees of freedom, here roughly 42 facial muscles",
-        "The image is downscaled to 42 pixels",
-        "42 color channels are enough for a face",
-        "A classifier distinguishes 42 facial expressions"
-      ],
-      "exp": "Real-world images are a tiny subset of all possible RGB combinations. The data is lower dimensional than the number of pixels suggests. This is the core idea behind latent variables."
     },
     {
       "id": "1-14",
@@ -185,18 +89,6 @@
       "exp": "Every sensible point in latent space yields a plausible image. Averaging pixels, in contrast, leaves the set of realistic images."
     },
     {
-      "id": "1-16",
-      "sec": "1.2.3",
-      "q": "Which statement is NOT an advantage of latent variables when mapping text to images?",
-      "opts": [
-        "The model no longer needs any training data",
-        "Fewer text/image pairs are needed because inputs and outputs are lower dimensional",
-        "Generated images are more likely to be plausible",
-        "Randomness in the mapping produces several images that fit one caption"
-      ],
-      "exp": "The book names exactly three advantages: fewer pairs, more plausible images and multiple outputs per caption. Training data is still required."
-    },
-    {
       "id": "1-17",
       "sec": "1.3.1",
       "q": "A chess agent receives a reward only at the end of the game, for winning. Which problem becomes extreme here?",
@@ -221,30 +113,6 @@
       "exp": "The known strategy yields reliable but small rewards. Only exploration can discover the much better solution."
     },
     {
-      "id": "1-19",
-      "sec": "1.3.1",
-      "q": "Why do actions in chess change the state of the system non-deterministically?",
-      "opts": [
-        "For any move, the opponent may respond with many different moves",
-        "The rules of chess contain random elements",
-        "The agent chooses its moves at random",
-        "The reward is transmitted with noise"
-      ],
-      "exp": "The agent's own move is unambiguous, but the next state it observes depends on the opponent's response."
-    },
-    {
-      "id": "1-20",
-      "sec": "1.3.1",
-      "q": "What does a policy network map?",
-      "opts": [
-        "The observed world state to an action, such as board position to move, or sensor measurements to joint movements",
-        "An action to the expected reward",
-        "The latent space to the data space",
-        "Training data to model parameters"
-      ],
-      "exp": "The policy is the mapping from state to action. It is one way to incorporate deep networks into reinforcement learning."
-    },
-    {
       "id": "1-21",
       "sec": "1.4",
       "q": "A system predicts salary levels from historical data. What does the book say to expect?",
@@ -255,18 +123,6 @@
         "It predicts the same mean for all groups"
       ],
       "exp": "The model learns the relationship the data shows, including its injustices. Careless deployment can entrench or aggravate existing biases."
-    },
-    {
-      "id": "1-22",
-      "sec": "1.4",
-      "q": "Which approach to explainable AI does the book describe as moderately successful?",
-      "opts": [
-        "Local explanations of why a particular individual decision was made",
-        "Full disclosure of how large networks work",
-        "Inspection of all weights by experts",
-        "Replacing the network with an equivalent rule base"
-      ],
-      "exp": "The whole system cannot be explained. For individual decisions, interpretable descriptions are possible. Whether full transparency is achievable remains an open question."
     },
     {
       "id": "1-23",
@@ -293,6 +149,19 @@
         "A text describing the defect"
       ],
       "exp": "Six classes make this a multiclass classification problem with N equal to six. A binary mask would instead be a segmentation, which is a structured output."
+    },
+    {
+      "id": "1-25",
+      "sec": "Transfer",
+      "transfer": true,
+      "q": "A plant has years of sensor recordings from normal operation of a drive but only a handful of documented failures. Which approach fits best for detecting abnormal behavior early?",
+      "opts": [
+        "Unsupervised learning: model the distribution of normal operation without labels and flag recordings that the model considers unlikely",
+        "Supervised binary classification with the classes normal and failure, trained on the existing recordings",
+        "Reinforcement learning, because the drive produces a reward signal as long as it runs normally",
+        "Multivariate regression that predicts every sensor channel from the date of the next failure"
+      ],
+      "exp": "A few failures are far too little to train a classifier on the failure class. A model of normal behavior needs only data that is already available in large quantities. Recordings it considers improbable are candidates for inspection."
     }
   ]
 }

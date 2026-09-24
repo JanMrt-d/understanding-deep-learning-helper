@@ -14,6 +14,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC, CONTENT, DIST = ROOT / "src", ROOT / "content", ROOT / "docs"
+N_CORE, N_TRANSFER = 10, 3  # questions per chapter
 
 
 def main() -> int:
@@ -40,6 +41,10 @@ def main() -> int:
             if len(item["opts"]) != 4:
                 print(f"Question {item['id']} does not have exactly 4 options (index 0 is correct)", file=sys.stderr)
                 return 1
+        kinds = [bool(item.get("transfer")) for item in q["questions"]]
+        if kinds != [False] * N_CORE + [True] * N_TRANSFER:
+            print(f"Quiz {q['id']} needs {N_CORE} core questions followed by {N_TRANSFER} transfer questions", file=sys.stderr)
+            return 1
 
     data = (
         "const QUIZ = " + json.dumps(quiz, ensure_ascii=False) + ";\n"
