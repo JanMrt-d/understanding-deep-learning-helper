@@ -84,6 +84,16 @@ NODE_PATH=$(npm root -g) node scripts/check.js    # benötigt Playwright mit Chr
 * Keine externen Ressourcen außer Google Fonts, alles andere inline.
 * Erklärungen und Fragen in eigenen Worten formulieren und keine Passagen oder Abbildungen aus dem Buch übernehmen.
 
+## Lizenz
+
+| Bestandteil | Lizenz |
+|---|---|
+| Code: `src/js/`, `src/page.html`, `src/styles.css`, `scripts/` | [MIT](LICENSE) |
+| Inhalte: `src/chapters/`, `content/`, Texte und Diagramme in `docs/index.html` | [CC BY 4.0](LICENSE-CONTENT) |
+| Buch-PDF in `book/` | CC BY-NC-ND 4.0, © MIT Press, siehe [`book/README.md`](book/README.md) |
+
+Bei Weiterverwendung der Inhalte bitte „UDL Lernbegleiter von Jan Mertes“ mit Link auf dieses Repo nennen.
+
 ## Hinweis
 
 Dieses Projekt ist nicht mit dem Autor oder MIT Press verbunden. Die interaktiven Abbildungen sind vereinfachte Spielzeugmodelle zur Veranschaulichung. Fehler im Lernbegleiter gehen auf dieses Repo zurück, nicht auf das Buch.
