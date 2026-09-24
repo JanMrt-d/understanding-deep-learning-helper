@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Baut dist/index.html als eine selbstständige Datei aus src/ und content/.
+"""Baut docs/index.html (GitHub Pages) als eine selbstständige Datei aus src/ und content/.
 
 Reihenfolge:
   src/page.html            Gerüst mit Platzhaltern
@@ -13,7 +13,7 @@ import pathlib
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SRC, CONTENT, DIST = ROOT / "src", ROOT / "content", ROOT / "dist"
+SRC, CONTENT, DIST = ROOT / "src", ROOT / "content", ROOT / "docs"
 
 
 def main() -> int:

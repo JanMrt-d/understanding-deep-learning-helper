@@ -191,6 +191,7 @@ tr.hl td{background:var(--accent-soft)}
 .fb p{font-size:14.5px}
 .empty{color:var(--muted);text-align:center;padding:24px 0}
 footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;margin-top:20px}
+footer a{color:var(--accent)}
 
 @media (max-width:760px){
   .takeaways{grid-template-columns:1fr}

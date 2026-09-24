@@ -1,10 +1,10 @@
-// Smoke-Test für dist/index.html: JS-Fehler, horizontaler Überlauf auf Phone-Breite, alle Kapitel-Tabs.
+// Smoke-Test für docs/index.html: JS-Fehler, horizontaler Überlauf auf Phone-Breite, alle Kapitel-Tabs.
 // Aufruf: NODE_PATH=$(npm root -g) node scripts/check.js
 const path = require("path");
 const { chromium } = require("playwright");
 
 (async () => {
-  const file = "file://" + path.resolve(__dirname, "../dist/index.html");
+  const file = "file://" + path.resolve(__dirname, "../docs/index.html");
   const browser = await chromium.launch();
   let failed = false;
   for (const vp of [{ width: 1100, height: 900 }, { width: 390, height: 800 }]) {
