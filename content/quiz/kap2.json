@@ -1,0 +1,238 @@
+{
+  "id": "kap2",
+  "num": 2,
+  "title": "Überwachtes Lernen",
+  "intro": "Modell, Parameter, Verlustfunktion, Training und Test am Beispiel der eindimensionalen linearen Regression.",
+  "questions": [
+    {
+      "id": "2-01",
+      "sec": "2.1",
+      "q": "Was bezeichnet das Buch als Inferenz?",
+      "opts": [
+        "Die Berechnung der Vorhersage y aus der Eingabe x mit dem Modell",
+        "Die Suche nach den besten Parametern",
+        "Die Bewertung des Modells auf Testdaten",
+        "Den Rückschluss von Ausgaben auf die zugrunde liegende Verteilung"
+      ],
+      "exp": "Inferenz heißt einfach: Eingabe durch die Modellgleichung schicken und Ausgabe berechnen. Training und Test sind getrennte Schritte."
+    },
+    {
+      "id": "2-02",
+      "sec": "2.1",
+      "q": "Welche Rolle spielen Modellgleichung und Parameter ϕ in y = f[x, ϕ]?",
+      "opts": [
+        "Die Gleichung legt eine Familie möglicher Zusammenhänge fest, die Parameter wählen daraus einen bestimmten aus",
+        "Die Gleichung wird trainiert, die Parameter sind fest vorgegeben",
+        "Die Parameter bestimmen die Form der Gleichung, etwa linear oder quadratisch",
+        "Beide werden beim Training gemeinsam neu hergeleitet"
+      ],
+      "exp": "Bei der linearen Regression ist die Familie die Menge aller Geraden. Achsenabschnitt und Steigung bestimmen die konkrete Gerade."
+    },
+    {
+      "id": "2-03",
+      "sec": "2.1",
+      "q": "Was verlangt das Buch in Kapitel 2 von strukturierten bzw. tabellarischen Daten?",
+      "opts": [
+        "Ein- und Ausgabevektoren haben feste Größe und ihre Elemente stehen immer in derselben Reihenfolge",
+        "Alle Werte müssen normiert zwischen null und eins liegen",
+        "Die Daten müssen aus einer relationalen Datenbank stammen",
+        "Jede Eingabe muss genau eine Ausgabe besitzen, die eine Kategorie ist"
+      ],
+      "exp": "Beim Prius-Beispiel steht immer erst das Alter, dann der Kilometerstand im Vektor."
+    },
+    {
+      "id": "2-04",
+      "sec": "2.1",
+      "q": "Was ist der Verlust L?",
+      "opts": [
+        "Ein Skalar, der zusammenfasst, wie schlecht das Modell mit den Parametern ϕ die Trainingsausgaben vorhersagt",
+        "Die Abweichung der Vorhersage für ein einzelnes neues Beispiel",
+        "Die Anzahl falsch klassifizierter Testbeispiele",
+        "Die Differenz zwischen Trainings- und Testleistung"
+      ],
+      "exp": "Ein kleiner Verlust bedeutet eine gute Anpassung an die Trainingsdaten. Über die Generalisierung sagt er allein nichts aus."
+    },
+    {
+      "id": "2-05",
+      "sec": "2.1",
+      "q": "Warum wird der Verlust als Funktion L[ϕ] der Parameter geschrieben, obwohl er auch von den Daten abhängt?",
+      "opts": [
+        "Die Trainingsdaten sind während des Trainings fest, verändert werden nur die Parameter",
+        "Die Daten haben keinen Einfluss auf den Verlust",
+        "Der Verlust wird vor dem Training einmalig berechnet",
+        "Die Parameter enthalten eine Kopie der Trainingsdaten"
+      ],
+      "exp": "Formal korrekt wäre L[{xᵢ, yᵢ}, ϕ]. Weil die Daten fix sind, lässt das Buch sie der Lesbarkeit halber weg."
+    },
+    {
+      "id": "2-06",
+      "sec": "2.2.1",
+      "q": "Was bedeuten ϕ₀ und ϕ₁ im eindimensionalen linearen Regressionsmodell?",
+      "opts": [
+        "Achsenabschnitt und Steigung der Geraden",
+        "Mittelwert und Varianz der Ausgaben",
+        "Minimaler und maximaler Eingabewert",
+        "Lernrate und Anzahl der Iterationen"
+      ],
+      "exp": "Zwei Parameter beschreiben jede mögliche Gerade. Ihre Wahl bestimmt das Familienmitglied."
+    },
+    {
+      "id": "2-07",
+      "sec": "2.2.2",
+      "q": "Warum werden die Abweichungen im Least-Squares-Verlust quadriert?",
+      "opts": [
+        "Die Richtung der Abweichung, also ober- oder unterhalb der Daten, soll keine Rolle spielen. Theoretische Gründe folgen in Kapitel 5.",
+        "Damit Ausreißer weniger Gewicht erhalten",
+        "Damit der Verlust linear in den Parametern ist",
+        "Damit der Verlust immer genau null erreichen kann"
+      ],
+      "exp": "Ohne Quadrat würden sich positive und negative Abweichungen aufheben. Quadrieren gewichtet große Abweichungen übrigens stärker, dämpft Ausreißer also nicht."
+    },
+    {
+      "id": "2-08",
+      "sec": "2.2.2",
+      "q": "Was entspricht in der Heatmap der Verlustfunktion (Abb. 2.3) dem Minimum?",
+      "opts": [
+        "Das Parameterpaar der am besten passenden Geraden",
+        "Die Gerade mit der größten Steigung",
+        "Der Punkt, an dem der Achsenabschnitt null ist",
+        "Das Trainingsbeispiel mit dem kleinsten Fehler"
+      ],
+      "exp": "Jeder Punkt der Fläche ist ein Parameterpaar, also eine Gerade. Der tiefste Punkt gehört zur Geraden mit dem kleinsten Verlust."
+    },
+    {
+      "id": "2-09",
+      "sec": "2.2.3",
+      "q": "Wie läuft das im Buch beschriebene iterative Training ab?",
+      "opts": [
+        "Zufällig initialisieren, am aktuellen Punkt den Gradienten messen, in Richtung des steilsten Abstiegs gehen und wiederholen, bis der Gradient flach ist",
+        "Alle Parameterkombinationen auswerten und die beste wählen",
+        "Parameter so lange zufällig neu ziehen, bis der Verlust unter einem Schwellwert liegt",
+        "Jedes Trainingsbeispiel einzeln exakt durch Anpassen der Parameter treffen"
+      ],
+      "exp": "Das ist Gradientenabstieg. Bei zwei Parametern wäre die vollständige Auswertung noch möglich, bei Millionen nicht."
+    },
+    {
+      "id": "2-10",
+      "sec": "2.2.3",
+      "q": "Für die lineare Regression gibt es eine geschlossene Lösung. Warum nutzt das Buch trotzdem Gradientenabstieg?",
+      "opts": [
+        "Komplexere Modelle haben keine geschlossene Lösung und zu viele Parameter, um den Verlust für jede Kombination auszuwerten",
+        "Die geschlossene Lösung ist numerisch immer instabil",
+        "Gradientenabstieg findet bei linearer Regression ein besseres Minimum",
+        "Die geschlossene Lösung erfordert Testdaten"
+      ],
+      "exp": "Das Beispiel dient als Einstieg in ein Verfahren, das später für tiefe Netze unverzichtbar ist."
+    },
+    {
+      "id": "2-11",
+      "sec": "2.2.4",
+      "q": "Wozu wird der Verlust auf einem separaten Testdatensatz berechnet?",
+      "opts": [
+        "Um zu prüfen, wie gut das Modell auf Beispiele generalisiert, die es im Training nicht gesehen hat",
+        "Um die Parameter ein zweites Mal nachzujustieren",
+        "Um den Trainingsverlust zu bestätigen",
+        "Um die Lernrate zu bestimmen"
+      ],
+      "exp": "Ein kleiner Trainingsverlust belegt nur die Anpassung an bekannte Daten. Erst der Test zeigt, ob das Modell einsatzfähig ist."
+    },
+    {
+      "id": "2-12",
+      "sec": "2.2.4",
+      "q": "Wovon hängt laut Buch ab, wie gut die Vorhersagegenauigkeit auf Testdaten übertragbar ist?",
+      "opts": [
+        "Von Repräsentativität und Vollständigkeit der Trainingsdaten sowie von der Ausdrucksstärke des Modells",
+        "Nur von der Anzahl der Trainingsiterationen",
+        "Nur von der Größe des Testdatensatzes",
+        "Von der Wahl der Startparameter"
+      ],
+      "exp": "Beide Faktoren wirken zusammen. Fehlende Situationen in den Trainingsdaten kann auch das beste Modell nicht kompensieren."
+    },
+    {
+      "id": "2-13",
+      "sec": "2.2.4",
+      "q": "Was beschreibt Underfitting?",
+      "opts": [
+        "Das Modell ist zu wenig ausdrucksstark, um den wahren Zusammenhang abzubilden, etwa eine Gerade für einen gekrümmten Verlauf",
+        "Das Modell hat zu wenige Trainingsiterationen erhalten",
+        "Das Modell beschreibt Eigenheiten der Trainingsdaten, die untypisch sind",
+        "Der Testdatensatz ist zu klein"
+      ],
+      "exp": "Das Buch definiert Underfitting über die Ausdrucksstärke der Modellfamilie. Die passende Familie enthält den Zusammenhang schlicht nicht."
+    },
+    {
+      "id": "2-14",
+      "sec": "2.2.4",
+      "q": "Was beschreibt Overfitting?",
+      "opts": [
+        "Ein sehr ausdrucksstarkes Modell beschreibt statistische Eigenheiten der Trainingsdaten, die untypisch sind, und macht dadurch ungewöhnliche Vorhersagen",
+        "Das Modell hat einen zu großen Trainingsverlust",
+        "Das Modell ist zu einfach für die Daten",
+        "Die Trainingsdaten enthalten zu viele Merkmale"
+      ],
+      "exp": "Overfitting zeigt sich typischerweise als kleiner Trainingsverlust bei deutlich größerem Testverlust."
+    },
+    {
+      "id": "2-15",
+      "sec": "Notes",
+      "q": "Wie unterscheiden sich Loss Function und Cost Function im strengen Sinn?",
+      "opts": [
+        "Die Loss Function ist der Term eines einzelnen Datenpunkts, die Cost Function die minimierte Gesamtgröße, die auch Zusatzterme enthalten kann",
+        "Die Loss Function gilt für Regression, die Cost Function für Klassifikation",
+        "Die Cost Function wird maximiert, die Loss Function minimiert",
+        "Es gibt keinen Unterschied, beide Begriffe sind identisch definiert"
+      ],
+      "exp": "Im Buch werden beide Begriffe meist synonym verwendet. Streng genommen ist die Cost Function die Summe plus mögliche Zusatzterme wie Regularisierung (Kapitel 9)."
+    },
+    {
+      "id": "2-16",
+      "sec": "Notes",
+      "q": "Worin unterscheidet sich ein generatives Modell x = g[y, ϕ] von einem diskriminativen Modell y = f[x, ϕ]?",
+      "opts": [
+        "Es berechnet die Messungen aus der Zielgröße. Für eine Vorhersage muss man es invertieren, was schwierig sein kann.",
+        "Es benötigt keine Trainingsdaten",
+        "Es liefert immer Wahrscheinlichkeiten statt Punktwerte",
+        "Es kann nur für Bilder eingesetzt werden"
+      ],
+      "exp": "Diskriminative Modelle sagen y direkt aus x voraus. Generative Modelle beschreiben, wie die Daten x aus y entstehen."
+    },
+    {
+      "id": "2-17",
+      "sec": "Notes",
+      "q": "Warum dominieren diskriminative Modelle, obwohl generative Modelle Vorwissen über die Datenentstehung einbauen können?",
+      "opts": [
+        "Sehr flexible diskriminative Modelle mit großen Datenmengen übertreffen in der Regel den Vorteil des eingebauten Vorwissens",
+        "Generative Modelle lassen sich grundsätzlich nicht trainieren",
+        "Vorwissen verschlechtert immer die Vorhersage",
+        "Diskriminative Modelle benötigen weniger Daten"
+      ],
+      "exp": "Beim Beispiel der 3D-Pose eines Autos könnte man Geometrie und Lichttransport modellieren. In der Praxis gewinnt aber meist die Kombination aus flexiblem Modell und vielen Daten."
+    },
+    {
+      "id": "2-18",
+      "sec": "Transfer",
+      "transfer": true,
+      "q": "Ein Modell zur Vorhersage von Auftragsdurchlaufzeiten erreicht einen sehr kleinen Trainingsverlust, auf neuen Aufträgen aber große Fehler. Was ist die naheliegende Diagnose?",
+      "opts": [
+        "Overfitting: Das Modell hat Eigenheiten der historischen Aufträge gelernt, die nicht verallgemeinern",
+        "Underfitting: Das Modell ist zu einfach",
+        "Der Gradientenabstieg ist nicht konvergiert",
+        "Die Verlustfunktion ist falsch, weil sie quadriert"
+      ],
+      "exp": "Kleiner Trainings- und großer Testverlust ist das typische Muster. Zu prüfen sind auch Repräsentativität der Daten, etwa neue Produktvarianten, und die Ausdrucksstärke des Modells."
+    },
+    {
+      "id": "2-19",
+      "sec": "Transfer",
+      "transfer": true,
+      "q": "Ein Energiemodell einer Presse nutzt nur eine Gerade über der Hubzahl. Sowohl Trainings- als auch Testfehler sind hoch. Was liegt nahe?",
+      "opts": [
+        "Underfitting: Die Modellfamilie ist zu eingeschränkt, um den tatsächlichen Zusammenhang abzubilden",
+        "Overfitting auf die Trainingsdaten",
+        "Zu wenige Testdaten",
+        "Die Parameter wurden falsch initialisiert"
+      ],
+      "exp": "Wenn schon die Trainingsdaten schlecht erklärt werden, fehlt dem Modell Ausdrucksstärke. Flache neuronale Netze aus Kapitel 3 beschreiben eine deutlich größere Familie."
+    }
+  ]
+}

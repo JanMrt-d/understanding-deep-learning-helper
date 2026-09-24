@@ -1,0 +1,1076 @@
+<title>UDL Lernbegleiter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=STIX+Two+Text:ital@0;1&display=swap">
+<style>
+:root{
+  --bg:#F4F7F8; --surface:#FFFFFF; --surface2:#EAF0F2; --ink:#13212B; --muted:#5B6B76; --line:#D6DFE3;
+  --accent:#0B7A85; --accent-soft:#DDF0F2; --data:#D9731A; --data-soft:#FBEBDD;
+  --ok:#1E7F4E; --ok-soft:#E3F3EA; --bad:#B63A2E; --bad-soft:#F8E6E3; --chip:#E6EDF0;
+  --face:#F2E4D0; --face-line:#5E4B3B;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --f-math:"STIX Two Text","Cambria Math","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E151A; --surface:#152028; --surface2:#1B2831; --ink:#E2EAEE; --muted:#93A4AE; --line:#29373F;
+    --accent:#45C3CF; --accent-soft:#13343B; --data:#F09A4A; --data-soft:#3A2715;
+    --ok:#5BCB8E; --ok-soft:#133226; --bad:#F08476; --bad-soft:#3A1D1A; --chip:#1D2A33;
+    --face:#4B4036; --face-line:#E0CDB6;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E151A; --surface:#152028; --surface2:#1B2831; --ink:#E2EAEE; --muted:#93A4AE; --line:#29373F;
+  --accent:#45C3CF; --accent-soft:#13343B; --data:#F09A4A; --data-soft:#3A2715;
+  --ok:#5BCB8E; --ok-soft:#133226; --bad:#F08476; --bad-soft:#3A1D1A; --chip:#1D2A33;
+  --face:#4B4036; --face-line:#E0CDB6;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.62 var(--f-body);padding-inline:16px;padding-block:28px 72px}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font:500 11.5px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:700 clamp(30px,5.4vw,44px)/1.04 var(--f-display);margin:8px 0 8px;letter-spacing:-.015em;text-wrap:balance}
+h2{font:700 clamp(26px,4.2vw,34px)/1.1 var(--f-display);margin:6px 0 0;letter-spacing:-.01em;text-wrap:balance}
+h3{font:700 23px/1.2 var(--f-display);margin:4px 0 0;text-wrap:balance}
+h4{font:600 17px/1.35 var(--f-body);margin:10px 0 0}
+p{margin:0;max-width:68ch}
+.lead{color:var(--muted);font-size:17px}
+header.site{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;padding-bottom:6px}
+.logo-fig{width:140px;height:auto}
+.logo-fig .ax{stroke:var(--line);stroke-width:1.5}
+.logo-fig .fit{stroke:var(--accent);stroke-width:2.5;fill:none}
+.logo-fig .res{stroke:var(--data);stroke-width:1.2;stroke-dasharray:2 2}
+.logo-fig .pt{fill:var(--data)}
+nav.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:500 14.5px/1 var(--f-body);color:var(--ink);background:var(--chip);border:1px solid transparent;border-radius:999px;padding:10px 15px;cursor:pointer;display:inline-flex;gap:9px;align-items:center}
+.tab .n{font:500 11.5px/1 var(--f-mono);color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--bg)}
+.tab[aria-selected="true"] .n{color:var(--bg);opacity:.85}
+.tab[disabled]{cursor:default;background:transparent;border-color:var(--line);color:var(--muted)}
+button:focus-visible,input:focus-visible,canvas:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+article.chapter{display:flex;flex-direction:column;gap:0}
+.ch-hero{display:flex;flex-direction:column;gap:12px;padding-block:18px 22px;border-top:1px solid var(--line)}
+.takeaways{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0 0;padding:0;list-style:none}
+.takeaways li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14.5px;line-height:1.5}
+.takeaways li b{display:block;font:500 11px/1.2 var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.subnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line);scrollbar-width:thin}
+.subnav button{flex:0 0 auto;font:500 13px/1 var(--f-body);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 12px;cursor:pointer}
+.subnav button:hover{color:var(--ink);border-color:var(--accent)}
+.subnav button.q{color:var(--accent);border-color:var(--accent)}
+section.sec{display:flex;flex-direction:column;gap:14px;padding-block:34px 8px;scroll-margin-top:64px}
+.sec-meta{display:flex;gap:10px;align-items:baseline}
+.sec-meta .tag{font:500 11.5px/1 var(--f-mono);color:var(--bg);background:var(--data);border-radius:4px;padding:4px 6px;letter-spacing:.04em}
+.math{font:italic 400 20px/1.5 var(--f-math);text-align:center;padding:12px 8px;background:var(--surface2);border-radius:8px;overflow-x:auto;white-space:nowrap;max-width:68ch}
+.math .u{font-style:normal}
+.math sub,.math sup{font-size:.68em}
+.math .note{display:block;font:400 13px/1.4 var(--f-body);color:var(--muted);white-space:normal;margin-top:4px}
+.defs{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:68ch}
+.defs div{border-left:3px solid var(--accent);padding:2px 0 2px 12px;font-size:15px}
+.defs b{display:block;font-weight:600}
+
+figure.fig{margin:6px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+figure.fig figcaption{font-size:13.5px;line-height:1.5;color:var(--muted)}
+figure.fig figcaption b{color:var(--ink);font-weight:600}
+.diagram{width:100%;height:auto;display:block;color:var(--ink)}
+.diagram .bx{fill:var(--surface2);stroke:var(--line);stroke-width:1.2}
+.diagram .bx-acc{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.diagram .bx-data{fill:var(--data-soft);stroke:var(--data);stroke-width:1.2}
+.diagram .frame{fill:none;stroke:var(--line);stroke-width:1.5}
+.diagram .t{fill:var(--ink);font:500 13px var(--f-body)}
+.diagram .th{fill:var(--ink);font:700 14px var(--f-body)}
+.diagram .ts{fill:var(--muted);font:400 12px var(--f-body)}
+.diagram .ta{fill:var(--accent);font:600 13px var(--f-body)}
+.diagram .tm{fill:var(--ink);font:italic 15px var(--f-math)}
+.diagram .arr{stroke:var(--muted);stroke-width:1.5;fill:none}
+.diagram .arr-acc{stroke:var(--accent);stroke-width:1.8;fill:none}
+.diagram .dash{stroke-dasharray:5 4}
+.diagram .ah{fill:var(--muted)}
+.diagram .ah-acc{fill:var(--accent)}
+.diagram .strike{stroke:var(--bad);stroke-width:1.5}
+.diagram .cell-a{fill:var(--accent)}
+.diagram .cell-0{fill:var(--line)}
+.diagram .cell-1{fill:var(--muted);opacity:.45}
+.diagram .cell-2{fill:var(--muted);opacity:.8}
+.diagram .cell-b{fill:var(--surface);stroke:var(--line)}
+
+.ctl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.btn{font:500 13.5px/1 var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer}
+.btn:hover:not([disabled]){border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.btn[disabled]{opacity:.5;cursor:default}
+.rng{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:14px;max-width:100%}
+.rng label{font:500 13px/1.2 var(--f-body);color:var(--muted)}
+.rng input[type=range]{accent-color:var(--accent);width:150px;max-width:40vw}
+.rng output{font:500 13px/1 var(--f-mono);font-variant-numeric:tabular-nums;min-width:4.5ch}
+.readout{display:flex;flex-wrap:wrap;gap:8px 20px;font:500 13px/1.3 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--muted)}
+.readout b{color:var(--ink);font-weight:500}
+.status{font-size:13.5px;color:var(--muted);min-height:1.4em}
+.status.ok{color:var(--ok)} .status.bad{color:var(--bad)}
+canvas{display:block;width:100%;touch-action:none}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pair .cv-label{font:500 11.5px/1.2 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* problem explorer */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13px/1 var(--f-body);color:var(--ink);background:var(--chip);border:1px solid transparent;border-radius:999px;padding:8px 11px;cursor:pointer}
+.chip.ind{border-color:var(--data)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.pipe{display:grid;grid-template-columns:1fr auto 1fr auto .8fr auto 1fr auto 1fr;gap:8px;align-items:stretch}
+.pbox{background:var(--surface2);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.35;min-width:0;overflow-wrap:anywhere}
+.pbox .pl{font:500 10.5px/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pbox.vec span:last-child{font:500 13px/1.35 var(--f-mono)}
+.pbox.model{background:var(--ink);color:var(--bg);align-items:center;justify-content:center;text-align:center}
+.pbox.model .pl{color:var(--bg);opacity:.7}
+.pbox.model span:last-child{font:italic 20px/1 var(--f-math)}
+.parr{align-self:center;color:var(--muted);font-size:18px}
+.ptags{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+.ptag{font:600 13px/1 var(--f-body);padding:6px 9px;border-radius:6px;background:var(--accent-soft);color:var(--ink)}
+.ptag.in{background:var(--chip)}
+
+/* order demo */
+.order{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ocard{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--surface2)}
+.ocard .pl{font:500 10.5px/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.otoks{display:flex;flex-wrap:wrap;gap:6px;min-height:34px}
+.otok{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 9px;font-size:14px}
+.ores{font-size:14px;font-weight:600}
+.ores.ok{color:var(--ok)} .ores.bad{color:var(--bad)}
+@media (prefers-reduced-motion:no-preference){
+  .otoks.anim .otok{animation:pop .35s ease}
+  @keyframes pop{from{transform:translateY(-6px);opacity:.3}to{transform:none;opacity:1}}
+  .btn,.chip,.tab,.opt,.subnav button{transition:border-color .15s,background-color .15s,color .15s}
+}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;line-height:1.45}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font:600 12px/1.3 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:var(--surface2)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;min-width:130px}
+tr.hl td{background:var(--accent-soft)}
+
+.rl-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:68ch}
+.rl-list div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px}
+.rl-list b{display:block;margin-bottom:4px}
+.callout{border-left:3px solid var(--data);background:var(--data-soft);padding:12px 14px;border-radius:0 8px 8px 0;max-width:68ch;font-size:15px}
+.callout b{font-weight:600}
+
+/* quiz */
+.qhead{display:flex;flex-direction:column;gap:12px}
+.stats{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-variant-numeric:tabular-nums}
+.stat{display:flex;flex-direction:column;gap:3px}
+.stat b{font:700 22px/1 var(--f-display)}
+.stat span{font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.bar{flex:1 1 200px;height:8px;border-radius:4px;background:var(--chip);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .g{background:var(--ok)} .bar .r{background:var(--bad)}
+.qlist{display:flex;flex-direction:column;gap:14px;list-style:none;margin:0;padding:0}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:12px}
+.q-meta{display:flex;justify-content:space-between;gap:12px;font:500 11.5px/1.2 var(--f-mono);color:var(--muted);letter-spacing:.03em}
+.q-meta .tr{color:var(--data)}
+.qcard h5{font:600 16.5px/1.4 var(--f-body);margin:0}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;text-align:left;width:100%;font:400 15px/1.45 var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;cursor:pointer}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt .k{font:500 12px/1 var(--f-mono);display:inline-grid;place-items:center;width:24px;height:24px;border-radius:6px;background:var(--chip);color:var(--muted)}
+.opt[disabled]{cursor:default}
+.opt.correct{background:var(--ok-soft);border-color:var(--ok)}
+.opt.correct .k{background:var(--ok);color:var(--bg)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.opt.wrong .k{background:var(--bad);color:var(--bg)}
+.opt.dim{opacity:.6}
+.fb{border-left:3px solid var(--line);padding:2px 0 2px 12px;display:flex;flex-direction:column;gap:4px}
+.fb strong{font:600 14px/1.3 var(--f-body)}
+.fb.ok{border-color:var(--ok)} .fb.ok strong{color:var(--ok)}
+.fb.bad{border-color:var(--bad)} .fb.bad strong{color:var(--bad)}
+.fb p{font-size:14.5px}
+.empty{color:var(--muted);text-align:center;padding:24px 0}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;margin-top:20px}
+
+@media (max-width:760px){
+  .takeaways{grid-template-columns:1fr}
+  .pipe{grid-template-columns:1fr}
+  .parr{transform:rotate(90deg);justify-self:center}
+  .order,.pair,.defs,.rl-list{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  header.site{grid-template-columns:1fr}
+  .logo-fig{display:none}
+  figure.fig{padding:12px}
+  .qcard{padding:15px 14px 14px}
+  .rng input[type=range]{width:120px}
+}
+
+</style>
+
+<div class="wrap">
+  <header class="site">
+    <div>
+      <div class="eyebrow">Prince · Understanding Deep Learning · Lernbegleiter</div>
+      <h1>Deep Learning verstehen</h1>
+      <p class="lead">Theorie in eigenen Worten, interaktive Abbildungen, ein Praxisbeispiel aus der Industrie und Verständnisfragen. Kapitel für Kapitel.</p>
+    </div>
+    <svg class="logo-fig" viewBox="0 0 132 96" aria-hidden="true">
+      <line class="ax" x1="8" y1="88" x2="128" y2="88"/><line class="ax" x1="8" y1="88" x2="8" y2="6"/>
+      <line class="res" x1="24" y1="68" x2="24" y2="76.4"/><line class="res" x1="44" y1="72" x2="44" y2="65.6"/>
+      <line class="res" x1="64" y1="48" x2="64" y2="54.8"/><line class="res" x1="84" y1="50" x2="84" y2="44"/>
+      <line class="res" x1="104" y1="27" x2="104" y2="33.2"/><line class="res" x1="120" y1="30" x2="120" y2="24.6"/>
+      <line class="fit" x1="12" y1="82.9" x2="126" y2="21.3"/>
+      <circle class="pt" cx="24" cy="68" r="3.4"/><circle class="pt" cx="44" cy="72" r="3.4"/><circle class="pt" cx="64" cy="48" r="3.4"/>
+      <circle class="pt" cx="84" cy="50" r="3.4"/><circle class="pt" cx="104" cy="27" r="3.4"/><circle class="pt" cx="120" cy="30" r="3.4"/>
+    </svg>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Kapitel" id="tabs"></nav>
+
+<!-- ===================== KAPITEL 1 ===================== -->
+<article class="chapter" id="ch-kap1" data-ch="kap1">
+  <div class="ch-hero">
+    <div class="eyebrow">Kapitel 1</div>
+    <h2>Einführung</h2>
+    <p class="lead">Wo Deep Learning im Feld der KI steht, welche drei Lernparadigmen es gibt und warum reale Daten viel weniger komplex sind, als ihre Rohgröße vermuten lässt.</p>
+    <ul class="takeaways">
+      <li><b>Einordnung</b>Maschinelles Lernen passt mathematische Modelle an Daten an. Tiefe Netze sind heute der stärkste Modelltyp in allen drei Paradigmen.</li>
+      <li><b>Lernsignal</b>Überwacht lernt aus Paaren (x, y), unüberwacht nur aus x, bestärkend aus verzögerten Belohnungen.</li>
+      <li><b>Latente Variablen</b>Reale Daten entstehen aus wenigen verborgenen Größen. Generative Modelle nutzen genau das.</li>
+    </ul>
+  </div>
+  <nav class="subnav" aria-label="Abschnitte Kapitel 1">
+    <button data-go="k1-map">Landkarte</button><button data-go="k1-sup">Überwacht</button><button data-go="k1-struct">Strukturierte Ausgaben</button><button data-go="k1-unsup">Latente Variablen</button><button data-go="k1-rl">Bestärkend</button><button data-go="k1-ethics">Ethik</button><button data-go="k1-praxis">Praxis</button><button class="q" data-go="k1-quiz">Quiz</button>
+  </nav>
+
+  <section class="sec" id="k1-map">
+    <div class="eyebrow">§ 1 · Überblick</div>
+    <h3>Die Landkarte</h3>
+    <p>KI umfasst alle Ansätze, die intelligentes Verhalten nachbilden, auch klassische Logik und Suchverfahren. Maschinelles Lernen ist die Teilmenge, die Entscheidungen lernt, indem sie mathematische Modelle an beobachtete Daten anpasst. Deep Learning ist dabei kein vierter Bereich neben den anderen. Es ist ein Modelltyp, der heute in allen drei Lernparadigmen den Stand der Technik bildet.</p>
+    <p>Die drei Paradigmen unterscheiden sich vor allem darin, <em>woraus</em> gelernt wird.</p>
+    <figure class="fig">
+      <svg class="diagram" viewBox="0 0 720 290" role="img" aria-label="KI enthält maschinelles Lernen mit drei Paradigmen. Tiefe neuronale Netze liegen quer über allen drei.">
+        <rect class="frame" x="10" y="10" width="700" height="270" rx="14"/>
+        <text class="th" x="28" y="36">Künstliche Intelligenz</text>
+        <text class="ts" x="692" y="36" text-anchor="end">auch Logik, Suche, probabilistisches Schließen</text>
+        <rect class="frame" x="30" y="50" width="660" height="214" rx="10"/>
+        <text class="th" x="48" y="74">Maschinelles Lernen</text>
+        <text class="ts" x="672" y="74" text-anchor="end">Modelle an Daten anpassen</text>
+        <rect class="bx" x="48" y="90" width="196" height="160" rx="8"/>
+        <rect class="bx" x="262" y="90" width="196" height="160" rx="8"/>
+        <rect class="bx" x="476" y="90" width="196" height="160" rx="8"/>
+        <text class="th" x="146" y="116" text-anchor="middle">Überwacht</text>
+        <text class="th" x="360" y="116" text-anchor="middle">Unüberwacht</text>
+        <text class="th" x="574" y="116" text-anchor="middle">Bestärkend</text>
+        <text class="t" x="146" y="140" text-anchor="middle">lernt aus Paaren (x, y)</text>
+        <text class="t" x="360" y="140" text-anchor="middle">lernt nur aus Daten x</text>
+        <text class="t" x="574" y="140" text-anchor="middle">lernt aus Belohnungen</text>
+        <text class="ts" x="146" y="160" text-anchor="middle">Preis, Fehlerklasse, Übersetzung</text>
+        <text class="ts" x="360" y="160" text-anchor="middle">Bilder erzeugen, Anomalien</text>
+        <text class="ts" x="574" y="160" text-anchor="middle">Schach, Robotik, Regelung</text>
+        <rect class="bx-acc" x="40" y="186" width="640" height="46" rx="8" opacity=".95"/>
+        <text class="ta" x="360" y="214" text-anchor="middle">Tiefe neuronale Netze: das Werkzeug in allen drei Bereichen</text>
+      </svg>
+      <figcaption><b>Die Paradigmen trennt das Lernsignal.</b> Tiefe Netze liegen quer dazu und werden in jedem der drei Bereiche eingesetzt.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec" id="k1-sup">
+    <div class="eyebrow">§ 1.1</div>
+    <h3>Überwachtes Lernen</h3>
+    <p>Jede reale Eingabe, ob Satz, Tonaufnahme oder Bild, wird zuerst in einen Zahlenvektor übersetzt. Das Modell bildet diesen Vektor auf einen anderen Zahlenvektor ab, der anschließend zurück in eine verständliche Vorhersage übersetzt wird. Was im Modell passiert, bleibt in Kapitel 1 bewusst eine Blackbox.</p>
+    <p>Den Problemtyp bestimmt allein die Ausgabe. Eine kontinuierliche Zahl macht die Aufgabe zur Regression, mehrere Zahlen zur multivariaten Regression. Bei einer Klassifikation liefert das Modell einen Vektor mit einer Wahrscheinlichkeit pro Klasse.</p>
+    <figure class="fig">
+      <div class="chips" id="pe-chips" role="group" aria-label="Beispiel wählen"></div>
+      <div class="pipe" aria-live="polite">
+        <div class="pbox"><span class="pl">Reale Eingabe</span><span id="pe-real"></span></div><span class="parr">→</span>
+        <div class="pbox vec"><span class="pl">Vektor x</span><span id="pe-vin"></span></div><span class="parr">→</span>
+        <div class="pbox model"><span class="pl">Modell</span><span>f[x, ϕ]</span></div><span class="parr">→</span>
+        <div class="pbox vec"><span class="pl">Vektor y</span><span id="pe-vout"></span></div><span class="parr">→</span>
+        <div class="pbox"><span class="pl">Vorhersage</span><span id="pe-pred"></span></div>
+      </div>
+      <div class="ptags"><span class="ptag" id="pe-type"></span><span class="ptag in" id="pe-inp"></span><span id="pe-note" style="color:var(--muted)"></span></div>
+      <figcaption><b>Problemtyp-Explorer.</b> Wählen Sie ein Beispiel. Die ersten fünf stammen aus Abbildung 1.2 des Buches, die orange umrandeten aus der Industrie. Achten Sie darauf, wie sich die Ausgabe von der Eingabe entkoppelt.</figcaption>
+    </figure>
+
+    <h4>Die Struktur der Eingabe</h4>
+    <p>Eingaben unterscheiden sich nicht nur in der Größe. Tabellarische Daten haben keine innere Ordnung, man kann die Merkmale umsortieren und neu trainieren, ohne dass sich etwas ändert. Bei Text ist die Reihenfolge Teil der Bedeutung. Bilder haben räumliche Nachbarschaften, die im flachen Vektor verloren gehen, denn zwei übereinanderliegende Pixel stehen dort eine ganze Bildzeile auseinander. Moleküle schließlich sind Graphen aus Atomen und Bindungen.</p>
+    <figure class="fig">
+      <div class="order">
+        <div class="ocard"><span class="pl">Tabellarisch · Immobilie</span><div class="otoks" id="ord-tab"></div><div class="ores ok" id="ord-tab-r"></div></div>
+        <div class="ocard"><span class="pl">Sequenz · Text</span><div class="otoks" id="ord-txt"></div><div class="ores" id="ord-txt-r"></div></div>
+      </div>
+      <div class="ctl"><button class="btn primary" id="ord-btn">Reihenfolge vertauschen</button></div>
+      <figcaption><b>Reihenfolge-Test.</b> Dieselbe Operation hat je nach Datenstruktur keine oder eine entscheidende Wirkung. Das Buch nutzt dafür ein ähnliches Beispiel mit Frau und Huhn.</figcaption>
+    </figure>
+
+    <h4>Was Training bedeutet</h4>
+    <p>Das Modell ist eine Gleichung, die eine ganze <em>Familie</em> möglicher Zusammenhänge beschreibt. Training heißt, in dieser Familie das Mitglied zu suchen, das die Trainingspaare am besten erklärt. Weil die gelabelten Paare dabei wie ein Lehrer wirken, spricht man von überwachtem Lernen. Tiefe Netze sind besonders nützlich, weil ihre Familie extrem breit ist und sich trotzdem effizient durchsuchen lässt. Kapitel 2 macht das mit einer einfachen Geraden greifbar.</p>
+  </section>
+
+  <section class="sec" id="k1-struct">
+    <div class="eyebrow">§ 1.1.5</div>
+    <h3>Strukturierte Ausgaben</h3>
+    <p>Manche Modelle geben kein einzelnes Label aus, sondern ein ganzes Bild, einen Satz oder eine Transkription. Bei der Segmentierung ist diese Struktur eng an die Eingabe gekoppelt. Ein Pixel, das seinem Nachbarn farblich ähnelt, gehört vermutlich zur selben Klasse. Übersetzung, Spracherkennung und Text-zu-Bild sind schwieriger, und zwar aus zwei Gründen. Die Ausgabe ist mehrdeutig, und sie muss einer eigenen Grammatik gehorchen, denn nicht jede Wortfolge ist ein Satz und nicht jede Pixelbelegung ein Bild.</p>
+    <p>Diese Grammatik lässt sich ohne Labels lernen, etwa aus der Statistik großer Textsammlungen. Das ist die Brücke zum unüberwachten Lernen.</p>
+    <figure class="fig">
+      <svg class="diagram" viewBox="0 0 720 250" role="img" aria-label="Segmentierung bildet jedes Pixel auf ein Label gleicher Position ab. Übersetzung bildet einen Satz auf mehrere gültige Sätze ab, und nicht jede Wortfolge ist gültig.">
+        <defs>
+          <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+        </defs>
+        <text class="th" x="20" y="28">Segmentierung</text>
+        <text class="ts" x="20" y="46">Ausgabe eng an die Eingabe gebunden</text>
+        <g id="seg-in"></g><g id="seg-out"></g>
+        <line class="arr" x1="132" y1="115" x2="200" y2="115" marker-end="url(#ah2)"/>
+        <text class="ts" x="166" y="105" text-anchor="middle">je Pixel</text>
+        <text class="ts" x="75" y="185" text-anchor="middle">Bild</text>
+        <text class="ts" x="255" y="185" text-anchor="middle">Kuh oder Hintergrund</text>
+        <line x1="350" y1="20" x2="350" y2="230" stroke="var(--line)" stroke-width="1"/>
+        <text class="th" x="380" y="28">Übersetzung</text>
+        <text class="ts" x="380" y="46">Ausgabe mehrdeutig und mit eigener Grammatik</text>
+        <rect class="bx" x="380" y="96" width="132" height="36" rx="6"/>
+        <text class="t" x="446" y="119" text-anchor="middle">The machine stops.</text>
+        <path class="arr" d="M512 114 C530 114 530 80 548 80" marker-end="url(#ah2)"/>
+        <path class="arr" d="M512 114 L548 123" marker-end="url(#ah2)"/>
+        <path class="arr" d="M512 114 C530 114 530 168 548 168" marker-end="url(#ah2)"/>
+        <rect class="bx-acc" x="552" y="62" width="160" height="34" rx="6"/><text class="t" x="632" y="84" text-anchor="middle">Die Maschine stoppt.</text>
+        <rect class="bx-acc" x="552" y="106" width="160" height="34" rx="6"/><text class="t" x="632" y="128" text-anchor="middle">Die Maschine hält an.</text>
+        <rect class="bx-acc" x="552" y="150" width="160" height="34" rx="6"/><text class="t" x="632" y="172" text-anchor="middle">Die Anlage steht still.</text>
+        <text class="ts" x="632" y="212" text-anchor="middle">Stoppt Maschine die.</text>
+        <line class="strike" x1="576" y1="208" x2="688" y2="208"/>
+        <text class="ts" x="632" y="232" text-anchor="middle">keine gültige Ausgabe</text>
+      </svg>
+      <figcaption><b>Links</b> hat jede Ausgabe ihren festen Platz in der Eingabe. <b>Rechts</b> gibt es mehrere richtige Antworten, und die Menge gültiger Ausgaben ist selbst stark eingeschränkt.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec" id="k1-unsup">
+    <div class="eyebrow">§ 1.2</div>
+    <h3>Unüberwachtes Lernen und latente Variablen</h3>
+    <p>Ohne Ausgabe-Labels gibt es nichts, was das Lernen überwacht. Ziel ist dann, die Struktur der Daten selbst zu beschreiben. Das Buch konzentriert sich auf <em>generative</em> Modelle. Sie erzeugen neue Beispiele, die statistisch nicht von den Trainingsdaten zu unterscheiden sind. Ist ein Teil der Ausgabe vorgegeben, etwa beim Ergänzen verdeckter Bildbereiche oder beim Fortschreiben eines Textes, spricht man von konditionaler Generierung.</p>
+    <p>Wie überzeugend das wirken kann, zeigen große Textmodelle. Sie beantworten Fragen, indem sie die wahrscheinlichste Fortsetzung eines Dokuments erzeugen. Laut Buch kennen sie dabei die Statistik der Sprache, verstehen aber nicht die Bedeutung ihrer Antwort.</p>
+
+    <h4>Fast alle möglichen Bilder sind Rauschen</h4>
+    <p>Zieht man für jedes Pixel zufällige RGB-Werte, entsteht praktisch nie etwas, das wie ein Foto aussieht. Reale Bilder sind eine verschwindend kleine Teilmenge aller möglichen Bilder, weil sie aus physikalischen Prozessen mit wenigen Freiheitsgraden entstehen. Beim Gesicht sind das grob die 42 Muskeln.</p>
+    <figure class="fig">
+      <div class="pair">
+        <div><div class="cv-label">Zufällige Pixel · 40 × 40 × 3 Werte</div><canvas id="cv-noise" data-ar="1" aria-label="Bild aus zufälligen Pixelwerten"></canvas></div>
+        <div><div class="cv-label">Aus 2 latenten Variablen erzeugt</div><canvas id="cv-noiseface" data-ar="1" aria-label="Gezeichnetes Gesicht"></canvas></div>
+      </div>
+      <div class="ctl"><button class="btn" id="noise-btn">Neues Zufallsbild ziehen</button></div>
+      <figcaption>Egal wie oft Sie ziehen, links entsteht kein Gesicht. Rechts genügen zwei Zahlen, weil das Bild nach Regeln entsteht.</figcaption>
+    </figure>
+
+    <h4>Der latente Raum</h4>
+    <p>Latente Variablen <i>z</i> sind die wenigen verborgenen Größen, die ein Datenbeispiel bestimmen. Man gibt ihnen per Konstruktion eine einfache Verteilung, meist eine Normalverteilung. Ein tiefes Netz <i>g</i> lernt die Abbildung von <i>z</i> auf die Daten <i>x</i>. Ein neues Beispiel entsteht, indem man <i>z</i> zufällig zieht und durch <i>g</i> schickt.</p>
+    <div class="math"><i>z</i> <span class="u">∼ N</span>(0, <i>I</i>) &nbsp;&nbsp;&nbsp; <i>x</i> = <i>g</i>[<i>z</i>, <i>ϕ</i>] &nbsp;&nbsp;&nbsp; <span class="u">dim</span>(<i>z</i>) ≪ <span class="u">dim</span>(<i>x</i>)</div>
+    <figure class="fig">
+      <div class="pair">
+        <div><div class="cv-label">Latenter Raum z · ziehen oder klicken</div><canvas id="cv-pad" data-ar="1" tabindex="0" aria-label="Zweidimensionaler latenter Raum, Punkt verschiebbar"></canvas></div>
+        <div><div class="cv-label">Datenraum x = g[z] · 160 × 160 × 3 Werte</div><canvas id="cv-face" data-ar="1" aria-label="Erzeugtes Gesicht"></canvas></div>
+      </div>
+      <div class="ctl"><button class="btn primary" id="pad-sample">z ∼ N(0, I) ziehen</button><div class="readout" id="pad-read"></div></div>
+      <figcaption><b>Spielzeug-Generator.</b> Zwei latente Werte steuern 76.800 Pixelwerte. Die Ringe markieren eine und zwei Standardabweichungen, dort liegen die meisten Stichproben. In echten Modellen haben die Achsen selten eine so klare Bedeutung wie Lächeln oder Augenöffnung, denn das Modell legt selbst fest, was sie kodieren.</figcaption>
+    </figure>
+
+    <h4>Interpolation</h4>
+    <p>Weil jeder sinnvolle Punkt im latenten Raum ein plausibles Beispiel ergibt, kann man zwischen zwei realen Beispielen interpolieren. Man bestimmt ihre latenten Werte, geht dort schrittweise von einem zum anderen und bildet jeden Zwischenpunkt zurück ab. Eine Überblendung der Pixel verlässt dagegen die Menge realistischer Bilder.</p>
+    <figure class="fig">
+      <div class="pair">
+        <div><div class="cv-label">Im latenten Raum interpoliert</div><canvas id="cv-lerp" data-ar="1" aria-label="Latente Interpolation"></canvas></div>
+        <div><div class="cv-label">Pixel überblendet</div><canvas id="cv-blend" data-ar="1" aria-label="Pixelüberblendung"></canvas></div>
+      </div>
+      <div class="ctl"><div class="rng"><label for="lerp-t">Bild A</label><input type="range" id="lerp-t" min="0" max="1" step="0.01" value="0.5"><label for="lerp-t">Bild B</label></div><button class="btn" id="lerp-play">Abspielen</button></div>
+      <figcaption>Links bleibt jedes Zwischenbild ein gültiges Gesicht. Rechts liegen zwei halbe Gesichter übereinander, mit doppeltem Mund und doppelten Augen.</figcaption>
+    </figure>
+    <p>Dasselbe Prinzip verbindet unüberwachtes und überwachtes Lernen. Ein Text-zu-Bild-Modell kann statt Text direkt auf Pixel abzubilden den latenten Raum des Textes mit dem latenten Raum der Bilder verknüpfen. Das bringt drei Vorteile. Es braucht weniger Trainingspaare, weil beide Seiten niedrigdimensional sind. Es erzeugt eher plausible Bilder. Und mit Zufall in der Abbildung entstehen mehrere passende Bilder zu einer Beschreibung.</p>
+  </section>
+
+  <section class="sec" id="k1-rl">
+    <div class="eyebrow">§ 1.3</div>
+    <h3>Bestärkendes Lernen</h3>
+    <p>Ein Agent handelt in einer Umgebung. Jede Aktion verändert den Zustand, oft nicht deterministisch, und bringt manchmal eine Belohnung. Ziel ist eine Strategie mit möglichst hoher mittlerer Belohnung. Zwei Probleme prägen das Feld.</p>
+    <div class="rl-list">
+      <div><b>Temporal Credit Assignment</b>Die Belohnung kommt oft viele Schritte nach den Aktionen, die sie verursacht haben. Welche davon war entscheidend? Beim Schach mit Belohnung nur für den Sieg ist das Problem extrem.</div>
+      <div><b>Exploration oder Exploitation</b>Eine bekannte Strategie mit mäßiger Belohnung weiter nutzen oder Neues ausprobieren, das besser sein könnte? Der Roboter, der auf der Seite liegend vorwärts rutscht, lernt so nie laufen.</div>
+    </div>
+    <p>Deep Learning kommt über das <em>Policy Network</em> ins Spiel. Es bildet den beobachteten Zustand direkt auf eine Aktion ab, beim Schach die Brettstellung auf einen Zug, beim Roboter die Sensorwerte auf Gelenkbewegungen.</p>
+    <figure class="fig">
+      <canvas id="cv-grid" data-ar="0.625" aria-label="Gridworld mit lernendem Agenten"></canvas>
+      <div class="ctl">
+        <button class="btn primary" id="gw-run">Training starten</button>
+        <button class="btn" id="gw-reset">Zurücksetzen</button>
+        <div class="rng"><label for="gw-eps">Exploration ε</label><input type="range" id="gw-eps" min="0" max="0.5" step="0.01" value="0.02"><output id="gw-eps-o">0,02</output></div>
+        <div class="rng"><label for="gw-speed">Tempo</label><input type="range" id="gw-speed" min="0" max="3" step="1" value="1"><output id="gw-speed-o">normal</output></div>
+      </div>
+      <div class="readout" id="gw-read"></div>
+      <div class="legend"><span><i style="background:var(--accent)"></i>gelernter Wert des Feldes</span><span><i style="background:var(--data);border-radius:50%"></i>Agent</span><span>Pfeil: aktuelle Policy</span></div>
+      <figcaption><b>So probieren Sie es aus.</b> Mit ε nahe null findet der Agent meist zuerst die nahe Belohnung +1 und bleibt dabei, das ist reine Exploitation. Setzen Sie zurück, wählen Sie ε um 0,4 und das Tempo „schnell“. Durch mehr Exploration entdeckt er die entferntere +10 und stellt seine Policy um. Beobachten Sie, wie sich der Wert über die Episoden rückwärts vom Ziel ausbreitet. So löst der Algorithmus das Credit-Assignment-Problem schrittweise. Hier steht noch eine Tabelle mit einem Wert je Feld. Bei zu vielen Zuständen, wie beim Schach, übernimmt ein Policy Network diese Rolle.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec" id="k1-ethics">
+    <div class="eyebrow">§ 1.4</div>
+    <h3>Ethik</h3>
+    <p>Das Buch nennt fünf zentrale Sorgen und betont, dass sie nicht spekulativ sind. Die rechte Spalte überträgt sie auf typische Industrieprojekte.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Thema</th><th>Kern laut Buch</th><th>Übertragung auf Industrieprojekte</th></tr></thead>
+      <tbody>
+        <tr><td>Bias und Fairness</td><td>Modelle übernehmen Verzerrungen aus historischen Daten, etwa niedrigere Gehaltsprognosen für Frauen.</td><td>Ein Qualitätsmodell, das nur Daten einer Linie oder Schicht kennt, bewertet andere systematisch falsch.</td></tr>
+        <tr><td>Erklärbarkeit</td><td>Tiefe Netze sind als Ganzes nicht erklärbar. Lokale Erklärungen einzelner Entscheidungen gelingen teilweise.</td><td>Werker und Qualitätsverantwortliche akzeptieren eine Ausschussentscheidung nur mit nachvollziehbarer Begründung.</td></tr>
+        <tr><td>Militärische Nutzung</td><td>Jede mächtige Technologie wird auch militärisch eingesetzt.</td><td>Dual-Use-Fragen bei Bildverarbeitung, Robotik und im Exportgeschäft.</td></tr>
+        <tr><td>Machtkonzentration</td><td>Wenige Organisationen kontrollieren die Technologie. Automatisierung trifft Geringverdienende überproportional.</td><td>Abhängigkeit von einzelnen Plattform- und Modellanbietern, Veränderung von Tätigkeitsprofilen in der Fertigung.</td></tr>
+        <tr><td>Existenzielles Risiko</td><td>Systeme, die fähiger sind als Menschen, lassen sich womöglich nicht kontrollieren.</td><td>Autonome Eingriffe in Anlagen brauchen klare Freigabe- und Abschaltkonzepte.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="sec" id="k1-praxis">
+    <div class="sec-meta"><span class="tag">PRAXIS</span><span class="eyebrow">Condition Monitoring</span></div>
+    <h3>Ein Antrieb, drei Lernparadigmen</h3>
+    <p>Am Beispiel eines überwachten Antriebs sieht man, wie die drei Paradigmen in einem Projekt zusammenspielen. Welches passt, entscheidet vor allem die Frage, welche Daten verfügbar sind.</p>
+    <figure class="fig">
+      <svg class="diagram" viewBox="0 0 720 250" role="img" aria-label="Messdaten eines Antriebs fließen in drei Lernparadigmen mit unterschiedlichen Datenanforderungen.">
+        <defs><marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+        <rect class="bx-data" x="14" y="92" width="180" height="68" rx="8"/>
+        <text class="th" x="104" y="120" text-anchor="middle">Antrieb mit Lager</text>
+        <text class="ts" x="104" y="141" text-anchor="middle">Vibration, Strom, Temperatur</text>
+        <line class="arr" x1="194" y1="126" x2="236" y2="126"/>
+        <text class="ts" x="215" y="84" text-anchor="middle">Messdaten</text>
+        <path class="arr" d="M236 126 C258 126 258 50 290 50" marker-end="url(#ah3)"/>
+        <path class="arr" d="M236 126 L290 126" marker-end="url(#ah3)"/>
+        <path class="arr" d="M236 126 C258 126 258 202 290 202" marker-end="url(#ah3)"/>
+        <rect class="bx" x="294" y="22" width="410" height="56" rx="8"/>
+        <text class="th" x="310" y="45">Überwacht: Restlebensdauer, Fehlerklasse</text>
+        <text class="ts" x="310" y="65">braucht gelabelte Ausfälle und Befunde, die selten sind</text>
+        <rect class="bx-acc" x="294" y="98" width="410" height="56" rx="8"/>
+        <text class="th" x="310" y="121">Unüberwacht: Normalverhalten lernen</text>
+        <text class="ts" x="310" y="141">meldet Abweichungen, braucht nur Daten aus dem Normalbetrieb</text>
+        <rect class="bx" x="294" y="174" width="410" height="56" rx="8"/>
+        <text class="th" x="310" y="197">Bestärkend: Betriebsstrategie optimieren</text>
+        <text class="ts" x="310" y="217">braucht Simulator oder sicheren Testbetrieb und eine Belohnung</text>
+      </svg>
+      <figcaption>Dieselben Sensordaten speisen drei Ansätze mit sehr unterschiedlichen Voraussetzungen.</figcaption>
+    </figure>
+    <div class="tbl"><table>
+      <thead><tr><th>Paradigma</th><th>Frage an die Daten</th><th>Voraussetzung</th><th>Typischer Engpass</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td>Unüberwacht</td><td>Weicht der aktuelle Zustand vom Normalbetrieb ab?</td><td>Daten aus dem Normalbetrieb</td><td>Der Normalbetrieb muss alle regulären Betriebspunkte abdecken, sonst gibt es Fehlalarme.</td></tr>
+        <tr><td>Überwacht</td><td>Welcher Fehler liegt vor, wie lange hält das Lager noch?</td><td>Gelabelte Ausfälle und Befunde</td><td>Ausfälle sind selten, Labels teuer.</td></tr>
+        <tr><td>Bestärkend</td><td>Welche Fahrweise minimiert Energie bei gleichem Durchsatz?</td><td>Simulator oder sicherer Testbetrieb, Belohnungsfunktion</td><td>Exploration an der realen Anlage ist riskant.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><b>Beratungsperspektive.</b> Für den Einstieg beim Kunden ist die unüberwachte Anomalieerkennung meist der schnellste Weg zu Nutzen, weil sie ohne Ausfallhistorie startet. Die dabei gesammelten und von Instandhaltern bestätigten Befunde werden später zu Labels für überwachte Modelle. Aus einem Projekt entsteht so die Datenbasis für das nächste.</div>
+  </section>
+
+  <section class="sec" id="k1-quiz">
+    <div class="eyebrow">Selbsttest</div>
+    <h3>Verständnisfragen Kapitel 1</h3>
+    <div id="quiz-kap1"></div>
+  </section>
+</article>
+
+<!-- ===================== KAPITEL 2 ===================== -->
+<article class="chapter" id="ch-kap2" data-ch="kap2" hidden>
+  <div class="ch-hero">
+    <div class="eyebrow">Kapitel 2</div>
+    <h2>Überwachtes Lernen</h2>
+    <p class="lead">Alle Grundbegriffe des überwachten Lernens an einem Modell, das jeder kennt, der Geraden.</p>
+    <ul class="takeaways">
+      <li><b>Modell</b>Eine Gleichung beschreibt eine Familie von Funktionen. Die Parameter wählen ein Mitglied aus.</li>
+      <li><b>Training</b>Gesucht sind die Parameter mit dem kleinsten Verlust auf den Trainingsdaten, meist durch Gradientenabstieg.</li>
+      <li><b>Test</b>Erst unabhängige Testdaten zeigen, ob das Modell generalisiert oder unter- bzw. überangepasst ist.</li>
+    </ul>
+  </div>
+  <nav class="subnav" aria-label="Abschnitte Kapitel 2">
+    <button data-go="k2-frame">Grundgerüst</button><button data-go="k2-lin">Lineare Regression</button><button data-go="k2-test">Under- und Overfitting</button><button data-go="k2-notes">Begriffe</button><button data-go="k2-praxis">Praxis</button><button class="q" data-go="k2-quiz">Quiz</button>
+  </nav>
+
+  <section class="sec" id="k2-frame">
+    <div class="eyebrow">§ 2.1</div>
+    <h3>Das Grundgerüst</h3>
+    <p>Ein überwachtes Modell ist eine Funktion <i>f</i> mit Parametern <i>ϕ</i>. Die Gleichung legt fest, welche Zusammenhänge überhaupt möglich sind. Die Parameter wählen einen davon aus. Die Vorhersage <i>y</i> aus einer Eingabe <i>x</i> zu berechnen, heißt <em>Inferenz</em>.</p>
+    <div class="math"><i>y</i> = <i>f</i>[<i>x</i>, <i>ϕ</i>]</div>
+    <p>Training sucht die Parameter, die auf den <i>I</i> Trainingspaaren {<i>x<sub>i</sub></i>, <i>y<sub>i</sub></i>} den kleinsten Verlust <i>L</i> liefern. Der Verlust ist ein einzelner Wert, der zusammenfasst, wie schlecht das Modell die Trainingsausgaben trifft.</p>
+    <div class="math"><i>ϕ̂</i> = <span class="u">argmin</span><sub><i>ϕ</i></sub> <i>L</i>[<i>ϕ</i>]<span class="note">Streng genommen hängt L auch von den Daten ab. Weil sie beim Training fest sind, schreibt man nur die Parameter.</span></div>
+    <p>Ein kleiner Trainingsverlust beweist aber noch nichts. Erst separate Testdaten zeigen, ob das Modell auf ungesehene Beispiele generalisiert. Das Kapitel setzt außerdem tabellarische Daten voraus, also Vektoren fester Größe mit immer gleicher Reihenfolge. Beim Gebrauchtwagen steht immer erst das Alter, dann der Kilometerstand.</p>
+    <figure class="fig">
+      <svg class="diagram" viewBox="0 0 660 228" role="img" aria-label="Training erzeugt die Parameter phi Dach. Diese werden in dasselbe Modell eingesetzt, das für den Test und für Vorhersagen verwendet wird.">
+        <defs>
+          <marker id="ah4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+          <marker id="ah4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+        </defs>
+        <text class="ts" x="20" y="45">Training</text>
+        <text class="ts" x="20" y="135">Test</text>
+        <text class="ts" x="20" y="195">Einsatz</text>
+        <rect class="bx-data" x="100" y="20" width="150" height="40" rx="7"/><text class="t" x="175" y="45" text-anchor="middle">Paare {xᵢ, yᵢ}</text>
+        <rect class="bx" x="290" y="20" width="150" height="40" rx="7"/><text class="t" x="365" y="45" text-anchor="middle">L[ϕ] minimieren</text>
+        <rect class="bx-acc" x="480" y="20" width="150" height="40" rx="7"/><text class="ta" x="555" y="45" text-anchor="middle">gelernte ϕ̂</text>
+        <line class="arr" x1="250" y1="40" x2="288" y2="40" marker-end="url(#ah4)"/>
+        <line class="arr" x1="440" y1="40" x2="478" y2="40" marker-end="url(#ah4)"/>
+        <path class="arr-acc dash" d="M555 60 V84 H365 V108" marker-end="url(#ah4a)"/>
+        <text class="ta" x="462" y="78" text-anchor="middle">einsetzen</text>
+        <rect class="bx-data" x="100" y="112" width="150" height="40" rx="7"/><text class="t" x="175" y="137" text-anchor="middle">Testdaten</text>
+        <rect class="bx" x="100" y="172" width="150" height="40" rx="7"/><text class="t" x="175" y="197" text-anchor="middle">neue Eingabe x</text>
+        <rect class="bx" x="290" y="112" width="150" height="100" rx="7"/><text class="tm" x="365" y="167" text-anchor="middle">f[x, ϕ̂]</text>
+        <rect class="bx" x="480" y="112" width="150" height="40" rx="7"/><text class="t" x="555" y="137" text-anchor="middle">Testverlust</text>
+        <rect class="bx" x="480" y="172" width="150" height="40" rx="7"/><text class="t" x="555" y="197" text-anchor="middle">Vorhersage y</text>
+        <line class="arr" x1="250" y1="132" x2="288" y2="132" marker-end="url(#ah4)"/>
+        <line class="arr" x1="250" y1="192" x2="288" y2="192" marker-end="url(#ah4)"/>
+        <line class="arr" x1="440" y1="132" x2="478" y2="132" marker-end="url(#ah4)"/>
+        <line class="arr" x1="440" y1="192" x2="478" y2="192" marker-end="url(#ah4)"/>
+      </svg>
+      <figcaption><b>Ein Modell, drei Verwendungen.</b> Die Parameter entstehen nur aus den Trainingsdaten. Test und Einsatz nutzen dieselbe Funktion mit festen Parametern. Der Test beantwortet die Frage, ob das Modell reif für den Einsatz ist.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec" id="k2-lin">
+    <div class="eyebrow">§ 2.2</div>
+    <h3>Lineare Regression: Modell, Verlust, Training</h3>
+    <p>Das einfachste Modell ist eine Gerade mit Achsenabschnitt <i>ϕ</i><sub>0</sub> und Steigung <i>ϕ</i><sub>1</sub>. Jedes Parameterpaar ist ein Mitglied der Familie aller Geraden.</p>
+    <div class="math"><i>y</i> = <i>f</i>[<i>x</i>, <i>ϕ</i>] = <i>ϕ</i><sub>0</sub> + <i>ϕ</i><sub>1</sub><i>x</i></div>
+    <p>Der Verlust summiert die quadrierten senkrechten Abstände zwischen Gerade und Datenpunkten. Durch das Quadrat spielt es keine Rolle, ob ein Punkt über oder unter der Geraden liegt. Große Abweichungen werden dabei überproportional bestraft. Die tiefere Begründung für genau diese Wahl liefert Kapitel 5.</p>
+    <div class="math"><i>L</i>[<i>ϕ</i>] = <span class="u">∑</span><sub><i>i</i>=1</sub><sup><i>I</i></sup> (<i>ϕ</i><sub>0</sub> + <i>ϕ</i><sub>1</sub><i>x<sub>i</sub></i> − <i>y<sub>i</sub></i>)<sup>2</sup></div>
+    <p>Bei zwei Parametern kann man den Verlust für jede Kombination ausrechnen und als Landschaft darstellen. Bei Millionen Parametern geht das nicht mehr. Training startet deshalb an einem zufälligen Punkt, misst dort das Gefälle, den Gradienten, und macht einen Schritt bergab. Das wiederholt sich, bis das Gelände flach ist.</p>
+    <div class="math"><i>ϕ</i> ← <i>ϕ</i> − <i>α</i> · <i>∂L</i>/<i>∂ϕ</i><span class="note">α ist die Lernrate. Sie bestimmt die Schrittweite.</span></div>
+    <figure class="fig">
+      <div class="pair">
+        <div><div class="cv-label">Datenraum · Gerade und Residuen</div><canvas id="cv-lin" data-ar="0.9" aria-label="Datenpunkte mit Regressionsgerade"></canvas></div>
+        <div><div class="cv-label">Parameterraum · Verlustlandschaft L[ϕ]</div><canvas id="cv-loss" data-ar="0.9" tabindex="0" aria-label="Verlustlandschaft, klicken setzt die Parameter"></canvas></div>
+      </div>
+      <div class="ctl">
+        <div class="rng"><label for="lin-p0">ϕ₀ Achsenabschnitt</label><input type="range" id="lin-p0" min="-0.6" max="1.4" step="0.01" value="1.1"><output id="lin-p0-o"></output></div>
+        <div class="rng"><label for="lin-p1">ϕ₁ Steigung</label><input type="range" id="lin-p1" min="-0.6" max="1.4" step="0.01" value="-0.3"><output id="lin-p1-o"></output></div>
+      </div>
+      <div class="ctl">
+        <button class="btn primary" id="gd-run">Gradientenabstieg starten</button>
+        <div class="rng"><label for="gd-lr">Lernrate α</label><input type="range" id="gd-lr" min="0.002" max="0.045" step="0.001" value="0.012"><output id="gd-lr-o"></output></div>
+        <button class="btn" id="lin-opt">Optimum direkt berechnen</button>
+      </div>
+      <div class="readout" id="lin-read"></div>
+      <div class="status" id="gd-status"></div>
+      <figcaption><b>Zwei Sichten auf dasselbe Modell.</b> Links eine Gerade mit ihren Fehlern in Orange. Rechts ist dieselbe Gerade ein einzelner Punkt, die Farbe zeigt den Verlust, kräftigeres Türkis heißt kleiner. Das grüne Kreuz markiert das Minimum. Ziehen Sie den Punkt rechts oder nutzen Sie die Regler. Starten Sie danach den Gradientenabstieg und probieren Sie eine Lernrate über 0,035. Die Parameter springen dann über das Tal hinweg und schaukeln sich auf.</figcaption>
+    </figure>
+    <p>Für die lineare Regression gibt es eine geschlossene Lösung, die der Button „Optimum direkt berechnen“ nutzt. Das Buch führt den iterativen Weg trotzdem ein, weil er auch für Modelle funktioniert, bei denen es keine geschlossene Lösung gibt. Das sind praktisch alle tiefen Netze.</p>
+  </section>
+
+  <section class="sec" id="k2-test">
+    <div class="eyebrow">§ 2.2.4</div>
+    <h3>Testen: Underfitting und Overfitting</h3>
+    <p>Wie gut sich die Genauigkeit auf neue Daten überträgt, hängt von zwei Dingen ab. Die Trainingsdaten müssen repräsentativ und vollständig sein, und die Ausdrucksstärke des Modells muss zum Problem passen.</p>
+    <div class="defs">
+      <div><b>Underfitting</b>Das Modell ist zu einfach, um den wahren Zusammenhang abzubilden. Trainings- und Testfehler sind beide hoch.</div>
+      <div><b>Overfitting</b>Das Modell ist so ausdrucksstark, dass es untypische Eigenheiten der Trainingsdaten mitlernt. Der Trainingsfehler ist klein, der Testfehler groß.</div>
+    </div>
+    <figure class="fig">
+      <div class="pair">
+        <div><div class="cv-label">Modell und Daten</div><canvas id="cv-poly" data-ar="0.8" aria-label="Polynomanpassung an Trainingsdaten"></canvas></div>
+        <div><div class="cv-label">Fehler über Modellkomplexität</div><canvas id="cv-polyerr" data-ar="0.8" aria-label="Trainings- und Testfehler je Polynomgrad"></canvas></div>
+      </div>
+      <div class="ctl"><div class="rng"><label for="poly-d">Ausdrucksstärke (Polynomgrad)</label><input type="range" id="poly-d" min="0" max="9" step="1" value="1"><output id="poly-d-o"></output></div></div>
+      <div class="readout" id="poly-read"></div>
+      <div class="legend"><span><i style="background:var(--data);border-radius:50%"></i>Trainingsdaten</span><span><i style="background:transparent;border:2px solid var(--muted);border-radius:50%"></i>Testdaten</span><span><i style="background:var(--accent)"></i>Modell</span></div>
+      <figcaption><b>Die U-Kurve.</b> Mit wachsendem Grad sinkt der Trainingsfehler immer weiter. Der Testfehler sinkt nur bis zu einem Punkt und steigt dann wieder. Bei Grad 9 geht das Modell exakt durch alle zehn Trainingspunkte und schwingt dazwischen wild. Polynome dienen hier nur als Anschauung für wachsende Ausdrucksstärke, das Buch vertieft das Thema in den Kapiteln 8 und 9.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec" id="k2-notes">
+    <div class="eyebrow">Notes zu Kapitel 2</div>
+    <h3>Zwei Begriffspaare</h3>
+    <h4>Loss Function und Cost Function</h4>
+    <p>Im Buch werden beide Begriffe meist synonym verwendet. Streng genommen ist die Loss Function der Beitrag eines einzelnen Datenpunkts, also ein Summand. Die Cost Function ist die gesamte Größe, die minimiert wird, und kann zusätzliche Terme enthalten, die zu keinem Datenpunkt gehören, etwa eine Regularisierung aus Kapitel 9. Objective Function ist der Oberbegriff für alles, was maximiert oder minimiert wird.</p>
+    <h4>Diskriminativ und generativ</h4>
+    <p>Die Modelle in diesem Kapitel sind diskriminativ, sie sagen <i>y</i> direkt aus der Messung <i>x</i> voraus. Ein generatives Modell geht den umgekehrten Weg und beschreibt, wie die Messung aus der Zielgröße entsteht. Das erlaubt Vorwissen, zum Beispiel über Geometrie und Lichtausbreitung bei der Schätzung der 3D-Pose eines Autos im Bild. Für eine Vorhersage muss man das Modell aber invertieren, was schwierig sein kann.</p>
+    <figure class="fig">
+      <svg class="diagram" viewBox="0 0 660 180" role="img" aria-label="Diskriminativ zeigt der Pfeil von x nach y. Generativ zeigt er von y nach x, und die Vorhersage erfordert die Umkehrung.">
+        <defs>
+          <marker id="ah5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+          <marker id="ah5a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-acc" d="M0,0 L10,5 L0,10 z"/></marker>
+        </defs>
+        <text class="th" x="20" y="45">Diskriminativ</text>
+        <text class="th" x="20" y="125">Generativ</text>
+        <rect class="bx-data" x="150" y="20" width="150" height="40" rx="7"/><text class="t" x="225" y="45" text-anchor="middle">Messung x (Bild)</text>
+        <rect class="bx" x="480" y="20" width="150" height="40" rx="7"/><text class="t" x="555" y="45" text-anchor="middle">Zielgröße y (Pose)</text>
+        <line class="arr-acc" x1="300" y1="40" x2="478" y2="40" marker-end="url(#ah5a)"/>
+        <text class="ta" x="390" y="32" text-anchor="middle">y = f[x, ϕ] direkt</text>
+        <rect class="bx-data" x="150" y="100" width="150" height="40" rx="7"/><text class="t" x="225" y="125" text-anchor="middle">Messung x (Bild)</text>
+        <rect class="bx" x="480" y="100" width="150" height="40" rx="7"/><text class="t" x="555" y="125" text-anchor="middle">Zielgröße y (Pose)</text>
+        <line class="arr" x1="480" y1="120" x2="302" y2="120" marker-end="url(#ah5)"/>
+        <text class="ts" x="390" y="112" text-anchor="middle">x = g[y, ϕ] mit Vorwissen</text>
+        <path class="arr-acc dash" d="M225 140 V160 H555 V142" marker-end="url(#ah5a)"/>
+        <text class="ta" x="390" y="174" text-anchor="middle">Vorhersage braucht die Umkehrung g⁻¹</text>
+      </svg>
+      <figcaption><b>Der Unterschied ist die Pfeilrichtung.</b> In der Praxis gewinnen meist diskriminative Modelle, weil sehr flexible Modelle mit vielen Daten den Vorteil des eingebauten Vorwissens überholen.</figcaption>
+    </figure>
+  </section>
+
+  <section class="sec" id="k2-praxis">
+    <div class="sec-meta"><span class="tag">PRAXIS</span><span class="eyebrow">Energiemanagement</span></div>
+    <h3>Energie-Baseline einer Presse</h3>
+    <p>Eine lineare Regression reicht oft für einen ersten, gut erklärbaren Nutzen. Die mittlere Leistungsaufnahme einer Presse lässt sich als Grundlast plus Leistung je Hubzahl modellieren.</p>
+    <div class="math"><i>P</i> = <i>ϕ</i><sub>0</sub> + <i>ϕ</i><sub>1</sub> · <i>n</i><span class="note">P mittlere Leistung in kW je Stunde, n Hübe pro Minute im Stundenmittel</span></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Begriff aus Kapitel 2</th><th>Entsprechung im Projekt</th></tr></thead>
+      <tbody>
+        <tr><td>Eingabe x</td><td>Hubzahl pro Minute, als Stundenmittel aus der Steuerung</td></tr>
+        <tr><td>Ausgabe y</td><td>Mittlere Leistungsaufnahme in kW aus dem Energiezähler</td></tr>
+        <tr><td>ϕ₀</td><td>Grundlast aus Hydraulik, Kühlung und Steuerung, die auch im Leerlauf anfällt</td></tr>
+        <tr><td>ϕ₁</td><td>Zusätzliche Leistung je Hub pro Minute</td></tr>
+        <tr><td>Verlust L</td><td>Summe der quadrierten Abweichungen über die Trainingswochen</td></tr>
+        <tr><td>Test</td><td>Vorhersage für Wochen, die nicht im Training waren</td></tr>
+        <tr><td>Underfitting</td><td>Werkzeug oder Material beeinflussen den Verbrauch stark, die Gerade kennt sie aber nicht</td></tr>
+        <tr><td>Overfitting</td><td>Ein sehr flexibles Modell auf wenigen Schichten lernt Einzelereignisse wie einen Stillstand mit</td></tr>
+      </tbody>
+    </table></div>
+    <p>Der Nutzen liegt in der Abweichung. Liegt die gemessene Leistung dauerhaft über der Erwartung des Modells, deutet das auf Mehrverbrauch hin, etwa durch Leckagen in der Hydraulik oder verschlissene Pumpen. Eine Beispielrechnung mit angenommenen Werten:</p>
+    <div class="math">Δ<i>P</i> · <i>t</i> · <i>c</i> = 5 <span class="u">kW</span> · 6.000 <span class="u">h/a</span> · 0,20 <span class="u">€/kWh</span> = 6.000 <span class="u">€/a</span></div>
+    <div class="callout"><b>Beratungsperspektive.</b> Beide Parameter sind physikalisch interpretierbar. Das erleichtert die Abnahme beim Kunden und ist ein gutes Argument, mit einem einfachen Modell zu starten. Ein tiefes Netz lohnt sich erst, wenn Testfehler und Residuen zeigen, dass die Gerade den Zusammenhang nicht mehr trägt.</div>
+  </section>
+
+  <section class="sec" id="k2-quiz">
+    <div class="eyebrow">Selbsttest</div>
+    <h3>Verständnisfragen Kapitel 2</h3>
+    <div id="quiz-kap2"></div>
+  </section>
+</article>
+
+  <footer>Inhalte frei nach S. J. D. Prince, Understanding Deep Learning, MIT Press. Interaktive Abbildungen sind vereinfachte Spielzeugmodelle. Der Quizfortschritt wird nur in diesem Browser gespeichert.</footer>
+</div>
+
+<script>
+const QUIZ = [{"id": "kap1", "num": 1, "title": "Einführung", "intro": "Überwachtes, unüberwachtes und bestärkendes Lernen im Überblick, latente Variablen und ethische Fragen.", "questions": [{"id": "1-01", "sec": "1.1.1", "q": "Ein Modell schätzt den Preis einer Immobilie aus Wohnfläche und Zimmerzahl. Um welchen Problemtyp handelt es sich?", "opts": ["Regression, weil eine kontinuierliche Zahl ausgegeben wird", "Binäre Klassifikation, weil der Preis über oder unter dem Marktwert liegt", "Multiklassen-Klassifikation mit einer Klasse pro Preisstufe", "Unüberwachtes Lernen, weil kein Experte den Preis festlegt"], "exp": "Regression liefert einen kontinuierlichen Wert statt einer Kategoriezuordnung. Preisstufen wären eine künstliche Diskretisierung, die das Buch nicht vorsieht."}, {"id": "1-02", "sec": "1.1.1", "q": "Ein Modell sagt für ein Molekül gleichzeitig Gefrier- und Siedepunkt voraus. Wie heißt dieses Problem?", "opts": ["Multivariate Regression", "Binäre Klassifikation mit den Klassen fest und flüssig", "Multiklassen-Klassifikation mit zwei Ausgaben", "Konditionale Generierung"], "exp": "Es werden mehrere kontinuierliche Zahlen vorhergesagt. Mehr als eine Ausgabegröße macht die Regression multivariat."}, {"id": "1-03", "sec": "1.1.1", "q": "Was enthält der Ausgabevektor eines Klassifikationsmodells mit N Kategorien?", "opts": ["Für jede der N Kategorien die Wahrscheinlichkeit, dass die Eingabe zu ihr gehört", "Den Index der gewählten Kategorie als einzelne Ganzzahl", "Einen kontinuierlichen Wert, der anschließend auf die nächste Kategorie gerundet wird", "Einen Wahrheitswert pro Eingabemerkmal"], "exp": "Das Modell gibt einen Vektor der Größe N mit Wahrscheinlichkeiten zurück. Die konkrete Klassenentscheidung wird erst daraus abgeleitet."}, {"id": "1-04", "sec": "1.1.2", "q": "Warum gelten die Merkmale einer Immobilie als tabellarische Daten?", "opts": ["Sie haben keine interne Struktur. Vertauscht man die Reihenfolge der Eingaben und trainiert neu, bleibt die Vorhersage gleich.", "Sie werden üblicherweise in einer Datenbanktabelle gespeichert.", "Sie bestehen ausschließlich aus ganzen Zahlen fester Länge.", "Die Reihenfolge der Merkmale trägt die Bedeutung der Daten."], "exp": "Entscheidend ist die fehlende interne Struktur. Bei Text dagegen ändert eine andere Wortreihenfolge die Bedeutung, bei Bildern tragen Nachbarschaften zwischen Pixeln Information."}, {"id": "1-05", "sec": "1.1.2", "q": "Welche Eigenschaft unterscheidet Bilddaten neben ihrer Größe von tabellarischen Daten?", "opts": ["Räumliche Struktur: Übereinanderliegende Pixel sind eng verwandt, obwohl sie im Eingabevektor weit auseinander stehen", "Bilder haben immer eine variable Länge", "Bilder lassen sich nicht als Zahlenvektor darstellen", "Bildpixel sind statistisch unabhängig voneinander"], "exp": "Das Aneinanderhängen der RGB-Werte zerstört die Nachbarschaft in vertikaler Richtung. Ein gutes Modell muss diese Struktur trotzdem nutzen können. Das motiviert später die Faltungsnetze."}, {"id": "1-06", "sec": "1.1.3", "q": "Was bedeutet es im Sinne des Buches, ein Modell zu trainieren?", "opts": ["Innerhalb einer Familie möglicher Gleichungen diejenige suchen, die die Trainingsdaten am besten beschreibt", "Alle Trainingspaare speichern und zwischen ihnen interpolieren", "Die Modellgleichung aus den Daten symbolisch herleiten", "Die Architektur so lange erweitern, bis jeder Trainingspunkt exakt getroffen wird"], "exp": "Das Modell legt eine Familie von Kurven fest. Training wählt daraus mithilfe der Trainingsdaten ein Mitglied aus."}, {"id": "1-07", "sec": "1.1.3", "q": "Woher kommt der Begriff überwachtes Lernen?", "opts": ["Gelabelte Eingabe/Ausgabe-Paare übernehmen die Rolle eines Lehrers für den Trainingsprozess", "Ein Mensch überwacht die Vorhersagen im laufenden Betrieb", "Das Modell überwacht seine eigene Unsicherheit", "Die Trainingsdaten werden vor dem Training von Experten bereinigt"], "exp": "Die Labels, etwa das von Experten bestimmte Genre eines Musikstücks, dienen als Supervisor."}, {"id": "1-08", "sec": "1.1.5", "q": "Semantische Segmentierung und maschinelle Übersetzung liefern beide strukturierte Ausgaben. Warum gilt Übersetzung als schwieriger?", "opts": ["Die Ausgabe ist mehrdeutig und muss einer eigenen Grammatik folgen, die nicht eng an die Eingabe gebunden ist", "Text enthält mehr Dimensionen als ein Bild", "Übersetzung ist eine Klassifikation mit Millionen Klassen", "Segmentierung benötigt keine Trainingsdaten"], "exp": "Bei der Segmentierung hängt die Ausgabestruktur eng an der Eingabe, ähnliche Nachbarpixel tragen vermutlich dasselbe Label. Bei Übersetzung gibt es mehrere gültige Lösungen und nicht jede Wortfolge ist ein gültiger Satz."}, {"id": "1-09", "sec": "1.1.5", "q": "Wie lässt sich laut Buch die Grammatik einer strukturierten Ausgabe lernen?", "opts": ["Ohne Ausgabe-Labels aus der Statistik großer Datenkorpora, also unüberwacht", "Nur durch explizit programmierte Grammatikregeln", "Durch mehr gelabelte Eingabe/Ausgabe-Paare", "Durch bestärkendes Lernen mit einer Belohnung pro korrektem Satz"], "exp": "Gültige Sätze lassen sich aus einem großen Textkorpus lernen, ohne dass Paare nötig sind. Das ist die Brücke zum unüberwachten Lernen."}, {"id": "1-10", "sec": "1.2.1", "q": "Was ist das Ziel der generativen unüberwachten Modelle, auf die sich das Buch konzentriert?", "opts": ["Neue Beispiele synthetisieren, die statistisch nicht von den Trainingsdaten zu unterscheiden sind", "Die Trainingsdaten in Cluster einteilen", "Für jedes Beispiel ein fehlendes Label vorhersagen", "Die Trainingsdaten verlustfrei komprimieren"], "exp": "Manche generativen Modelle beschreiben die Wahrscheinlichkeitsverteilung explizit, andere lernen nur einen Mechanismus zum Erzeugen neuer Beispiele."}, {"id": "1-11", "sec": "1.2.1", "q": "Inpainting und Textvervollständigung sind Beispiele wofür?", "opts": ["Konditionale Generierung, bei der ein Teil der Ausgabe vorgegeben ist", "Multivariate Regression", "Semantische Segmentierung", "Bestärkendes Lernen"], "exp": "Beim Inpainting bleiben die unverdeckten Pixel fest. Bei der Textvervollständigung ist der Anfang des Textes fest. Das Modell erzeugt nur den fehlenden Teil."}, {"id": "1-12", "sec": "1.2.1", "q": "Ein großes Textmodell beantwortet eine Frage korrekt. Was folgt daraus laut Buch?", "opts": ["Es hat die wahrscheinlichste Fortsetzung des Dokuments erzeugt. Es kennt die Statistik der Sprache, versteht aber die Bedeutung seiner Antwort nicht.", "Es hat ein explizites Weltmodell aufgebaut und daraus logisch geschlossen", "Es hat die Antwort wörtlich aus den Trainingsdaten abgerufen", "Es wurde für genau diese Frage überwacht trainiert"], "exp": "Das Buch betont, dass die scheinbare Intelligenz aus dem Auffüllen der wahrscheinlichsten Vervollständigung stammt."}, {"id": "1-13", "sec": "1.2.2", "q": "Warum lässt sich die Variation von Gesichtsbildern derselben Person mit etwa 42 Zahlen beschreiben?", "opts": ["Die Bilder entstehen durch einen physikalischen Prozess mit wenigen Freiheitsgraden, hier rund 42 Gesichtsmuskeln", "Das Bild wird auf 42 Pixel herunterskaliert", "42 Farbkanäle genügen für ein Gesicht", "Ein Klassifikator unterscheidet 42 Gesichtsausdrücke"], "exp": "Reale Bilder sind eine winzige Teilmenge aller möglichen RGB-Kombinationen. Die Daten sind niedriger dimensional, als die Zahl der Pixel vermuten lässt. Das ist die Grundidee latenter Variablen."}, {"id": "1-14", "sec": "1.2.2", "q": "Wie erzeugt ein generatives Modell mit latenten Variablen ein neues Beispiel?", "opts": ["Es zieht eine Stichprobe aus einer einfachen Verteilung über die latenten Variablen und bildet sie mit einem tiefen Netz in den Datenraum ab", "Es kombiniert zufällig Ausschnitte aus Trainingsbeispielen", "Es sucht das ähnlichste Trainingsbeispiel und verrauscht es", "Es erzeugt Pixel für Pixel gleichverteilte Zufallswerte"], "exp": "Die latente Verteilung ist per Konstruktion einfach. Die gesamte Komplexität steckt in der gelernten Abbildung vom latenten Raum in den Datenraum."}, {"id": "1-15", "sec": "1.2.2", "q": "Warum wirken Zwischenbilder bei der Interpolation im latenten Raum plausibel und nicht wie eine Überblendung?", "opts": ["Interpoliert werden die latenten Variablen der beiden Bilder, erst danach wird in den Bildraum abgebildet", "Die Pixelwerte beider Bilder werden gewichtet gemittelt", "Das Modell wählt reale Trainingsbilder, die zwischen den beiden liegen", "Die Bilder werden vorher auf dieselbe Helligkeit normiert"], "exp": "Jeder sinnvolle Punkt im latenten Raum ergibt ein plausibles Bild. Eine Pixelmittelung dagegen verlässt die Menge realistischer Bilder."}, {"id": "1-16", "sec": "1.2.3", "q": "Welche Aussage ist KEIN Vorteil latenter Variablen beim Abbilden von Text auf Bild?", "opts": ["Das Modell kommt ganz ohne Trainingsdaten aus", "Es werden weniger Text/Bild-Paare benötigt, weil Ein- und Ausgabe niedriger dimensional sind", "Erzeugte Bilder sind eher plausibel", "Durch Zufall in der Abbildung entstehen mehrere passende Bilder zu einer Beschreibung"], "exp": "Das Buch nennt genau drei Vorteile: weniger Paare, plausiblere Bilder und mehrere Ergebnisse pro Beschreibung. Trainingsdaten werden weiterhin gebraucht."}, {"id": "1-17", "sec": "1.3.1", "q": "Ein Schachagent erhält nur am Spielende eine Belohnung für den Sieg. Welches Problem tritt hier in extremer Form auf?", "opts": ["Temporal Credit Assignment: Unklar ist, welche der vielen Züge für Sieg oder Niederlage entscheidend waren", "Exploration-Exploitation-Trade-off", "Overfitting auf bekannte Eröffnungen", "Fehlende Labels für jede Brettstellung"], "exp": "Die Belohnung kommt lange nach den Aktionen. Sie den verursachenden Aktionen zuzuordnen, ist das zeitliche Zuordnungsproblem."}, {"id": "1-18", "sec": "1.3.1", "q": "Ein Roboter kommt voran, indem er auf der Seite liegend mit einem Bein schiebt. Welches Dilemma illustriert das?", "opts": ["Exploration und Exploitation: bekannte, mäßig belohnte Strategie nutzen oder neue Aktionen ausprobieren, die zum Gehen führen könnten", "Temporal Credit Assignment", "Underfitting des Bewegungsmodells", "Nicht-deterministische Zustandsübergänge"], "exp": "Die bekannte Strategie liefert sichere, aber kleine Belohnungen. Nur Exploration kann die deutlich bessere Lösung finden."}, {"id": "1-19", "sec": "1.3.1", "q": "Warum ändern Aktionen im Schach den Systemzustand nicht deterministisch?", "opts": ["Auf jeden eigenen Zug kann der Gegner mit vielen verschiedenen Zügen antworten", "Die Schachregeln enthalten Zufallselemente", "Der Agent wählt seine Züge zufällig", "Die Belohnung wird verrauscht übermittelt"], "exp": "Der eigene Zug ist eindeutig, aber der Folgezustand, den der Agent als Nächstes sieht, hängt von der Reaktion des Gegners ab."}, {"id": "1-20", "sec": "1.3.1", "q": "Was bildet ein Policy Network ab?", "opts": ["Den beobachteten Zustand der Welt auf eine Aktion, etwa Brettstellung auf Zug oder Sensorwerte auf Gelenkbewegung", "Eine Aktion auf die erwartete Belohnung", "Den latenten Raum auf den Datenraum", "Trainingsdaten auf Modellparameter"], "exp": "Die Policy ist die Abbildung von Zustand auf Aktion. Das ist eine Möglichkeit, tiefe Netze in bestärkendes Lernen einzubinden."}, {"id": "1-21", "sec": "1.4", "q": "Ein System sagt Gehälter auf Basis historischer Daten voraus. Was ist laut Buch zu erwarten?", "opts": ["Es reproduziert die historischen Verzerrungen, etwa niedrigere Gehälter für Frauen", "Es gleicht historische Verzerrungen automatisch aus", "Es wird bei ausreichend Daten neutral", "Es sagt für alle Gruppen denselben Mittelwert voraus"], "exp": "Das Modell lernt den Zusammenhang, den die Daten zeigen, einschließlich der Ungerechtigkeiten darin. Unbedachter Einsatz kann bestehende Verzerrungen verfestigen."}, {"id": "1-22", "sec": "1.4", "q": "Welcher Ansatz der erklärbaren KI gilt laut Buch als mäßig erfolgreich?", "opts": ["Lokale Erklärungen, warum eine bestimmte einzelne Entscheidung getroffen wurde", "Vollständige Offenlegung der Funktionsweise großer Netze", "Inspektion aller Gewichte durch Experten", "Ersatz des Netzes durch eine äquivalente Regelbasis"], "exp": "Das Gesamtsystem lässt sich nicht erklären. Für einzelne Entscheidungen gelingen interpretierbare Beschreibungen. Ob vollständige Transparenz möglich ist, bleibt offen."}, {"id": "1-23", "sec": "Transfer", "transfer": true, "q": "Ein Kunde möchte aus Vibrationsdaten eines Lagers die Restlebensdauer in Betriebsstunden vorhersagen. Welche Einordnung passt?", "opts": ["Überwachte Regression mit einer Zeitreihe als Eingabe, deren Reihenfolge Information trägt", "Binäre Klassifikation mit tabellarischen Daten", "Unüberwachtes generatives Modell", "Bestärkendes Lernen, weil die Maschine im Betrieb lernt"], "exp": "Ausgabe ist eine kontinuierliche Größe, gelabelt durch historische Ausfälle. Wie bei Audio ist die Eingabe hochdimensional und zeitlich geordnet."}, {"id": "1-24", "sec": "Transfer", "transfer": true, "q": "Eine Inline-Prüfung soll jedes Bauteilbild einer von fünf Fehlerarten oder der Klasse i.O. zuordnen. Was liefert das Modell?", "opts": ["Einen Vektor mit sechs Wahrscheinlichkeiten, je eine pro Klasse", "Eine einzelne Zahl zwischen null und fünf", "Ein Binärbild mit Fehlerregionen", "Einen Text mit der Fehlerbeschreibung"], "exp": "Sechs Klassen ergeben eine Multiklassen-Klassifikation mit N gleich sechs. Ein Binärbild wäre dagegen eine Segmentierung, also eine strukturierte Ausgabe."}]}, {"id": "kap2", "num": 2, "title": "Überwachtes Lernen", "intro": "Modell, Parameter, Verlustfunktion, Training und Test am Beispiel der eindimensionalen linearen Regression.", "questions": [{"id": "2-01", "sec": "2.1", "q": "Was bezeichnet das Buch als Inferenz?", "opts": ["Die Berechnung der Vorhersage y aus der Eingabe x mit dem Modell", "Die Suche nach den besten Parametern", "Die Bewertung des Modells auf Testdaten", "Den Rückschluss von Ausgaben auf die zugrunde liegende Verteilung"], "exp": "Inferenz heißt einfach: Eingabe durch die Modellgleichung schicken und Ausgabe berechnen. Training und Test sind getrennte Schritte."}, {"id": "2-02", "sec": "2.1", "q": "Welche Rolle spielen Modellgleichung und Parameter ϕ in y = f[x, ϕ]?", "opts": ["Die Gleichung legt eine Familie möglicher Zusammenhänge fest, die Parameter wählen daraus einen bestimmten aus", "Die Gleichung wird trainiert, die Parameter sind fest vorgegeben", "Die Parameter bestimmen die Form der Gleichung, etwa linear oder quadratisch", "Beide werden beim Training gemeinsam neu hergeleitet"], "exp": "Bei der linearen Regression ist die Familie die Menge aller Geraden. Achsenabschnitt und Steigung bestimmen die konkrete Gerade."}, {"id": "2-03", "sec": "2.1", "q": "Was verlangt das Buch in Kapitel 2 von strukturierten bzw. tabellarischen Daten?", "opts": ["Ein- und Ausgabevektoren haben feste Größe und ihre Elemente stehen immer in derselben Reihenfolge", "Alle Werte müssen normiert zwischen null und eins liegen", "Die Daten müssen aus einer relationalen Datenbank stammen", "Jede Eingabe muss genau eine Ausgabe besitzen, die eine Kategorie ist"], "exp": "Beim Prius-Beispiel steht immer erst das Alter, dann der Kilometerstand im Vektor."}, {"id": "2-04", "sec": "2.1", "q": "Was ist der Verlust L?", "opts": ["Ein Skalar, der zusammenfasst, wie schlecht das Modell mit den Parametern ϕ die Trainingsausgaben vorhersagt", "Die Abweichung der Vorhersage für ein einzelnes neues Beispiel", "Die Anzahl falsch klassifizierter Testbeispiele", "Die Differenz zwischen Trainings- und Testleistung"], "exp": "Ein kleiner Verlust bedeutet eine gute Anpassung an die Trainingsdaten. Über die Generalisierung sagt er allein nichts aus."}, {"id": "2-05", "sec": "2.1", "q": "Warum wird der Verlust als Funktion L[ϕ] der Parameter geschrieben, obwohl er auch von den Daten abhängt?", "opts": ["Die Trainingsdaten sind während des Trainings fest, verändert werden nur die Parameter", "Die Daten haben keinen Einfluss auf den Verlust", "Der Verlust wird vor dem Training einmalig berechnet", "Die Parameter enthalten eine Kopie der Trainingsdaten"], "exp": "Formal korrekt wäre L[{xᵢ, yᵢ}, ϕ]. Weil die Daten fix sind, lässt das Buch sie der Lesbarkeit halber weg."}, {"id": "2-06", "sec": "2.2.1", "q": "Was bedeuten ϕ₀ und ϕ₁ im eindimensionalen linearen Regressionsmodell?", "opts": ["Achsenabschnitt und Steigung der Geraden", "Mittelwert und Varianz der Ausgaben", "Minimaler und maximaler Eingabewert", "Lernrate und Anzahl der Iterationen"], "exp": "Zwei Parameter beschreiben jede mögliche Gerade. Ihre Wahl bestimmt das Familienmitglied."}, {"id": "2-07", "sec": "2.2.2", "q": "Warum werden die Abweichungen im Least-Squares-Verlust quadriert?", "opts": ["Die Richtung der Abweichung, also ober- oder unterhalb der Daten, soll keine Rolle spielen. Theoretische Gründe folgen in Kapitel 5.", "Damit Ausreißer weniger Gewicht erhalten", "Damit der Verlust linear in den Parametern ist", "Damit der Verlust immer genau null erreichen kann"], "exp": "Ohne Quadrat würden sich positive und negative Abweichungen aufheben. Quadrieren gewichtet große Abweichungen übrigens stärker, dämpft Ausreißer also nicht."}, {"id": "2-08", "sec": "2.2.2", "q": "Was entspricht in der Heatmap der Verlustfunktion (Abb. 2.3) dem Minimum?", "opts": ["Das Parameterpaar der am besten passenden Geraden", "Die Gerade mit der größten Steigung", "Der Punkt, an dem der Achsenabschnitt null ist", "Das Trainingsbeispiel mit dem kleinsten Fehler"], "exp": "Jeder Punkt der Fläche ist ein Parameterpaar, also eine Gerade. Der tiefste Punkt gehört zur Geraden mit dem kleinsten Verlust."}, {"id": "2-09", "sec": "2.2.3", "q": "Wie läuft das im Buch beschriebene iterative Training ab?", "opts": ["Zufällig initialisieren, am aktuellen Punkt den Gradienten messen, in Richtung des steilsten Abstiegs gehen und wiederholen, bis der Gradient flach ist", "Alle Parameterkombinationen auswerten und die beste wählen", "Parameter so lange zufällig neu ziehen, bis der Verlust unter einem Schwellwert liegt", "Jedes Trainingsbeispiel einzeln exakt durch Anpassen der Parameter treffen"], "exp": "Das ist Gradientenabstieg. Bei zwei Parametern wäre die vollständige Auswertung noch möglich, bei Millionen nicht."}, {"id": "2-10", "sec": "2.2.3", "q": "Für die lineare Regression gibt es eine geschlossene Lösung. Warum nutzt das Buch trotzdem Gradientenabstieg?", "opts": ["Komplexere Modelle haben keine geschlossene Lösung und zu viele Parameter, um den Verlust für jede Kombination auszuwerten", "Die geschlossene Lösung ist numerisch immer instabil", "Gradientenabstieg findet bei linearer Regression ein besseres Minimum", "Die geschlossene Lösung erfordert Testdaten"], "exp": "Das Beispiel dient als Einstieg in ein Verfahren, das später für tiefe Netze unverzichtbar ist."}, {"id": "2-11", "sec": "2.2.4", "q": "Wozu wird der Verlust auf einem separaten Testdatensatz berechnet?", "opts": ["Um zu prüfen, wie gut das Modell auf Beispiele generalisiert, die es im Training nicht gesehen hat", "Um die Parameter ein zweites Mal nachzujustieren", "Um den Trainingsverlust zu bestätigen", "Um die Lernrate zu bestimmen"], "exp": "Ein kleiner Trainingsverlust belegt nur die Anpassung an bekannte Daten. Erst der Test zeigt, ob das Modell einsatzfähig ist."}, {"id": "2-12", "sec": "2.2.4", "q": "Wovon hängt laut Buch ab, wie gut die Vorhersagegenauigkeit auf Testdaten übertragbar ist?", "opts": ["Von Repräsentativität und Vollständigkeit der Trainingsdaten sowie von der Ausdrucksstärke des Modells", "Nur von der Anzahl der Trainingsiterationen", "Nur von der Größe des Testdatensatzes", "Von der Wahl der Startparameter"], "exp": "Beide Faktoren wirken zusammen. Fehlende Situationen in den Trainingsdaten kann auch das beste Modell nicht kompensieren."}, {"id": "2-13", "sec": "2.2.4", "q": "Was beschreibt Underfitting?", "opts": ["Das Modell ist zu wenig ausdrucksstark, um den wahren Zusammenhang abzubilden, etwa eine Gerade für einen gekrümmten Verlauf", "Das Modell hat zu wenige Trainingsiterationen erhalten", "Das Modell beschreibt Eigenheiten der Trainingsdaten, die untypisch sind", "Der Testdatensatz ist zu klein"], "exp": "Das Buch definiert Underfitting über die Ausdrucksstärke der Modellfamilie. Die passende Familie enthält den Zusammenhang schlicht nicht."}, {"id": "2-14", "sec": "2.2.4", "q": "Was beschreibt Overfitting?", "opts": ["Ein sehr ausdrucksstarkes Modell beschreibt statistische Eigenheiten der Trainingsdaten, die untypisch sind, und macht dadurch ungewöhnliche Vorhersagen", "Das Modell hat einen zu großen Trainingsverlust", "Das Modell ist zu einfach für die Daten", "Die Trainingsdaten enthalten zu viele Merkmale"], "exp": "Overfitting zeigt sich typischerweise als kleiner Trainingsverlust bei deutlich größerem Testverlust."}, {"id": "2-15", "sec": "Notes", "q": "Wie unterscheiden sich Loss Function und Cost Function im strengen Sinn?", "opts": ["Die Loss Function ist der Term eines einzelnen Datenpunkts, die Cost Function die minimierte Gesamtgröße, die auch Zusatzterme enthalten kann", "Die Loss Function gilt für Regression, die Cost Function für Klassifikation", "Die Cost Function wird maximiert, die Loss Function minimiert", "Es gibt keinen Unterschied, beide Begriffe sind identisch definiert"], "exp": "Im Buch werden beide Begriffe meist synonym verwendet. Streng genommen ist die Cost Function die Summe plus mögliche Zusatzterme wie Regularisierung (Kapitel 9)."}, {"id": "2-16", "sec": "Notes", "q": "Worin unterscheidet sich ein generatives Modell x = g[y, ϕ] von einem diskriminativen Modell y = f[x, ϕ]?", "opts": ["Es berechnet die Messungen aus der Zielgröße. Für eine Vorhersage muss man es invertieren, was schwierig sein kann.", "Es benötigt keine Trainingsdaten", "Es liefert immer Wahrscheinlichkeiten statt Punktwerte", "Es kann nur für Bilder eingesetzt werden"], "exp": "Diskriminative Modelle sagen y direkt aus x voraus. Generative Modelle beschreiben, wie die Daten x aus y entstehen."}, {"id": "2-17", "sec": "Notes", "q": "Warum dominieren diskriminative Modelle, obwohl generative Modelle Vorwissen über die Datenentstehung einbauen können?", "opts": ["Sehr flexible diskriminative Modelle mit großen Datenmengen übertreffen in der Regel den Vorteil des eingebauten Vorwissens", "Generative Modelle lassen sich grundsätzlich nicht trainieren", "Vorwissen verschlechtert immer die Vorhersage", "Diskriminative Modelle benötigen weniger Daten"], "exp": "Beim Beispiel der 3D-Pose eines Autos könnte man Geometrie und Lichttransport modellieren. In der Praxis gewinnt aber meist die Kombination aus flexiblem Modell und vielen Daten."}, {"id": "2-18", "sec": "Transfer", "transfer": true, "q": "Ein Modell zur Vorhersage von Auftragsdurchlaufzeiten erreicht einen sehr kleinen Trainingsverlust, auf neuen Aufträgen aber große Fehler. Was ist die naheliegende Diagnose?", "opts": ["Overfitting: Das Modell hat Eigenheiten der historischen Aufträge gelernt, die nicht verallgemeinern", "Underfitting: Das Modell ist zu einfach", "Der Gradientenabstieg ist nicht konvergiert", "Die Verlustfunktion ist falsch, weil sie quadriert"], "exp": "Kleiner Trainings- und großer Testverlust ist das typische Muster. Zu prüfen sind auch Repräsentativität der Daten, etwa neue Produktvarianten, und die Ausdrucksstärke des Modells."}, {"id": "2-19", "sec": "Transfer", "transfer": true, "q": "Ein Energiemodell einer Presse nutzt nur eine Gerade über der Hubzahl. Sowohl Trainings- als auch Testfehler sind hoch. Was liegt nahe?", "opts": ["Underfitting: Die Modellfamilie ist zu eingeschränkt, um den tatsächlichen Zusammenhang abzubilden", "Overfitting auf die Trainingsdaten", "Zu wenige Testdaten", "Die Parameter wurden falsch initialisiert"], "exp": "Wenn schon die Trainingsdaten schlecht erklärt werden, fehlt dem Modell Ausdrucksstärke. Flache neuronale Netze aus Kapitel 3 beschreiben eine deutlich größere Familie."}]}];
+const UPCOMING = 3;
+const CH_TITLES = {"kap1": "Einführung", "kap2": "Überwachtes Lernen"};
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fmt = (v,d=2) => v.toFixed(d).replace(".",",").replace("-","−");
+function tok(){ const s=getComputedStyle(document.documentElement); const g=n=>s.getPropertyValue(n).trim(); return {bg:g("--bg"),surface:g("--surface"),surface2:g("--surface2"),ink:g("--ink"),muted:g("--muted"),line:g("--line"),accent:g("--accent"),data:g("--data"),ok:g("--ok"),bad:g("--bad"),face:g("--face"),faceLine:g("--face-line"),fBody:g("--f-body"),fMono:g("--f-mono"),fMath:g("--f-math")}; }
+function rgb(h){ h=h.replace("#",""); if(h.length===3) h=h.split("").map(c=>c+c).join(""); const n=parseInt(h,16); return [n>>16&255,n>>8&255,n&255]; }
+function prep(cv){
+  const w=cv.clientWidth; if(!w) return null;
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const h=Math.round(w*(parseFloat(cv.dataset.ar)||0.62));
+  const W=Math.round(w*dpr), H=Math.round(h*dpr);
+  if(cv.width!==W||cv.height!==H){ cv.width=W; cv.height=H; cv.style.height=h+"px"; }
+  const ctx=cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h);
+  return {ctx,w,h};
+}
+function arrowHead(ctx,x1,y1,x2,y2,size){ const a=Math.atan2(y2-y1,x2-x1); ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(x2-size*Math.cos(a-0.45),y2-size*Math.sin(a-0.45)); ctx.lineTo(x2-size*Math.cos(a+0.45),y2-size*Math.sin(a+0.45)); ctx.closePath(); ctx.fill(); }
+const widgets=[];
+const pauseHooks=[]; /* f(activeChapterId) wird beim Kapitelwechsel aufgerufen */
+function redrawAll(){ widgets.forEach(f=>{ try{ f(); }catch(e){ console.error(e); } }); }
+let rsz=0; window.addEventListener("resize",()=>{ cancelAnimationFrame(rsz); rsz=requestAnimationFrame(redrawAll); });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{ themeGen++; redrawAll(); });
+new MutationObserver(()=>{ themeGen++; redrawAll(); }).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+let themeGen=0;
+function randn(){ let u=0,v=0; while(!u) u=Math.random(); while(!v) v=Math.random(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+
+/* ---------- storage ---------- */
+const STORE_KEY="udl-quiz-v1";
+let state={answers:{},onlyOpen:{},active:"kap1"};
+try{ const s=JSON.parse(localStorage.getItem(STORE_KEY)||"null"); if(s&&s.answers) state=Object.assign(state,s); }catch(e){}
+function save(){ try{ localStorage.setItem(STORE_KEY,JSON.stringify(state)); }catch(e){} }
+
+/* ---------- chapters & navigation ---------- */
+const hash=(location.hash||"").slice(1);
+if(QUIZ.some(c=>c.id===hash)) state.active=hash;
+if(!QUIZ.some(c=>c.id===state.active)) state.active="kap1";
+function counts(id){ const ch=QUIZ.find(c=>c.id===id); let ok=0,bad=0; ch.questions.forEach(q=>{ const a=state.answers[q.id]; if(a===undefined) return; a===0?ok++:bad++; }); return {ok,bad,total:ch.questions.length}; }
+function renderTabs(){
+  const t=$("tabs"); t.innerHTML="";
+  QUIZ.forEach(ch=>{ const c=counts(ch.id); const b=document.createElement("button"); b.className="tab"; b.id="tab-"+ch.id; b.setAttribute("role","tab"); b.setAttribute("aria-selected",String(ch.id===state.active)); b.innerHTML=`Kap. ${ch.num} · ${CH_TITLES[ch.id]} <span class="n">${c.ok}/${c.total}</span>`; b.onclick=()=>showChapter(ch.id,true); t.appendChild(b); });
+  const up=document.createElement("button"); up.className="tab"; up.disabled=true; up.textContent=`Kap. ${UPCOMING} folgt`; t.appendChild(up);
+}
+function showChapter(id,scroll){
+  state.active=id; save();
+  document.querySelectorAll("article.chapter").forEach(a=>a.hidden=(a.dataset.ch!==id));
+  pauseHooks.forEach(f=>f(id));
+  renderTabs();
+  requestAnimationFrame(redrawAll);
+  if(scroll) $("tabs").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});
+}
+document.querySelectorAll(".subnav button").forEach(b=>b.addEventListener("click",()=>$(b.dataset.go).scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"})));
+
+/* ---------- K1: problem explorer ---------- */
+const PROBLEMS=[
+ {k:"Hauspreis",real:"Wohnfläche 120 m², 4 Zimmer, Baujahr 1998",vin:"[120, 4, 1998]",vout:"[389000]",pred:"389.000 €",type:"Regression",inp:"Tabellarisch",note:"Eine kontinuierliche Zahl als Ausgabe."},
+ {k:"Molekül",real:"Ethanol, C₂H₆O",vin:"Atome und Bindungen als Graph",vout:"[−114, 78]",pred:"Gefrierpunkt −114 °C, Siedepunkt 78 °C",type:"Multivariate Regression",inp:"Graph",note:"Mehrere kontinuierliche Zahlen zugleich."},
+ {k:"Rezension",real:"„Das Schnitzel war hervorragend.“",vin:"[27, 5120, 88, 4051]",vout:"[0,94  0,06]",pred:"positiv",type:"Binäre Klassifikation",inp:"Sequenz variabler Länge",note:"Wortindizes aus einem Vokabular mit 10.000 Einträgen."},
+ {k:"Musikgenre",real:"Audioclip, 10 s",vin:"441.000 Ganzzahlen (44,1 kHz, 16 bit)",vout:"[0,02  0,81  0,05 …]",pred:"Jazz",type:"Multiklassen-Klassifikation",inp:"Sehr hochdimensional",note:"Ein Wahrscheinlichkeitsvektor der Länge N für N Genres."},
+ {k:"Bildobjekt",real:"Foto, 640 × 480 Pixel",vin:"921.600 RGB-Werte",vout:"[0,01  0,93  0,02 …]",pred:"Katze",type:"Multiklassen-Klassifikation",inp:"Räumlich strukturiert",note:"Nachbarpixel hängen zusammen, auch wenn sie im Vektor weit auseinander liegen."},
+ {k:"Restlebensdauer",real:"Vibrationsmessung am Wälzlager",vin:"25.600 Werte pro Sekunde",vout:"[1840]",pred:"≈ 1.840 Betriebsstunden",type:"Regression",inp:"Zeitreihe",note:"Labels stammen aus dokumentierten Ausfällen.",ind:true},
+ {k:"Fehlerklasse",real:"Kamerabild eines Gussteils",vin:"RGB-Werte je Pixel",vout:"[0,03  0,91  0,02  0,01  0,02  0,01]",pred:"Riss",type:"Multiklassen-Klassifikation",inp:"Räumlich strukturiert",note:"Fünf Fehlerarten plus i.O. ergeben N = 6.",ind:true}
+];
+let peSel=0;
+function renderPE(){
+  const c=$("pe-chips"); c.innerHTML="";
+  PROBLEMS.forEach((p,i)=>{ const b=document.createElement("button"); b.className="chip"+(p.ind?" ind":""); b.id="pe-"+i; b.textContent=p.k; b.setAttribute("aria-pressed",String(i===peSel)); b.onclick=()=>{peSel=i; renderPE();}; c.appendChild(b); });
+  const p=PROBLEMS[peSel];
+  $("pe-real").textContent=p.real; $("pe-vin").textContent=p.vin; $("pe-vout").textContent=p.vout; $("pe-pred").textContent=p.pred;
+  $("pe-type").textContent=p.type; $("pe-inp").textContent="Eingabe: "+p.inp; $("pe-note").textContent=p.note;
+}
+renderPE();
+
+/* ---------- K1: order demo ---------- */
+let ordSw=false;
+function renderOrd(anim){
+  const tab=ordSw?["Baujahr 1998","Fläche 120 m²","Zimmer 4"]:["Fläche 120 m²","Zimmer 4","Baujahr 1998"];
+  const txt=ordSw?["Der Mann","beißt","den Hund"]:["Der Hund","beißt","den Mann"];
+  const put=(id,arr)=>{ const el=$(id); el.classList.remove("anim"); el.innerHTML=arr.map(t=>`<span class="otok">${t}</span>`).join(""); if(anim){ void el.offsetWidth; el.classList.add("anim"); } };
+  put("ord-tab",tab); put("ord-txt",txt);
+  $("ord-tab-r").textContent=ordSw?"Nach Neutraining: 389.000 €. Bedeutung unverändert.":"Vorhersage: 389.000 €";
+  const r=$("ord-txt-r"); r.textContent=ordSw?"Täter und Opfer vertauscht. Bedeutung geändert.":"Der Hund ist der Täter."; r.className="ores"+(ordSw?" bad":"");
+  $("ord-btn").textContent=ordSw?"Ursprüngliche Reihenfolge":"Reihenfolge vertauschen";
+}
+$("ord-btn").onclick=()=>{ ordSw=!ordSw; renderOrd(true); };
+renderOrd(false);
+
+/* ---------- K1: structured output grids (SVG) ---------- */
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  const cow=["00000","01110","11111","01010","00000"];
+  const shade=["01012","12221","22222","12121","01010"];
+  const mk=(g,x0,y0,fn)=>{ for(let r=0;r<5;r++) for(let c=0;c<5;c++){ const e=document.createElementNS(NS,"rect"); e.setAttribute("x",x0+c*18); e.setAttribute("y",y0+r*18); e.setAttribute("width",16); e.setAttribute("height",16); e.setAttribute("rx",2); e.setAttribute("class",fn(r,c)); g.appendChild(e);} };
+  mk($("seg-in"),30,70,(r,c)=>"cell-"+shade[r][c]);
+  mk($("seg-out"),210,70,(r,c)=>cow[r][c]==="1"?"cell-a":"cell-b");
+})();
+
+/* ---------- K1: faces, noise, latent ---------- */
+function faceParams(z1,z2){ return {smile:Math.tanh(0.75*z1), eye:1/(1+Math.exp(-1.3*z2)), brow:Math.tanh(0.55*z1-0.45*z2)}; }
+function drawFace(ctx,cx,cy,r,p,T,alpha){
+  ctx.save(); ctx.globalAlpha=alpha==null?1:alpha;
+  ctx.lineCap="round"; ctx.lineWidth=Math.max(1.6,r*0.04);
+  ctx.fillStyle=T.face; ctx.strokeStyle=T.faceLine;
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  for(const s of [-1,1]){
+    const ex=cx+s*r*0.36, ey=cy-r*0.1, ry=r*(0.018+0.12*p.eye);
+    ctx.fillStyle=T.surface; ctx.beginPath(); ctx.ellipse(ex,ey,r*0.14,ry,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    if(p.eye>0.1){ ctx.fillStyle=T.faceLine; ctx.beginPath(); ctx.arc(ex,ey,Math.min(r*0.06,ry*0.85),0,Math.PI*2); ctx.fill(); }
+    const by=cy-r*0.33-r*0.1*p.eye, ox=ex+s*r*0.16, ix=ex-s*r*0.16;
+    ctx.beginPath(); ctx.moveTo(ox,by); ctx.lineTo(ix,by+p.brow*r*0.09); ctx.stroke();
+  }
+  const my=cy+r*0.42, mw=r*0.36;
+  ctx.beginPath(); ctx.moveTo(cx-mw,my-p.smile*r*0.06); ctx.quadraticCurveTo(cx,my+p.smile*r*0.36,cx+mw,my-p.smile*r*0.06); ctx.stroke();
+  ctx.restore();
+}
+let noiseImg=null;
+function newNoise(){ const c=document.createElement("canvas"); c.width=40; c.height=40; const x=c.getContext("2d"); const d=x.createImageData(40,40); for(let i=0;i<d.data.length;i+=4){ d.data[i]=Math.random()*256; d.data[i+1]=Math.random()*256; d.data[i+2]=Math.random()*256; d.data[i+3]=255; } x.putImageData(d,0,0); noiseImg=c; }
+newNoise();
+function drawNoise(){
+  const a=prep($("cv-noise")); if(!a) return; const T=tok();
+  a.ctx.imageSmoothingEnabled=false; a.ctx.drawImage(noiseImg,0,0,a.w,a.h);
+  const b=prep($("cv-noiseface")); if(!b) return;
+  b.ctx.fillStyle=T.surface2; b.ctx.fillRect(0,0,b.w,b.h);
+  drawFace(b.ctx,b.w/2,b.h/2,b.w*0.38,faceParams(pad.z[0],pad.z[1]),T);
+}
+$("noise-btn").onclick=()=>{ newNoise(); drawNoise(); };
+widgets.push(drawNoise);
+
+const pad={z:[0.9,0.6],drag:false};
+const ZR=3;
+function drawPad(){
+  const a=prep($("cv-pad")); if(!a) return; const {ctx,w,h}=a; const T=tok();
+  const sx=v=>w/2+v/ZR*(w/2-10), sy=v=>h/2-v/ZR*(h/2-10);
+  ctx.fillStyle=T.surface2; ctx.fillRect(0,0,w,h);
+  for(const [k,al] of [[2,0.10],[1,0.18]]){ ctx.fillStyle=T.accent; ctx.globalAlpha=al; ctx.beginPath(); ctx.arc(w/2,h/2,k/ZR*(w/2-10),0,Math.PI*2); ctx.fill(); }
+  ctx.globalAlpha=1; ctx.strokeStyle=T.line; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(10,h/2); ctx.lineTo(w-10,h/2); ctx.moveTo(w/2,10); ctx.lineTo(w/2,h-10); ctx.stroke();
+  ctx.fillStyle=T.muted; ctx.font=`500 12px ${T.fMono}`; ctx.textAlign="right"; ctx.fillText("z₁ ≈ Lächeln",w-12,h/2-8); ctx.textAlign="left"; ctx.fillText("z₂ ≈ Augen",w/2+8,20);
+  const px=sx(pad.z[0]), py=sy(pad.z[1]);
+  ctx.fillStyle=T.data; ctx.strokeStyle=T.surface; ctx.lineWidth=2.5; ctx.beginPath(); ctx.arc(px,py,8,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  const b=prep($("cv-face")); if(!b) return;
+  b.ctx.fillStyle=T.surface2; b.ctx.fillRect(0,0,b.w,b.h);
+  drawFace(b.ctx,b.w/2,b.h/2,b.w*0.38,faceParams(pad.z[0],pad.z[1]),T);
+  $("pad-read").innerHTML=`<span>z = (<b>${fmt(pad.z[0])}</b> | <b>${fmt(pad.z[1])}</b>)</span>`;
+}
+widgets.push(drawPad);
+(function(){
+  const cv=$("cv-pad");
+  const set=e=>{ const r=cv.getBoundingClientRect(); const x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height; const k=r.width/(r.width-20); pad.z=[Math.max(-ZR,Math.min(ZR,(x-0.5)*2*ZR*k)),Math.max(-ZR,Math.min(ZR,-(y-0.5)*2*ZR*k))]; drawPad(); drawNoise(); };
+  cv.addEventListener("pointerdown",e=>{ pad.drag=true; cv.setPointerCapture(e.pointerId); set(e); });
+  cv.addEventListener("pointermove",e=>{ if(pad.drag) set(e); });
+  cv.addEventListener("pointerup",()=>pad.drag=false);
+  cv.addEventListener("keydown",e=>{ const d={ArrowLeft:[-.2,0],ArrowRight:[.2,0],ArrowUp:[0,.2],ArrowDown:[0,-.2]}[e.key]; if(!d) return; e.preventDefault(); pad.z=[Math.max(-ZR,Math.min(ZR,pad.z[0]+d[0])),Math.max(-ZR,Math.min(ZR,pad.z[1]+d[1]))]; drawPad(); drawNoise(); });
+  $("pad-sample").onclick=()=>{ pad.z=[Math.max(-ZR,Math.min(ZR,randn())),Math.max(-ZR,Math.min(ZR,randn()))]; drawPad(); drawNoise(); };
+})();
+
+const ZA=[-1.9,-1.6], ZB=[1.9,1.7];
+function drawLerp(){
+  const t=parseFloat($("lerp-t").value); const T=tok();
+  const a=prep($("cv-lerp")); if(!a) return;
+  a.ctx.fillStyle=T.surface2; a.ctx.fillRect(0,0,a.w,a.h);
+  drawFace(a.ctx,a.w/2,a.h/2,a.w*0.38,faceParams(ZA[0]+(ZB[0]-ZA[0])*t,ZA[1]+(ZB[1]-ZA[1])*t),T);
+  const b=prep($("cv-blend")); if(!b) return;
+  b.ctx.fillStyle=T.surface2; b.ctx.fillRect(0,0,b.w,b.h);
+  drawFace(b.ctx,b.w/2,b.h/2,b.w*0.38,faceParams(ZA[0],ZA[1]),T,1-t);
+  drawFace(b.ctx,b.w/2,b.h/2,b.w*0.38,faceParams(ZB[0],ZB[1]),T,t);
+}
+widgets.push(drawLerp);
+$("lerp-t").addEventListener("input",drawLerp);
+let lerpAnim=null;
+$("lerp-play").onclick=()=>{
+  if(lerpAnim){ cancelAnimationFrame(lerpAnim); lerpAnim=null; $("lerp-play").textContent="Abspielen"; return; }
+  $("lerp-play").textContent="Anhalten"; const t0=performance.now();
+  const step=now=>{ const u=((now-t0)/4000)%2; $("lerp-t").value=(u<1?u:2-u).toFixed(2); drawLerp(); lerpAnim=requestAnimationFrame(step); };
+  lerpAnim=requestAnimationFrame(step);
+};
+
+/* ---------- K1: gridworld Q-learning ---------- */
+const GW={W:8,H:5,start:[0,2],walls:new Set(),rew:{"1,0":1,"4,0":10},gamma:0.9,alpha:0.5,maxSteps:80};
+const ACT=[[0,-1],[1,0],[0,1],[-1,0]];
+const gw={Q:null,pos:null,steps:0,ep:0,hist:[],running:false,acc:0,last:0};
+function gwReset(){ gw.Q=new Float32Array(GW.W*GW.H*4); gw.pos=GW.start.slice(); gw.steps=0; gw.ep=0; gw.hist=[]; }
+gwReset();
+const gi=(x,y)=>(y*GW.W+x)*4;
+function gwMax(x,y){ const i=gi(x,y); return Math.max(gw.Q[i],gw.Q[i+1],gw.Q[i+2],gw.Q[i+3]); }
+function gwArg(x,y){ const i=gi(x,y); let m=-Infinity,best=[]; for(let a=0;a<4;a++){ const q=gw.Q[i+a]; if(q>m+1e-9){m=q;best=[a];} else if(Math.abs(q-m)<=1e-9) best.push(a); } return best[Math.floor(Math.random()*best.length)]; }
+function gwStep(eps){
+  const [x,y]=gw.pos; const a=Math.random()<eps?Math.floor(Math.random()*4):gwArg(x,y);
+  let nx=x+ACT[a][0], ny=y+ACT[a][1];
+  if(nx<0||ny<0||nx>=GW.W||ny>=GW.H||GW.walls.has(nx+","+ny)){ nx=x; ny=y; }
+  const r=GW.rew[nx+","+ny]||0, term=r>0;
+  const target=r+(term?0:GW.gamma*gwMax(nx,ny));
+  const i=gi(x,y)+a; gw.Q[i]+=GW.alpha*(target-gw.Q[i]);
+  gw.pos=[nx,ny]; gw.steps++;
+  if(term||gw.steps>=GW.maxSteps){ gw.hist.push(r); if(gw.hist.length>20) gw.hist.shift(); gw.ep++; gw.pos=GW.start.slice(); gw.steps=0; }
+}
+const SPEEDS=[{n:"Zeitlupe",ms:180,k:1},{n:"normal",ms:40,k:1},{n:"schnell",ms:16,k:25},{n:"sehr schnell",ms:16,k:400}];
+function drawGrid(){
+  const a=prep($("cv-grid")); if(!a) return; const {ctx,w}=a; const T=tok();
+  const cs=w/GW.W; const [ar,ag,ab]=rgb(T.accent);
+  for(let y=0;y<GW.H;y++) for(let x=0;x<GW.W;x++){
+    const X=x*cs, Y=y*cs, key=x+","+y;
+    if(GW.walls.has(key)){ ctx.fillStyle=T.line; ctx.fillRect(X,Y,cs,cs); continue; }
+    ctx.fillStyle=T.surface2; ctx.fillRect(X+1,Y+1,cs-2,cs-2);
+    const v=Math.max(0,Math.min(1,gwMax(x,y)/6));
+    if(v>0){ ctx.fillStyle=`rgba(${ar},${ag},${ab},${0.08+0.8*Math.sqrt(v)})`; ctx.fillRect(X+1,Y+1,cs-2,cs-2); }
+    if(GW.rew[key]){
+      ctx.strokeStyle=T.ok; ctx.lineWidth=3; ctx.strokeRect(X+3,Y+3,cs-6,cs-6);
+      ctx.fillStyle=T.ink; ctx.font=`700 ${Math.round(cs*0.28)}px ${T.fBody}`; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText("+"+GW.rew[key],X+cs/2,Y+cs/2);
+    } else if(gwMax(x,y)>0.005){
+      const i=gi(x,y); let b=0; for(let k=1;k<4;k++) if(gw.Q[i+k]>gw.Q[i+b]) b=k;
+      const cx=X+cs/2, cy=Y+cs/2, L=cs*0.22, dx=ACT[b][0]*L, dy=ACT[b][1]*L;
+      ctx.strokeStyle=v>0.45?T.bg:T.ink; ctx.fillStyle=ctx.strokeStyle; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(cx-dx,cy-dy); ctx.lineTo(cx+dx*0.6,cy+dy*0.6); ctx.stroke(); arrowHead(ctx,cx-dx,cy-dy,cx+dx,cy+dy,cs*0.14);
+    }
+    if(x===GW.start[0]&&y===GW.start[1]){ ctx.fillStyle=T.muted; ctx.font=`600 ${Math.round(cs*0.16)}px ${T.fMono}`; ctx.textAlign="left"; ctx.textBaseline="top"; ctx.fillText("Start",X+5,Y+5); }
+  }
+  ctx.fillStyle=T.data; ctx.strokeStyle=T.surface; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.arc(gw.pos[0]*cs+cs/2,gw.pos[1]*cs+cs/2,cs*0.19,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  const big=gw.hist.filter(r=>r===10).length, small=gw.hist.filter(r=>r===1).length, none=gw.hist.length-big-small;
+  $("gw-read").innerHTML=`<span>Episoden <b>${gw.ep}</b></span><span>Letzte ${gw.hist.length}: <b>${big}×</b> +10 · <b>${small}×</b> +1 · <b>${none}×</b> ohne Ziel</span><span>Startwert <b>${fmt(gwMax(GW.start[0],GW.start[1]))}</b></span>`;
+}
+widgets.push(drawGrid);
+function gwBtn(){ $("gw-run").textContent=gw.running?"Pausieren":(gw.ep?"Weiter trainieren":"Training starten"); }
+function gwLoop(now){
+  if(!gw.running) return;
+  const sp=SPEEDS[+$("gw-speed").value], eps=parseFloat($("gw-eps").value);
+  if(now-gw.last>=sp.ms){ gw.last=now; for(let k=0;k<sp.k;k++) gwStep(eps); drawGrid(); }
+  requestAnimationFrame(gwLoop);
+}
+$("gw-run").onclick=()=>{ gw.running=!gw.running; gwBtn(); if(gw.running) requestAnimationFrame(gwLoop); };
+$("gw-reset").onclick=()=>{ gwReset(); drawGrid(); gwBtn(); };
+$("gw-eps").addEventListener("input",()=>$("gw-eps-o").textContent=fmt(parseFloat($("gw-eps").value)));
+$("gw-speed").addEventListener("input",()=>$("gw-speed-o").textContent=SPEEDS[+$("gw-speed").value].n);
+pauseHooks.push(id=>{ if(id!=="kap1"){ gw.running=false; gwBtn(); } });
+
+/* ---------- K2: linear regression & gradient descent ---------- */
+const LX=[0.12,0.25,0.4,0.52,0.66,0.8,0.95,1.1,1.28,1.45,1.62,1.85];
+const LN=[0.09,-0.13,0.05,0.12,-0.07,0.03,-0.11,0.08,-0.04,0.1,-0.09,0.05];
+const LY=LX.map((x,i)=>0.35+0.55*x+LN[i]);
+const PR=[-0.6,1.4];
+const lin={p0:1.1,p1:-0.3,path:[],gd:false,it:0,heat:null,heatGen:-1};
+function lossAt(p0,p1){ let s=0; for(let i=0;i<LX.length;i++){ const r=p0+p1*LX[i]-LY[i]; s+=r*r; } return s; }
+function gradAt(p0,p1){ let g0=0,g1=0; for(let i=0;i<LX.length;i++){ const r=p0+p1*LX[i]-LY[i]; g0+=2*r; g1+=2*r*LX[i]; } return [g0,g1]; }
+const LOPT=(()=>{ const n=LX.length; let sx=0,sy=0,sxx=0,sxy=0; LX.forEach((x,i)=>{sx+=x;sy+=LY[i];sxx+=x*x;sxy+=x*LY[i];}); const p1=(n*sxy-sx*sy)/(n*sxx-sx*sx); return [(sy-p1*sx)/n,p1]; })();
+function buildHeat(T){
+  const N=150, c=document.createElement("canvas"); c.width=N; c.height=N; const x=c.getContext("2d"); const img=x.createImageData(N,N);
+  const vals=new Float32Array(N*N); let lo=Infinity,hi=-Infinity;
+  for(let j=0;j<N;j++) for(let i=0;i<N;i++){ const p0=PR[0]+(PR[1]-PR[0])*(i+0.5)/N, p1=PR[1]-(PR[1]-PR[0])*(j+0.5)/N; const v=Math.log(lossAt(p0,p1)); vals[j*N+i]=v; lo=Math.min(lo,v); hi=Math.max(hi,v); }
+  const A=rgb(T.accent), B=rgb(T.surface2), C=rgb(T.muted);
+  const band=v=>Math.floor((v-lo)/(hi-lo)*12);
+  for(let j=0;j<N;j++) for(let i=0;i<N;i++){
+    const v=vals[j*N+i], u=Math.pow((v-lo)/(hi-lo),0.85), k=(j*N+i)*4;
+    let col=[0,1,2].map(q=>A[q]*(1-u)+B[q]*u);
+    const b=band(v); if((i<N-1&&band(vals[j*N+i+1])!==b)||(j<N-1&&band(vals[(j+1)*N+i])!==b)) col=col.map((q,idx)=>q*0.55+C[idx]*0.45);
+    img.data[k]=col[0]; img.data[k+1]=col[1]; img.data[k+2]=col[2]; img.data[k+3]=255;
+  }
+  x.putImageData(img,0,0); return c;
+}
+function axes(ctx,T,m,w,h,xr,yr,ticks,xl,yl){
+  ctx.strokeStyle=T.line; ctx.lineWidth=1; ctx.fillStyle=T.muted; ctx.font=`400 11px ${T.fMono}`;
+  const X=v=>m.l+(v-xr[0])/(xr[1]-xr[0])*(w-m.l-m.r), Y=v=>h-m.b-(v-yr[0])/(yr[1]-yr[0])*(h-m.t-m.b);
+  ctx.textAlign="center"; ctx.textBaseline="top";
+  ticks.x.forEach(v=>{ ctx.beginPath(); ctx.moveTo(X(v),m.t); ctx.lineTo(X(v),h-m.b); ctx.globalAlpha=.5; ctx.stroke(); ctx.globalAlpha=1; ctx.fillText(fmt(v,1),X(v),h-m.b+5); });
+  ctx.textAlign="right"; ctx.textBaseline="middle";
+  ticks.y.forEach(v=>{ ctx.beginPath(); ctx.moveTo(m.l,Y(v)); ctx.lineTo(w-m.r,Y(v)); ctx.globalAlpha=.5; ctx.stroke(); ctx.globalAlpha=1; ctx.fillText(fmt(v,1),m.l-6,Y(v)); });
+  ctx.fillStyle=T.ink; ctx.font=`500 12px ${T.fBody}`; ctx.textAlign="center"; ctx.textBaseline="bottom"; ctx.fillText(xl,m.l+(w-m.l-m.r)/2,h-2);
+  ctx.save(); ctx.translate(12,m.t+(h-m.t-m.b)/2); ctx.rotate(-Math.PI/2); ctx.textBaseline="middle"; ctx.fillText(yl,0,0); ctx.restore();
+  return {X,Y};
+}
+function drawLin(){
+  const T=tok();
+  const a=prep($("cv-lin")); if(!a) return; const {ctx,w,h}=a; const m={l:40,r:10,t:10,b:38};
+  const {X,Y}=axes(ctx,T,m,w,h,[0,2],[0,2],{x:[0,0.5,1,1.5,2],y:[0,0.5,1,1.5,2]},"Eingabe x","Ausgabe y");
+  ctx.save(); ctx.beginPath(); ctx.rect(m.l,m.t,w-m.l-m.r,h-m.t-m.b); ctx.clip();
+  ctx.strokeStyle=T.data; ctx.lineWidth=1.4; ctx.setLineDash([4,3]);
+  LX.forEach((x,i)=>{ ctx.beginPath(); ctx.moveTo(X(x),Y(LY[i])); ctx.lineTo(X(x),Y(lin.p0+lin.p1*x)); ctx.stroke(); });
+  ctx.setLineDash([]); ctx.strokeStyle=T.accent; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(X(0),Y(lin.p0)); ctx.lineTo(X(2),Y(lin.p0+2*lin.p1)); ctx.stroke();
+  ctx.restore();
+  ctx.fillStyle=T.data; ctx.strokeStyle=T.surface; ctx.lineWidth=1.5;
+  LX.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(X(x),Y(LY[i]),5,0,Math.PI*2); ctx.fill(); ctx.stroke(); });
+
+  const b=prep($("cv-loss")); if(!b) return; const c2=b.ctx; const W=b.w, H=b.h;
+  if(!lin.heat||lin.heatGen!==themeGen){ lin.heat=buildHeat(T); lin.heatGen=themeGen; }
+  const m2={l:40,r:10,t:10,b:38};
+  c2.imageSmoothingEnabled=true; c2.drawImage(lin.heat,m2.l,m2.t,W-m2.l-m2.r,H-m2.t-m2.b);
+  const ax=axes(c2,T,m2,W,H,PR,PR,{x:[-0.5,0,0.5,1],y:[-0.5,0,0.5,1]},"ϕ₀ Achsenabschnitt","ϕ₁ Steigung");
+  c2.save(); c2.beginPath(); c2.rect(m2.l,m2.t,W-m2.l-m2.r,H-m2.t-m2.b); c2.clip();
+  c2.strokeStyle=T.ok; c2.lineWidth=2; c2.beginPath(); const ox=ax.X(LOPT[0]), oy=ax.Y(LOPT[1]); c2.moveTo(ox-6,oy); c2.lineTo(ox+6,oy); c2.moveTo(ox,oy-6); c2.lineTo(ox,oy+6); c2.stroke();
+  if(lin.path.length>1){ c2.strokeStyle=T.ink; c2.lineWidth=1.6; c2.beginPath(); lin.path.forEach((p,i)=>i?c2.lineTo(ax.X(p[0]),ax.Y(p[1])):c2.moveTo(ax.X(p[0]),ax.Y(p[1]))); c2.stroke(); c2.fillStyle=T.ink; lin.path.forEach(p=>{ c2.beginPath(); c2.arc(ax.X(p[0]),ax.Y(p[1]),2,0,Math.PI*2); c2.fill(); }); }
+  c2.fillStyle=T.data; c2.strokeStyle=T.surface; c2.lineWidth=2.5; c2.beginPath(); c2.arc(ax.X(lin.p0),ax.Y(lin.p1),7,0,Math.PI*2); c2.fill(); c2.stroke();
+  c2.restore();
+  $("lin-p0").value=lin.p0; $("lin-p1").value=lin.p1;
+  $("lin-p0-o").textContent=fmt(lin.p0); $("lin-p1-o").textContent=fmt(lin.p1); $("gd-lr-o").textContent=fmt(parseFloat($("gd-lr").value),3);
+  $("lin-read").innerHTML=`<span>Verlust L = <b>${fmt(lossAt(lin.p0,lin.p1),3)}</b></span><span>Minimum L = <b>${fmt(lossAt(LOPT[0],LOPT[1]),3)}</b> bei ϕ = (${fmt(LOPT[0])} | ${fmt(LOPT[1])})</span>${lin.it?`<span>Schritte <b>${lin.it}</b></span>`:""}`;
+}
+widgets.push(drawLin);
+function setLin(p0,p1,keepPath){ lin.p0=Math.max(PR[0],Math.min(PR[1],p0)); lin.p1=Math.max(PR[0],Math.min(PR[1],p1)); if(!keepPath){ lin.path=[]; lin.it=0; stopGD(""); } drawLin(); }
+$("lin-p0").addEventListener("input",e=>setLin(parseFloat(e.target.value),lin.p1));
+$("lin-p1").addEventListener("input",e=>setLin(lin.p0,parseFloat(e.target.value)));
+$("gd-lr").addEventListener("input",()=>$("gd-lr-o").textContent=fmt(parseFloat($("gd-lr").value),3));
+$("lin-opt").onclick=()=>{ setLin(LOPT[0],LOPT[1]); status("Geschlossene Lösung eingesetzt. Kein iterativer Weg nötig.","ok"); };
+(function(){
+  const cv=$("cv-loss"); let drag=false;
+  const set=e=>{ const r=cv.getBoundingClientRect(); const m={l:40,r:10,t:10,b:38}; const u=(e.clientX-r.left-m.l)/(r.width-m.l-m.r), v=(e.clientY-r.top-m.t)/(r.height-m.t-m.b); setLin(PR[0]+u*(PR[1]-PR[0]),PR[1]-v*(PR[1]-PR[0])); };
+  cv.addEventListener("pointerdown",e=>{ drag=true; cv.setPointerCapture(e.pointerId); set(e); });
+  cv.addEventListener("pointermove",e=>{ if(drag) set(e); });
+  cv.addEventListener("pointerup",()=>drag=false);
+  cv.addEventListener("keydown",e=>{ const d={ArrowLeft:[-.05,0],ArrowRight:[.05,0],ArrowUp:[0,.05],ArrowDown:[0,-.05]}[e.key]; if(!d) return; e.preventDefault(); setLin(lin.p0+d[0],lin.p1+d[1]); });
+})();
+function status(t,cls){ const s=$("gd-status"); s.textContent=t; s.className="status"+(cls?" "+cls:""); }
+function stopGD(msg,cls){ lin.gd=false; $("gd-run").textContent="Gradientenabstieg starten"; if(msg!==undefined) status(msg,cls); }
+$("gd-run").onclick=()=>{
+  if(lin.gd){ stopGD("Angehalten."); return; }
+  lin.gd=true; lin.path=[[lin.p0,lin.p1]]; lin.it=0; $("gd-run").textContent="Anhalten"; status("Läuft. Jeder Punkt rechts ist ein Schritt.");
+  let last=0;
+  const step=now=>{
+    if(!lin.gd) return;
+    if(now-last>=(reduced?0:70)){ last=now;
+      const lr=parseFloat($("gd-lr").value); const [g0,g1]=gradAt(lin.p0,lin.p1);
+      lin.p0-=lr*g0; lin.p1-=lr*g1; lin.it++; lin.path.push([lin.p0,lin.p1]);
+      const gn=Math.hypot(g0,g1);
+      if(!isFinite(lin.p0)||Math.abs(lin.p0)>6||Math.abs(lin.p1)>6){ lin.p0=Math.max(PR[0],Math.min(PR[1],lin.p0||0)); lin.p1=Math.max(PR[0],Math.min(PR[1],lin.p1||0)); drawLin(); stopGD(`Divergiert nach ${lin.it} Schritten. Die Lernrate ist zu groß, jeder Schritt springt weiter über das Tal hinaus.`,"bad"); return; }
+      drawLin();
+      if(gn<2e-3){ stopGD(`Konvergiert nach ${lin.it} Schritten. Der Gradient ist praktisch null.`,"ok"); return; }
+      if(lin.it>=400){ stopGD(`Nach 400 Schritten gestoppt. Mit dieser Lernrate geht es nur langsam voran.`); return; }
+    }
+    requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+};
+
+/* ---------- K2: polynomial under/overfitting ---------- */
+const TRUEF=x=>0.5+0.35*Math.sin(2*Math.PI*0.9*x);
+const PX=[0.03,0.13,0.22,0.34,0.44,0.56,0.66,0.77,0.88,0.97];
+const PNz=[0.06,-0.08,0.1,-0.05,0.07,-0.1,0.04,0.09,-0.07,0.05];
+const PY=PX.map((x,i)=>TRUEF(x)+PNz[i]);
+const TX=[0.07,0.18,0.28,0.39,0.5,0.61,0.71,0.82,0.92,0.995];
+const TNz=[-0.05,0.07,-0.06,0.08,-0.04,0.06,-0.08,0.05,0.07,-0.06];
+const TY=TX.map((x,i)=>TRUEF(x)+TNz[i]);
+function polyFit(d){
+  const n=d+1, M=Array.from({length:n},()=>new Float64Array(n+1));
+  PX.forEach((x,k)=>{ const t=2*x-1; const pw=[]; for(let i=0;i<n;i++) pw.push(Math.pow(t,i)); for(let i=0;i<n;i++){ for(let j=0;j<n;j++) M[i][j]+=pw[i]*pw[j]; M[i][n]+=pw[i]*PY[k]; } });
+  for(let i=0;i<n;i++) M[i][i]+=1e-10;
+  for(let c=0;c<n;c++){ let p=c; for(let r=c+1;r<n;r++) if(Math.abs(M[r][c])>Math.abs(M[p][c])) p=r; [M[c],M[p]]=[M[p],M[c]]; for(let r=0;r<n;r++){ if(r===c) continue; const f=M[r][c]/M[c][c]; for(let k=c;k<=n;k++) M[r][k]-=f*M[c][k]; } }
+  return M.map((row,i)=>row[n]/row[i]);
+}
+const polyEval=(w,x)=>{ const t=2*x-1; let s=0,p=1; for(const c of w){ s+=c*p; p*=t; } return s; };
+const mse=(w,X,Y)=>X.reduce((s,x,i)=>s+(polyEval(w,x)-Y[i])**2,0)/X.length;
+const POLY=Array.from({length:10},(_,d)=>{ const w=polyFit(d); return {w,tr:mse(w,PX,PY),te:mse(w,TX,TY)}; });
+const BEST=POLY.reduce((b,p,i)=>p.te<POLY[b].te?i:b,0);
+function drawPoly(){
+  const d=+$("poly-d").value, P=POLY[d], T=tok();
+  const a=prep($("cv-poly")); if(!a) return; const {ctx,w,h}=a; const m={l:40,r:10,t:10,b:38};
+  const {X,Y}=axes(ctx,T,m,w,h,[0,1],[-0.2,1.2],{x:[0,0.25,0.5,0.75,1],y:[0,0.5,1]},"Eingabe x","Ausgabe y");
+  ctx.save(); ctx.beginPath(); ctx.rect(m.l,m.t,w-m.l-m.r,h-m.t-m.b); ctx.clip();
+  ctx.strokeStyle=T.muted; ctx.globalAlpha=.35; ctx.lineWidth=1.5; ctx.setLineDash([3,4]); ctx.beginPath(); for(let i=0;i<=200;i++){ const x=i/200; i?ctx.lineTo(X(x),Y(TRUEF(x))):ctx.moveTo(X(x),Y(TRUEF(x))); } ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
+  ctx.strokeStyle=T.accent; ctx.lineWidth=2.8; ctx.beginPath(); for(let i=0;i<=400;i++){ const x=i/400; const y=Math.max(-5,Math.min(5,polyEval(P.w,x))); i?ctx.lineTo(X(x),Y(y)):ctx.moveTo(X(x),Y(y)); } ctx.stroke();
+  ctx.restore();
+  ctx.lineWidth=2; ctx.strokeStyle=T.muted; TX.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(X(x),Y(TY[i]),4.5,0,Math.PI*2); ctx.stroke(); });
+  ctx.fillStyle=T.data; ctx.strokeStyle=T.surface; ctx.lineWidth=1.5; PX.forEach((x,i)=>{ ctx.beginPath(); ctx.arc(X(x),Y(PY[i]),5,0,Math.PI*2); ctx.fill(); ctx.stroke(); });
+
+  const b=prep($("cv-polyerr")); if(!b) return; const c=b.ctx, W=b.w, H=b.h, m2={l:48,r:62,t:12,b:38};
+  const lo=-4, hi=1;
+  const Xd=v=>m2.l+v/9*(W-m2.l-m2.r), Yl=v=>H-m2.b-(Math.max(lo,Math.min(hi,Math.log10(v)))-lo)/(hi-lo)*(H-m2.t-m2.b);
+  c.strokeStyle=T.line; c.lineWidth=1; c.fillStyle=T.muted; c.font=`400 11px ${T.fMono}`; c.textAlign="right"; c.textBaseline="middle";
+  for(let k=lo;k<=hi;k++){ const yy=H-m2.b-(k-lo)/(hi-lo)*(H-m2.t-m2.b); c.globalAlpha=.5; c.beginPath(); c.moveTo(m2.l,yy); c.lineTo(W-m2.r,yy); c.stroke(); c.globalAlpha=1; c.fillText(k===0?"1":"10"+["⁻⁴","⁻³","⁻²","⁻¹","","¹"][k+4],m2.l-6,yy); }
+  c.textAlign="center"; c.textBaseline="top"; for(let i=0;i<=9;i++) c.fillText(String(i),Xd(i),H-m2.b+5);
+  c.fillStyle=T.ink; c.font=`500 12px ${T.fBody}`; c.textBaseline="bottom"; c.fillText("Polynomgrad",m2.l+(W-m2.l-m2.r)/2,H-2);
+  c.save(); c.translate(12,m2.t+(H-m2.t-m2.b)/2); c.rotate(-Math.PI/2); c.textBaseline="middle"; c.fillText("mittlerer quadr. Fehler",0,0); c.restore();
+  c.fillStyle=T.accent; c.globalAlpha=.12; c.fillRect(Xd(d)-8,m2.t,16,H-m2.t-m2.b); c.globalAlpha=1;
+  for(const [key,col,lab] of [["tr",T.accent,"Training"],["te",T.data,"Test"]]){
+    c.strokeStyle=col; c.lineWidth=2.4; c.beginPath(); POLY.forEach((p,i)=>i?c.lineTo(Xd(i),Yl(p[key])):c.moveTo(Xd(i),Yl(p[key]))); c.stroke();
+    c.fillStyle=col; POLY.forEach((p,i)=>{ c.beginPath(); c.arc(Xd(i),Yl(p[key]),i===d?5.5:3,0,Math.PI*2); c.fill(); });
+    c.font=`600 12px ${T.fBody}`; c.textAlign="left"; c.textBaseline="middle"; c.fillText(lab,Xd(9)+8,Yl(POLY[9][key]));
+  }
+  let diag,cls;
+  if(d<BEST && P.te>1.3*POLY[BEST].te){ diag="Underfitting: Das Modell ist zu starr für den Verlauf."; cls="bad"; }
+  else if(d>BEST && P.te>1.3*POLY[BEST].te){ diag="Overfitting: Das Modell lernt das Rauschen der Trainingsdaten mit."; cls="bad"; }
+  else { diag="Gute Generalisierung: Die Ausdrucksstärke passt zum Problem."; cls="ok"; }
+  $("poly-d-o").textContent=String(d);
+  $("poly-read").innerHTML=`<span>Trainingsfehler <b>${P.tr.toExponential(1).replace(".",",")}</b></span><span>Testfehler <b>${P.te.toExponential(1).replace(".",",")}</b></span><span class="status ${cls}" style="font-family:var(--f-body)">${diag}</span>`;
+}
+widgets.push(drawPoly);
+$("poly-d").addEventListener("input",drawPoly);
+
+/* ---------- Quiz ---------- */
+function seeded(str){ let h=2166136261; for(const c of str){ h^=c.charCodeAt(0); h=Math.imul(h,16777619);} return ()=>{ h^=h<<13; h^=h>>>17; h^=h<<5; return ((h>>>0)%10000)/10000; }; }
+function order(q){ const r=seeded(q.id+"x"); const idx=q.opts.map((_,i)=>i); for(let i=idx.length-1;i>0;i--){ const j=Math.floor(r()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; } return idx; }
+function renderQuiz(id){
+  const ch=QUIZ.find(c=>c.id===id), root=$("quiz-"+id), c=counts(id), onlyOpen=!!state.onlyOpen[id];
+  const pct=v=>(100*v/c.total).toFixed(2)+"%";
+  root.innerHTML=`<div class="qhead">
+      <p>Verständnisfragen ohne Rechenaufgaben. Antwort anklicken, Begründung lesen, falsche Fragen gezielt wiederholen.</p>
+      <div class="stats"><div class="stat"><b>${c.ok}</b><span>richtig</span></div><div class="stat"><b>${c.bad}</b><span>falsch</span></div><div class="stat"><b>${c.total-c.ok-c.bad}</b><span>offen</span></div>
+      <div class="bar" aria-hidden="true"><i class="g" style="width:${pct(c.ok)}"></i><i class="r" style="width:${pct(c.bad)}"></i></div></div>
+      <div class="ctl"><button class="btn" id="q-open-${id}" aria-pressed="${onlyOpen}">Nur offene anzeigen</button><button class="btn" id="q-retry-${id}" ${c.bad?"":"disabled"}>Falsche wiederholen (${c.bad})</button><button class="btn" id="q-reset-${id}">Kapitel zurücksetzen</button></div>
+    </div><ol class="qlist" id="ql-${id}" style="margin-top:16px"></ol>`;
+  $("q-open-"+id).onclick=()=>{ state.onlyOpen[id]=!onlyOpen; save(); renderQuiz(id); };
+  $("q-retry-"+id).onclick=()=>{ ch.questions.forEach(q=>{ if(state.answers[q.id]!==undefined&&state.answers[q.id]!==0) delete state.answers[q.id]; }); save(); renderQuiz(id); renderTabs(); };
+  const rb=$("q-reset-"+id);
+  rb.onclick=()=>{ if(rb.dataset.armed){ ch.questions.forEach(q=>delete state.answers[q.id]); save(); renderQuiz(id); renderTabs(); return; } rb.dataset.armed="1"; rb.textContent="Wirklich zurücksetzen?"; setTimeout(()=>{ if(rb.isConnected){ delete rb.dataset.armed; rb.textContent="Kapitel zurücksetzen"; } },3500); };
+  const list=$("ql-"+id); let shown=0; const L="ABCD";
+  ch.questions.forEach((q,qi)=>{
+    const ans=state.answers[q.id]; if(onlyOpen&&ans!==undefined) return; shown++;
+    const li=document.createElement("li"); li.className="qcard"; const ord=order(q);
+    li.innerHTML=`<div class="q-meta"><span>Frage ${qi+1} von ${ch.questions.length}</span><span class="${q.transfer?"tr":""}">${q.transfer?"Transfer":"§ "+q.sec}</span></div><h5>${q.q}</h5><div class="opts" role="group" aria-label="Antwortoptionen"></div>`;
+    const opts=li.querySelector(".opts");
+    ord.forEach((oi,pos)=>{
+      const b=document.createElement("button"); b.className="opt"; b.id=`opt-${q.id}-${oi}`;
+      b.innerHTML=`<span class="k">${L[pos]}</span><span>${q.opts[oi]}</span>`;
+      if(ans!==undefined){ b.disabled=true; b.classList.add(oi===0?"correct":(oi===ans?"wrong":"dim")); }
+      else b.onclick=()=>{ state.answers[q.id]=oi; save(); const y=window.scrollY; renderQuiz(id); renderTabs(); window.scrollTo(0,y); };
+      opts.appendChild(b);
+    });
+    if(ans!==undefined){ const fb=document.createElement("div"); fb.className="fb "+(ans===0?"ok":"bad"); fb.innerHTML=`<strong>${ans===0?"Richtig.":"Nicht ganz. Richtig ist "+L[ord.indexOf(0)]+"."}</strong><p>${q.exp}</p>`; li.appendChild(fb); }
+    list.appendChild(li);
+  });
+  if(!shown) list.innerHTML=`<li class="empty">Alle Fragen dieses Kapitels sind beantwortet.</li>`;
+}
+
+/* ---------- init ---------- */
+QUIZ.forEach(c=>renderQuiz(c.id));
+$("gw-eps-o").textContent=fmt(0.02); $("gw-speed-o").textContent=SPEEDS[1].n;
+showChapter(state.active,false);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(redrawAll);
+
+</script>

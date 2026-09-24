@@ -1,0 +1,298 @@
+{
+  "id": "kap1",
+  "num": 1,
+  "title": "Einführung",
+  "intro": "Überwachtes, unüberwachtes und bestärkendes Lernen im Überblick, latente Variablen und ethische Fragen.",
+  "questions": [
+    {
+      "id": "1-01",
+      "sec": "1.1.1",
+      "q": "Ein Modell schätzt den Preis einer Immobilie aus Wohnfläche und Zimmerzahl. Um welchen Problemtyp handelt es sich?",
+      "opts": [
+        "Regression, weil eine kontinuierliche Zahl ausgegeben wird",
+        "Binäre Klassifikation, weil der Preis über oder unter dem Marktwert liegt",
+        "Multiklassen-Klassifikation mit einer Klasse pro Preisstufe",
+        "Unüberwachtes Lernen, weil kein Experte den Preis festlegt"
+      ],
+      "exp": "Regression liefert einen kontinuierlichen Wert statt einer Kategoriezuordnung. Preisstufen wären eine künstliche Diskretisierung, die das Buch nicht vorsieht."
+    },
+    {
+      "id": "1-02",
+      "sec": "1.1.1",
+      "q": "Ein Modell sagt für ein Molekül gleichzeitig Gefrier- und Siedepunkt voraus. Wie heißt dieses Problem?",
+      "opts": [
+        "Multivariate Regression",
+        "Binäre Klassifikation mit den Klassen fest und flüssig",
+        "Multiklassen-Klassifikation mit zwei Ausgaben",
+        "Konditionale Generierung"
+      ],
+      "exp": "Es werden mehrere kontinuierliche Zahlen vorhergesagt. Mehr als eine Ausgabegröße macht die Regression multivariat."
+    },
+    {
+      "id": "1-03",
+      "sec": "1.1.1",
+      "q": "Was enthält der Ausgabevektor eines Klassifikationsmodells mit N Kategorien?",
+      "opts": [
+        "Für jede der N Kategorien die Wahrscheinlichkeit, dass die Eingabe zu ihr gehört",
+        "Den Index der gewählten Kategorie als einzelne Ganzzahl",
+        "Einen kontinuierlichen Wert, der anschließend auf die nächste Kategorie gerundet wird",
+        "Einen Wahrheitswert pro Eingabemerkmal"
+      ],
+      "exp": "Das Modell gibt einen Vektor der Größe N mit Wahrscheinlichkeiten zurück. Die konkrete Klassenentscheidung wird erst daraus abgeleitet."
+    },
+    {
+      "id": "1-04",
+      "sec": "1.1.2",
+      "q": "Warum gelten die Merkmale einer Immobilie als tabellarische Daten?",
+      "opts": [
+        "Sie haben keine interne Struktur. Vertauscht man die Reihenfolge der Eingaben und trainiert neu, bleibt die Vorhersage gleich.",
+        "Sie werden üblicherweise in einer Datenbanktabelle gespeichert.",
+        "Sie bestehen ausschließlich aus ganzen Zahlen fester Länge.",
+        "Die Reihenfolge der Merkmale trägt die Bedeutung der Daten."
+      ],
+      "exp": "Entscheidend ist die fehlende interne Struktur. Bei Text dagegen ändert eine andere Wortreihenfolge die Bedeutung, bei Bildern tragen Nachbarschaften zwischen Pixeln Information."
+    },
+    {
+      "id": "1-05",
+      "sec": "1.1.2",
+      "q": "Welche Eigenschaft unterscheidet Bilddaten neben ihrer Größe von tabellarischen Daten?",
+      "opts": [
+        "Räumliche Struktur: Übereinanderliegende Pixel sind eng verwandt, obwohl sie im Eingabevektor weit auseinander stehen",
+        "Bilder haben immer eine variable Länge",
+        "Bilder lassen sich nicht als Zahlenvektor darstellen",
+        "Bildpixel sind statistisch unabhängig voneinander"
+      ],
+      "exp": "Das Aneinanderhängen der RGB-Werte zerstört die Nachbarschaft in vertikaler Richtung. Ein gutes Modell muss diese Struktur trotzdem nutzen können. Das motiviert später die Faltungsnetze."
+    },
+    {
+      "id": "1-06",
+      "sec": "1.1.3",
+      "q": "Was bedeutet es im Sinne des Buches, ein Modell zu trainieren?",
+      "opts": [
+        "Innerhalb einer Familie möglicher Gleichungen diejenige suchen, die die Trainingsdaten am besten beschreibt",
+        "Alle Trainingspaare speichern und zwischen ihnen interpolieren",
+        "Die Modellgleichung aus den Daten symbolisch herleiten",
+        "Die Architektur so lange erweitern, bis jeder Trainingspunkt exakt getroffen wird"
+      ],
+      "exp": "Das Modell legt eine Familie von Kurven fest. Training wählt daraus mithilfe der Trainingsdaten ein Mitglied aus."
+    },
+    {
+      "id": "1-07",
+      "sec": "1.1.3",
+      "q": "Woher kommt der Begriff überwachtes Lernen?",
+      "opts": [
+        "Gelabelte Eingabe/Ausgabe-Paare übernehmen die Rolle eines Lehrers für den Trainingsprozess",
+        "Ein Mensch überwacht die Vorhersagen im laufenden Betrieb",
+        "Das Modell überwacht seine eigene Unsicherheit",
+        "Die Trainingsdaten werden vor dem Training von Experten bereinigt"
+      ],
+      "exp": "Die Labels, etwa das von Experten bestimmte Genre eines Musikstücks, dienen als Supervisor."
+    },
+    {
+      "id": "1-08",
+      "sec": "1.1.5",
+      "q": "Semantische Segmentierung und maschinelle Übersetzung liefern beide strukturierte Ausgaben. Warum gilt Übersetzung als schwieriger?",
+      "opts": [
+        "Die Ausgabe ist mehrdeutig und muss einer eigenen Grammatik folgen, die nicht eng an die Eingabe gebunden ist",
+        "Text enthält mehr Dimensionen als ein Bild",
+        "Übersetzung ist eine Klassifikation mit Millionen Klassen",
+        "Segmentierung benötigt keine Trainingsdaten"
+      ],
+      "exp": "Bei der Segmentierung hängt die Ausgabestruktur eng an der Eingabe, ähnliche Nachbarpixel tragen vermutlich dasselbe Label. Bei Übersetzung gibt es mehrere gültige Lösungen und nicht jede Wortfolge ist ein gültiger Satz."
+    },
+    {
+      "id": "1-09",
+      "sec": "1.1.5",
+      "q": "Wie lässt sich laut Buch die Grammatik einer strukturierten Ausgabe lernen?",
+      "opts": [
+        "Ohne Ausgabe-Labels aus der Statistik großer Datenkorpora, also unüberwacht",
+        "Nur durch explizit programmierte Grammatikregeln",
+        "Durch mehr gelabelte Eingabe/Ausgabe-Paare",
+        "Durch bestärkendes Lernen mit einer Belohnung pro korrektem Satz"
+      ],
+      "exp": "Gültige Sätze lassen sich aus einem großen Textkorpus lernen, ohne dass Paare nötig sind. Das ist die Brücke zum unüberwachten Lernen."
+    },
+    {
+      "id": "1-10",
+      "sec": "1.2.1",
+      "q": "Was ist das Ziel der generativen unüberwachten Modelle, auf die sich das Buch konzentriert?",
+      "opts": [
+        "Neue Beispiele synthetisieren, die statistisch nicht von den Trainingsdaten zu unterscheiden sind",
+        "Die Trainingsdaten in Cluster einteilen",
+        "Für jedes Beispiel ein fehlendes Label vorhersagen",
+        "Die Trainingsdaten verlustfrei komprimieren"
+      ],
+      "exp": "Manche generativen Modelle beschreiben die Wahrscheinlichkeitsverteilung explizit, andere lernen nur einen Mechanismus zum Erzeugen neuer Beispiele."
+    },
+    {
+      "id": "1-11",
+      "sec": "1.2.1",
+      "q": "Inpainting und Textvervollständigung sind Beispiele wofür?",
+      "opts": [
+        "Konditionale Generierung, bei der ein Teil der Ausgabe vorgegeben ist",
+        "Multivariate Regression",
+        "Semantische Segmentierung",
+        "Bestärkendes Lernen"
+      ],
+      "exp": "Beim Inpainting bleiben die unverdeckten Pixel fest. Bei der Textvervollständigung ist der Anfang des Textes fest. Das Modell erzeugt nur den fehlenden Teil."
+    },
+    {
+      "id": "1-12",
+      "sec": "1.2.1",
+      "q": "Ein großes Textmodell beantwortet eine Frage korrekt. Was folgt daraus laut Buch?",
+      "opts": [
+        "Es hat die wahrscheinlichste Fortsetzung des Dokuments erzeugt. Es kennt die Statistik der Sprache, versteht aber die Bedeutung seiner Antwort nicht.",
+        "Es hat ein explizites Weltmodell aufgebaut und daraus logisch geschlossen",
+        "Es hat die Antwort wörtlich aus den Trainingsdaten abgerufen",
+        "Es wurde für genau diese Frage überwacht trainiert"
+      ],
+      "exp": "Das Buch betont, dass die scheinbare Intelligenz aus dem Auffüllen der wahrscheinlichsten Vervollständigung stammt."
+    },
+    {
+      "id": "1-13",
+      "sec": "1.2.2",
+      "q": "Warum lässt sich die Variation von Gesichtsbildern derselben Person mit etwa 42 Zahlen beschreiben?",
+      "opts": [
+        "Die Bilder entstehen durch einen physikalischen Prozess mit wenigen Freiheitsgraden, hier rund 42 Gesichtsmuskeln",
+        "Das Bild wird auf 42 Pixel herunterskaliert",
+        "42 Farbkanäle genügen für ein Gesicht",
+        "Ein Klassifikator unterscheidet 42 Gesichtsausdrücke"
+      ],
+      "exp": "Reale Bilder sind eine winzige Teilmenge aller möglichen RGB-Kombinationen. Die Daten sind niedriger dimensional, als die Zahl der Pixel vermuten lässt. Das ist die Grundidee latenter Variablen."
+    },
+    {
+      "id": "1-14",
+      "sec": "1.2.2",
+      "q": "Wie erzeugt ein generatives Modell mit latenten Variablen ein neues Beispiel?",
+      "opts": [
+        "Es zieht eine Stichprobe aus einer einfachen Verteilung über die latenten Variablen und bildet sie mit einem tiefen Netz in den Datenraum ab",
+        "Es kombiniert zufällig Ausschnitte aus Trainingsbeispielen",
+        "Es sucht das ähnlichste Trainingsbeispiel und verrauscht es",
+        "Es erzeugt Pixel für Pixel gleichverteilte Zufallswerte"
+      ],
+      "exp": "Die latente Verteilung ist per Konstruktion einfach. Die gesamte Komplexität steckt in der gelernten Abbildung vom latenten Raum in den Datenraum."
+    },
+    {
+      "id": "1-15",
+      "sec": "1.2.2",
+      "q": "Warum wirken Zwischenbilder bei der Interpolation im latenten Raum plausibel und nicht wie eine Überblendung?",
+      "opts": [
+        "Interpoliert werden die latenten Variablen der beiden Bilder, erst danach wird in den Bildraum abgebildet",
+        "Die Pixelwerte beider Bilder werden gewichtet gemittelt",
+        "Das Modell wählt reale Trainingsbilder, die zwischen den beiden liegen",
+        "Die Bilder werden vorher auf dieselbe Helligkeit normiert"
+      ],
+      "exp": "Jeder sinnvolle Punkt im latenten Raum ergibt ein plausibles Bild. Eine Pixelmittelung dagegen verlässt die Menge realistischer Bilder."
+    },
+    {
+      "id": "1-16",
+      "sec": "1.2.3",
+      "q": "Welche Aussage ist KEIN Vorteil latenter Variablen beim Abbilden von Text auf Bild?",
+      "opts": [
+        "Das Modell kommt ganz ohne Trainingsdaten aus",
+        "Es werden weniger Text/Bild-Paare benötigt, weil Ein- und Ausgabe niedriger dimensional sind",
+        "Erzeugte Bilder sind eher plausibel",
+        "Durch Zufall in der Abbildung entstehen mehrere passende Bilder zu einer Beschreibung"
+      ],
+      "exp": "Das Buch nennt genau drei Vorteile: weniger Paare, plausiblere Bilder und mehrere Ergebnisse pro Beschreibung. Trainingsdaten werden weiterhin gebraucht."
+    },
+    {
+      "id": "1-17",
+      "sec": "1.3.1",
+      "q": "Ein Schachagent erhält nur am Spielende eine Belohnung für den Sieg. Welches Problem tritt hier in extremer Form auf?",
+      "opts": [
+        "Temporal Credit Assignment: Unklar ist, welche der vielen Züge für Sieg oder Niederlage entscheidend waren",
+        "Exploration-Exploitation-Trade-off",
+        "Overfitting auf bekannte Eröffnungen",
+        "Fehlende Labels für jede Brettstellung"
+      ],
+      "exp": "Die Belohnung kommt lange nach den Aktionen. Sie den verursachenden Aktionen zuzuordnen, ist das zeitliche Zuordnungsproblem."
+    },
+    {
+      "id": "1-18",
+      "sec": "1.3.1",
+      "q": "Ein Roboter kommt voran, indem er auf der Seite liegend mit einem Bein schiebt. Welches Dilemma illustriert das?",
+      "opts": [
+        "Exploration und Exploitation: bekannte, mäßig belohnte Strategie nutzen oder neue Aktionen ausprobieren, die zum Gehen führen könnten",
+        "Temporal Credit Assignment",
+        "Underfitting des Bewegungsmodells",
+        "Nicht-deterministische Zustandsübergänge"
+      ],
+      "exp": "Die bekannte Strategie liefert sichere, aber kleine Belohnungen. Nur Exploration kann die deutlich bessere Lösung finden."
+    },
+    {
+      "id": "1-19",
+      "sec": "1.3.1",
+      "q": "Warum ändern Aktionen im Schach den Systemzustand nicht deterministisch?",
+      "opts": [
+        "Auf jeden eigenen Zug kann der Gegner mit vielen verschiedenen Zügen antworten",
+        "Die Schachregeln enthalten Zufallselemente",
+        "Der Agent wählt seine Züge zufällig",
+        "Die Belohnung wird verrauscht übermittelt"
+      ],
+      "exp": "Der eigene Zug ist eindeutig, aber der Folgezustand, den der Agent als Nächstes sieht, hängt von der Reaktion des Gegners ab."
+    },
+    {
+      "id": "1-20",
+      "sec": "1.3.1",
+      "q": "Was bildet ein Policy Network ab?",
+      "opts": [
+        "Den beobachteten Zustand der Welt auf eine Aktion, etwa Brettstellung auf Zug oder Sensorwerte auf Gelenkbewegung",
+        "Eine Aktion auf die erwartete Belohnung",
+        "Den latenten Raum auf den Datenraum",
+        "Trainingsdaten auf Modellparameter"
+      ],
+      "exp": "Die Policy ist die Abbildung von Zustand auf Aktion. Das ist eine Möglichkeit, tiefe Netze in bestärkendes Lernen einzubinden."
+    },
+    {
+      "id": "1-21",
+      "sec": "1.4",
+      "q": "Ein System sagt Gehälter auf Basis historischer Daten voraus. Was ist laut Buch zu erwarten?",
+      "opts": [
+        "Es reproduziert die historischen Verzerrungen, etwa niedrigere Gehälter für Frauen",
+        "Es gleicht historische Verzerrungen automatisch aus",
+        "Es wird bei ausreichend Daten neutral",
+        "Es sagt für alle Gruppen denselben Mittelwert voraus"
+      ],
+      "exp": "Das Modell lernt den Zusammenhang, den die Daten zeigen, einschließlich der Ungerechtigkeiten darin. Unbedachter Einsatz kann bestehende Verzerrungen verfestigen."
+    },
+    {
+      "id": "1-22",
+      "sec": "1.4",
+      "q": "Welcher Ansatz der erklärbaren KI gilt laut Buch als mäßig erfolgreich?",
+      "opts": [
+        "Lokale Erklärungen, warum eine bestimmte einzelne Entscheidung getroffen wurde",
+        "Vollständige Offenlegung der Funktionsweise großer Netze",
+        "Inspektion aller Gewichte durch Experten",
+        "Ersatz des Netzes durch eine äquivalente Regelbasis"
+      ],
+      "exp": "Das Gesamtsystem lässt sich nicht erklären. Für einzelne Entscheidungen gelingen interpretierbare Beschreibungen. Ob vollständige Transparenz möglich ist, bleibt offen."
+    },
+    {
+      "id": "1-23",
+      "sec": "Transfer",
+      "transfer": true,
+      "q": "Ein Kunde möchte aus Vibrationsdaten eines Lagers die Restlebensdauer in Betriebsstunden vorhersagen. Welche Einordnung passt?",
+      "opts": [
+        "Überwachte Regression mit einer Zeitreihe als Eingabe, deren Reihenfolge Information trägt",
+        "Binäre Klassifikation mit tabellarischen Daten",
+        "Unüberwachtes generatives Modell",
+        "Bestärkendes Lernen, weil die Maschine im Betrieb lernt"
+      ],
+      "exp": "Ausgabe ist eine kontinuierliche Größe, gelabelt durch historische Ausfälle. Wie bei Audio ist die Eingabe hochdimensional und zeitlich geordnet."
+    },
+    {
+      "id": "1-24",
+      "sec": "Transfer",
+      "transfer": true,
+      "q": "Eine Inline-Prüfung soll jedes Bauteilbild einer von fünf Fehlerarten oder der Klasse i.O. zuordnen. Was liefert das Modell?",
+      "opts": [
+        "Einen Vektor mit sechs Wahrscheinlichkeiten, je eine pro Klasse",
+        "Eine einzelne Zahl zwischen null und fünf",
+        "Ein Binärbild mit Fehlerregionen",
+        "Einen Text mit der Fehlerbeschreibung"
+      ],
+      "exp": "Sechs Klassen ergeben eine Multiklassen-Klassifikation mit N gleich sechs. Ein Binärbild wäre dagegen eine Segmentierung, also eine strukturierte Ausgabe."
+    }
+  ]
+}

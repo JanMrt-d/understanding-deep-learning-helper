@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+"""Baut dist/index.html als eine selbstständige Datei aus src/ und content/.
+
+Reihenfolge:
+  src/page.html            Gerüst mit Platzhaltern
+  src/styles.css           -> /*@STYLES*/
+  src/chapters/<id>.html   -> <!--@CHAPTERS-->  (Reihenfolge aus content/chapters.json)
+  content/quiz/<id>.json   -> /*@DATA*/         (QUIZ, UPCOMING, CH_TITLES)
+  src/js/*.js              -> /*@SCRIPTS*/      (alphabetisch, daher Präfixe 00-, 10-, ...)
+"""
+import json
+import pathlib
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+SRC, CONTENT, DIST = ROOT / "src", ROOT / "content", ROOT / "dist"
+
+
+def main() -> int:
+    manifest = json.loads((CONTENT / "chapters.json").read_text(encoding="utf-8"))
+    chapters = manifest["chapters"]
+
+    html_parts, quiz = [], []
+    for ch in chapters:
+        cid = ch["id"]
+        html_parts.append((SRC / "chapters" / f"{cid}.html").read_text(encoding="utf-8").rstrip())
+        quiz.append(json.loads((CONTENT / "quiz" / f"{cid}.json").read_text(encoding="utf-8")))
+
+    ids = [q["id"] for q in quiz]
+    if ids != [c["id"] for c in chapters]:
+        print("Quiz-IDs passen nicht zum Manifest", file=sys.stderr)
+        return 1
+    for q in quiz:
+        seen = set()
+        for item in q["questions"]:
+            if item["id"] in seen:
+                print(f"Doppelte Frage-ID {item['id']}", file=sys.stderr)
+                return 1
+            seen.add(item["id"])
+            if len(item["opts"]) != 4:
+                print(f"Frage {item['id']} hat nicht genau 4 Optionen (Index 0 ist korrekt)", file=sys.stderr)
+                return 1
+
+    data = (
+        "const QUIZ = " + json.dumps(quiz, ensure_ascii=False) + ";\n"
+        "const UPCOMING = " + json.dumps(manifest.get("upcoming")) + ";\n"
+        "const CH_TITLES = " + json.dumps({c["id"]: c["title"] for c in chapters}, ensure_ascii=False) + ";\n"
+    )
+    scripts = "\n".join(p.read_text(encoding="utf-8") for p in sorted((SRC / "js").glob("*.js")))
+
+    page = (SRC / "page.html").read_text(encoding="utf-8")
+    for marker, value in [
+        ("/*@STYLES*/", (SRC / "styles.css").read_text(encoding="utf-8")),
+        ("<!--@CHAPTERS-->", "\n\n".join(html_parts)),
+        ("/*@DATA*/", data),
+        ("/*@SCRIPTS*/", scripts),
+    ]:
+        if marker not in page:
+            print(f"Platzhalter {marker} fehlt in src/page.html", file=sys.stderr)
+            return 1
+        page = page.replace(marker, value)
+
+    DIST.mkdir(exist_ok=True)
+    out = DIST / "index.html"
+    out.write_text(page, encoding="utf-8")
+    n = sum(len(q["questions"]) for q in quiz)
+    print(f"{out.relative_to(ROOT)}  {out.stat().st_size/1024:.0f} KiB  {len(chapters)} Kapitel  {n} Fragen")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

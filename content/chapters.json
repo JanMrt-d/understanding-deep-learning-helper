@@ -1,0 +1,15 @@
+{
+  "upcoming": 3,
+  "chapters": [
+    {
+      "id": "kap1",
+      "num": 1,
+      "title": "Einführung"
+    },
+    {
+      "id": "kap2",
+      "num": 2,
+      "title": "Überwachtes Lernen"
+    }
+  ]
+}
