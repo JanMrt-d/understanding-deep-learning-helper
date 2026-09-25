@@ -57,7 +57,6 @@ Consequences that are easy to miss:
 
 - All text in English with the standard terminology of ML research and of the book (*loss function*, *latent variables*, *temporal credit assignment*, *capacity*, …).
 - No em dashes and no semicolons in any content text.
-- Own wording only. Do not copy passages or figures from the book.
 - Colors only via CSS tokens in `src/styles.css` (light and dark variants), and in canvas only via `tok()`, so both themes work.
 - No external resources except Google Fonts. Everything else is inlined.
 - Licenses: code (`src/js/`, `src/page.html`, `src/styles.css`, `scripts/`) is MIT, content (`src/chapters/`, `content/`) is CC BY 4.0.
